@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using Licenta1.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace Licenta1.Areas.Identity.Data;
@@ -17,6 +18,8 @@ public class AplicationUser : IdentityUser
 	[PersonalData]
 	[Column(TypeName = "nvarchar(100)")]
 	public string LastName { get; set; }
+
+	public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
 }
 

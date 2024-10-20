@@ -4,6 +4,7 @@ using Licenta1.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Licenta1.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241002155649_AddCustomTables")]
+    partial class AddCustomTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,127 +98,24 @@ namespace Licenta1.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("Licenta1.Models.Booking", b =>
+            modelBuilder.Entity("Licenta1.Areas.Identity.Data.Product", b =>
                 {
-                    b.Property<int>("BookingId")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingId"));
-
-                    b.Property<DateTime>("BookingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CheckInDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CheckOutDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<float>("TotalPrice")
-                        .HasColumnType("real");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("BookingId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Booking", (string)null);
-                });
-
-            modelBuilder.Entity("Licenta1.Models.BookingRoom", b =>
-                {
-                    b.Property<int>("BookingRoomId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BookingRoomId"));
-
-                    b.Property<int>("BookingId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BookingRoomId");
-
-                    b.HasIndex("BookingId");
-
-                    b.HasIndex("RoomId");
-
-                    b.ToTable("BookingRoom", (string)null);
-                });
-
-            modelBuilder.Entity("Licenta1.Models.Price", b =>
-                {
-                    b.Property<int>("PriceId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PriceId"));
-
-                    b.Property<float>("BasePrice")
-                        .HasColumnType("real");
-
-                    b.Property<float>("Discount")
-                        .HasColumnType("real");
-
-                    b.Property<bool>("DiscountIsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime");
-
-                    b.HasKey("PriceId");
-
-                    b.ToTable("Prices");
-                });
-
-            modelBuilder.Entity("Licenta1.Models.Room", b =>
-                {
-                    b.Property<int>("RoomId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomId"));
-
-                    b.Property<int>("Capacity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PriceId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("RoomStatus")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.HasKey("ProductId");
 
-                    b.Property<string>("RoomType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("RoomId");
-
-                    b.HasIndex("PriceId");
-
-                    b.ToTable("Room", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -355,51 +255,6 @@ namespace Licenta1.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Licenta1.Models.Booking", b =>
-                {
-                    b.HasOne("Licenta1.Areas.Identity.Data.AplicationUser", "AplicationUser")
-                        .WithMany("Bookings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Booking_AplicationUser");
-
-                    b.Navigation("AplicationUser");
-                });
-
-            modelBuilder.Entity("Licenta1.Models.BookingRoom", b =>
-                {
-                    b.HasOne("Licenta1.Models.Booking", "Booking")
-                        .WithMany("BookingRooms")
-                        .HasForeignKey("BookingId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_BookingRoom_Booking");
-
-                    b.HasOne("Licenta1.Models.Room", "Room")
-                        .WithMany("BookingRooms")
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_BookingRoom_Room");
-
-                    b.Navigation("Booking");
-
-                    b.Navigation("Room");
-                });
-
-            modelBuilder.Entity("Licenta1.Models.Room", b =>
-                {
-                    b.HasOne("Licenta1.Models.Price", "Price")
-                        .WithMany("Rooms")
-                        .HasForeignKey("PriceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_Room_Price");
-
-                    b.Navigation("Price");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -449,26 +304,6 @@ namespace Licenta1.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Licenta1.Areas.Identity.Data.AplicationUser", b =>
-                {
-                    b.Navigation("Bookings");
-                });
-
-            modelBuilder.Entity("Licenta1.Models.Booking", b =>
-                {
-                    b.Navigation("BookingRooms");
-                });
-
-            modelBuilder.Entity("Licenta1.Models.Price", b =>
-                {
-                    b.Navigation("Rooms");
-                });
-
-            modelBuilder.Entity("Licenta1.Models.Room", b =>
-                {
-                    b.Navigation("BookingRooms");
                 });
 #pragma warning restore 612, 618
         }
