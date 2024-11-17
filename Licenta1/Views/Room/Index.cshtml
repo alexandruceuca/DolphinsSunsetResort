@@ -2,7 +2,7 @@
 @{
 	ViewData["Title"] = "Rooms";
 }
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 
 <main class="py-5">
 	<div class="Rooms">
@@ -11,9 +11,6 @@
 			<h3 class="text-img-home display-1 pt-5">Rooms</h3>
 		</div>
 	</div>
-
-
-
 
 	<!-- Date Range Picker -->
 	<form id="filterForm">
@@ -56,55 +53,12 @@
 		</div>
 	</section>
 </main>
-<script src="~/js/datePicker.js" asp-append-version="true"></script>
 
 <script>
-	// Handle the filter form submission using AJAX
-	$("#filterForm").submit(function (e) {
-		e.preventDefault(); // Prevent form from submitting the traditional way
-
-		// Get the form data
-		var startDate = $("#startDate").val();
-		var endDate = $("#endDate").val();
-
-		console.log("Start Date:", startDate);
-		console.log("End Date:", endDate);
-
-
-		$.ajax({
-			url: '@Url.Action("GetFilteredRooms", "Room")',
-			type: 'GET',
-			data: {
-				startDate: startDate,
-				endDate: endDate
-			},
-			success: function (response) {
-				// Update the room list with the filtered results
-				$("#roomListContainer").html(response);
-			},
-			error: function () {
-				alert("Error while filtering rooms.");
-			}
-		});
-
-	});
-
-		 //Reset filters when "Reset Filters" is clicked
-		$("#resetFilters").click(function () {
-			$("#startDate").val('');
-			$("#endDate").val('');
-
-			// Fetch the full list of rooms again (no filters)
-			$.ajax({
-				url: '@Url.Action("GetFilteredRooms", "Room")',
-				type: 'GET',
-				success: function (response) {
-					// Reset the room list container to the full list
-					$("#roomListContainer").html(response);
-				},
-				error: function () {
-					alert("Error while resetting filters.");
-				}
-			});
-		});
+	var filterUrl = '@Url.Action("GetFilteredRooms", "Room")';
 </script>
+
+<script src="~/js/datePicker.js" asp-append-version="true"></script>
+<script src="~/js/roomFilters.js" asp-append-version="true"></script>
+
+
