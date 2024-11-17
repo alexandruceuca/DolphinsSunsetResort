@@ -2,7 +2,7 @@
 @{
 	ViewData["Title"] = "Rooms";
 }
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <main class="py-5">
 	<div class="Rooms">
@@ -16,11 +16,11 @@
 
 
 	<!-- Date Range Picker -->
-	<form method="get">
+	<form id="filterForm">
 		<div class="row pt-5">
 			<div class="col-md-4">
 				<div class="input-group date" id="startDatePicker">
-					<input type="text" class="form-control" placeholder="Start Date">
+					<input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" value="@Context.Request.Query["startDate"]" />
 					<span class="input-group-text">
 						<i class="fa-regular fa-calendar"></i>
 					</span>
@@ -28,7 +28,7 @@
 			</div>
 			<div class="col-md-4">
 				<div class="input-group date" id="endDatePicker">
-					<input type="text" class="form-control" placeholder="End Date">
+					<input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate" value="@Context.Request.Query["endDate"]">
 					<span class="input-group-text">
 						<i class="fa-regular fa-calendar"></i>
 					</span>
@@ -39,7 +39,7 @@
 
 			</div>
 			<div class="col-md-2">
-				<button type="submit" class="btn btn-secondary">Reset Filter</button>
+				<button type="submit" id="resetFilters" class="btn btn-secondary">Reset Filter</button>
 
 			</div>
 		</div>
@@ -49,9 +49,62 @@
 	<section class="py-3">
 		<div class="container">
 			<div class="row g-3">
-				@await Component.InvokeAsync("RoomsList", new { methodName = "DisplayRoomListAsync" })
+				<div id="roomListContainer">
+					@await Component.InvokeAsync("RoomsList", new { methodName = "GetFilteredRooms" })
+				</div>
 			</div>
 		</div>
 	</section>
 </main>
 <script src="~/js/datePicker.js" asp-append-version="true"></script>
+
+<script>
+	// Handle the filter form submission using AJAX
+	$("#filterForm").submit(function (e) {
+		e.preventDefault(); // Prevent form from submitting the traditional way
+
+		// Get the form data
+		var startDate = $("#startDate").val();
+		var endDate = $("#endDate").val();
+
+		console.log("Start Date:", startDate);
+		console.log("End Date:", endDate);
+
+
+		$.ajax({
+			url: '@Url.Action("GetFilteredRooms", "Room")',
+			type: 'GET',
+			data: {
+				startDate: startDate,
+				endDate: endDate
+			},
+			success: function (response) {
+				// Update the room list with the filtered results
+				$("#roomListContainer").html(response);
+			},
+			error: function () {
+				alert("Error while filtering rooms.");
+			}
+		});
+
+	});
+
+		 //Reset filters when "Reset Filters" is clicked
+		$("#resetFilters").click(function () {
+			$("#startDate").val('');
+			$("#endDate").val('');
+
+			// Fetch the full list of rooms again (no filters)
+			$.ajax({
+				url: '@Url.Action("GetFilteredRooms", "Room")',
+				type: 'GET',
+				success: function (response) {
+					// Reset the room list container to the full list
+					$("#roomListContainer").html(response);
+				},
+				error: function () {
+					alert("Error while resetting filters.");
+				}
+			});
+		});
+</script>

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<Room>
+
+	<table>
+		<tr>
+			<th>Room Name</th>
+			<th>Room Capacity</th>
+		</tr>
+		<tbody>
+		@foreach(var room in Model)
+		{
+			<tr>
+				<td>
+					@room.Name
+				</td>
+				<td>
+					@room.Capacity
+				</td>
+			</tr>
+		}
+		</tbody>
+	</table>
