@@ -2,23 +2,32 @@
 using Licenta1.Views.ViewsModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace Licenta1.Controllers
 {
-    public class RoomController : Controller
-    {
-        private readonly AuthDbContext _context;
+	public class RoomController : Controller
+	{
+		private readonly AuthDbContext _context;
 
-        public RoomController(AuthDbContext context)
-        {
-            _context = context;
-        }
-        public async Task<IActionResult> Index()
-        {
-            var rooms = await _context.Rooms.ToListAsync();
+		public RoomController(AuthDbContext context)
+		{
+			_context = context;
+		}
+		public async Task<IActionResult> Index()
+		{
+			var rooms = await _context.Rooms.ToListAsync();
 
-            return View(rooms);
-        }
+			return View(rooms);
+		}
+
+		public IActionResult GetFilteredRooms(string startDate, string endDate)
+		{
+			DateTime? parsedStartDate = string.IsNullOrEmpty(startDate) ? (DateTime?)null : DateTime.Parse(startDate);
+			DateTime? parsedEndDate = string.IsNullOrEmpty(endDate) ? (DateTime?)null : DateTime.Parse(endDate);
+			return ViewComponent("RoomsList", new { methodName = "GetFilteredRooms", startDate = parsedStartDate, endDate = parsedEndDate });
+
+		}
 
 		public async Task<IActionResult> Info(int id)
 		{
@@ -29,7 +38,7 @@ namespace Licenta1.Controllers
 
 			if (room == null)
 			{
-				
+
 				return NotFound();
 			}
 
