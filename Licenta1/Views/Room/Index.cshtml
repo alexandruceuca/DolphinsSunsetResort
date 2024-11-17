@@ -1,0 +1,20 @@
+﻿@model IEnumerable<Licenta1.Models.Room>
+@{
+	ViewData["Title"] = "Rooms";
+}
+
+<main class="py-5">
+	<div class="Rooms">
+		<div class="container justify-content-center">
+			<img src="~/images/rooms/rooms-list.jpg" alt="Rooms" class="img-fluid">
+			<h3 class="text-img-home display-1 pt-5">Rooms</h3>
+		</div>
+	</div>
+	<section class="py-3">
+		<div class="container">
+			<div class="row g-3">
+				@await Component.InvokeAsync("RoomsList", new { methodName = "DisplayRoomListAsync" })
+			</div>
+		</div>
+	</section>
+</main>

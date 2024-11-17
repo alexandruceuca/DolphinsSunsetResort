@@ -1,0 +1,15 @@
+﻿@model Licenta1.Models.Room
+<main class="py-5">
+	<div class="room-info">
+		<h1>@Model.Name</h1>
+		<img src="@($"images/home-romes/room-{Model.RoomId}.jpg")" alt="Room Image" class="img-fluid">
+		<p><strong>Description:</strong> @Model.Description</p>
+		<p><strong>Price:</strong> @Model.Price.BasePrice.ToString("C")</p>
+		<p><strong>Available From:</strong> @Model.Price.StartDate.ToShortDateString()</p>
+		<p><strong>Available Until:</strong> @Model.Price.EndDate.ToShortDateString()</p>
+
+		<!-- You can add other room details here -->
+
+		<a class="btn btn-primary" href="#">Book Now</a>
+	</div>
+</main>

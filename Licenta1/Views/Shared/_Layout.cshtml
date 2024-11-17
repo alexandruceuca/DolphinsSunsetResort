@@ -1,155 +1,153 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Licenta</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Licenta</title>
 
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-   
-    <!-- Bootstrap CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <!-- Bootstrap CDN -->
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <!-- Font Awesome CDN -->
-    <!-- Google Font -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
-    <!-- Google Font -->
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+	<!-- Bootstrap CDN -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+		  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+	<!-- Bootstrap CDN -->
+	<!-- Font Awesome CDN -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+	<!-- Font Awesome CDN -->
+	<!-- Google Font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
+	<!-- Google Font -->
 </head>
 <body>
-    <header>
-        <!--Navbar Start -->
-        <nav class="navbar navbar-expand-lg navbar-light fixed-top">
-            <div class="container   nav-container ">
-                <a class="navbar-brand  order-lg-1 logo-margin-lg" href="#"> <img src="~/images/Logo.png" alt="Hotel"></a>
+	<header>
 
-                <button class="navbar-toggler order-lg-0" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
-                        aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+		<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+			<div class="container">
+				<!-- Logo -->
+				<a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
+					<img src="@Url.Content("~/images/Logo.png")" alt="Hotel" class="logo">
+				</a>
 
-                <div class="collapse navbar-collapse  " id="navbarNav">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
-                        <li class="nav-item">
-                            <a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Rooms</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Facilities">Facilities</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-controller="Home" asp-action="Contact">Contact</a>
-                        </li>
-                    </ul>
+				<!-- Toggler Button -->
+				<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
 
-                    <a class="d-flex justify-content-end d-lg-none" href="/Identity/Account/Login">
-                        <button class="btn  " type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                                 fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-                                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
-                            </svg>
-                        </button>
-                    </a>
+				<!-- Offcanvas Menu -->
+				<div class="offcanvas offcanvas-end" tabindex="-1" id="navbarOffcanvasLg" aria-labelledby="navbarOffcanvasLgLabel">
+					<div class="offcanvas-header">
+						<h5 class="offcanvas-title" id="offcanvasNavbarLabel">Hotel</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+					</div>
+					<div class="offcanvas-body">
+						<!-- Centered Links -->
+						<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+							<li class="nav-item">
+								<a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Room" asp-action="Index">Rooms</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="About" asp-action="Index">About</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Home" asp-action="Facilities">Facilities</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Contact" asp-action="Index">Contact</a>
+							</li>
+						</ul>
 
-                    <a class="d-flex justify-content-end d-lg-none">
-                        <button class="btn btn-primary " type="button">Book A Room</button>
-                    </a>
-                </div>
-
-                <div class="d-none d-lg-flex justify-content-end  order-lg-3 navbar-buttons">
-                    <a href="">
-                        <button class="btn btn-primary me-2" type="button">Book A Room</button>
-                    </a>
-
-                    <a href="/Identity/Account/Login">
-                        <button class="btn btn-primary  " type="button">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16"
-                                 height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-                                <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
-                            </svg>
-                        </button>
-
-                    </a>
-                </div>
-            </div>
-        </nav>
-        <!--Navbar End-->
-
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <!--Footer section start-->
-    <footer>
-        <div class="container">
-            <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
-                <div class="col mb-3">
-                    <a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
-                        <img src="~/images/Logo.png" alt="" class="img-fluid">
-                    </a>
-                    <p class="text-body-secondary">© 2024</p>
-                </div>
-
-                <div class="col mb-3">
-                </div>
-
-                <div class="col mb-3">
-                    <h5>Address</h5>
-                    <p>Romania</p>
-                </div>
-
-                <div class="col mb-3">
-                    <h5>Section</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item mb-2">
-                            <a asp-controller="Home" asp-action="Index" class="nav-link p-0 text-body-secondary">Home</a>
-                        </li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-body-secondary">Rooms</a></li>
-                        <li class="nav-item mb-2">
-                            <a asp-controller="Home" asp-action="About"
-                               class="nav-link p-0 text-body-secondary">About</a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a asp-controller="Home" asp-action="Facilities"
-                               class="nav-link p-0 text-body-secondary">Facilities</a>
-                        </li>
-                        <li class="nav-item mb-2">
-                            <a asp-controller="Home" asp-action="Contact"
-                               class="nav-link p-0 text-body-secondary">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <div class="col mb-3">
-                    <h5>Reservation</h5>
-                    <p>+07000000000</p>
-                    <p class="text-break">dolphins.susnet@tahoo.com</p>
-
-                </div>
+						<!-- Buttons -->
+						<div class="d-flex align-items-center justify-content-end mt-3 mt-lg-0">
+							<a class="btn btn-outline-primary me-2" href="/Identity/Account/Login">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+									<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
+								</svg>
+							</a>
+						</div>
+						 <div class="d-flex align-items-center justify-content-end mt-3 mt-lg-0">
+							<a class="btn btn-primary" href="#">
+								Book A Room
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
 
 
-            </footer>
-        </div>
-    </footer>
-    <!--Footer section end-->
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
 
-    @await RenderSectionAsync("Scripts", required: false)
+	<!--Footer section start-->
+	<footer>
+		<div class="container">
+			<footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+				<div class="col mb-3">
+					<a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+						<img src="~/images/Logo.png" alt="" class="img-fluid">
+					</a>
+					<p class="text-body-secondary">© 2024</p>
+				</div>
+
+				<div class="col mb-3">
+				</div>
+
+				<div class="col mb-3">
+					<h5>Address</h5>
+					<p>Romania</p>
+				</div>
+
+				<div class="col mb-3">
+					<h5>Section</h5>
+					<ul class="nav flex-column">
+						<li class="nav-item mb-2">
+							<a asp-controller="Home" asp-action="Index" class="nav-link p-0 text-body-secondary">Home</a>
+						</li>
+						<li class="nav-item mb-2">
+							<a asp-controller="Room" asp-action="Index" class="nav-link p-0 text-body-secondary">Rooms</a>
+						</li>
+						<li class="nav-item mb-2">
+							<a asp-controller="About" asp-action="Index"
+							   class="nav-link p-0 text-body-secondary">About</a>
+						</li>
+						<li class="nav-item mb-2">
+							<a asp-controller="Home" asp-action="Facilities"
+							   class="nav-link p-0 text-body-secondary">Facilities</a>
+						</li>
+						<li class="nav-item mb-2">
+							<a asp-controller="Contact" asp-action="Index"
+							   class="nav-link p-0 text-body-secondary">Contact</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col mb-3">
+					<h5>Reservation</h5>
+					<p>+07000000000</p>
+					<p class="text-break">dolphins.susnet@tahoo.com</p>
+
+				</div>
+
+
+			</footer>
+		</div>
+	</footer>
+	<!--Footer section end-->
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
