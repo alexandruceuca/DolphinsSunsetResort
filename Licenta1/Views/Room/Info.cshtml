@@ -1,15 +1,50 @@
-﻿@model Licenta1.Models.Room
+﻿@using Licenta1.Views.ViewsModel
+@model RoomInfoViewModel
+@{
+	ViewData["Title"] = @Model.Room.Name;
+}
 <main class="py-5">
 	<div class="room-info">
-		<h1>@Model.Name</h1>
-		<img src="@($"images/home-romes/room-{Model.RoomId}.jpg")" alt="Room Image" class="img-fluid">
-		<p><strong>Description:</strong> @Model.Description</p>
-		<p><strong>Price:</strong> @Model.Price.BasePrice.ToString("C")</p>
-		<p><strong>Available From:</strong> @Model.Price.StartDate.ToShortDateString()</p>
-		<p><strong>Available Until:</strong> @Model.Price.EndDate.ToShortDateString()</p>
+		<h1>@Model.Room.Name</h1>
+		<section class="Home">
+			<div class="slide-show container d-flex justify-content-center">
+				<div class="container-fluid img-slide-show">
+					@if (Model.ImagePaths != null && Model.ImagePaths.Any())
+					{
+						foreach (var image in Model.ImagePaths)
+						{
+							<div class="img-slide fade-animation">
+								<img src="~/images/rooms/room-@Model.Room.RoomId/@image" alt="Room Image" class="mb-2">
+							</div>
 
-		<!-- You can add other room details here -->
+						}
+						<a class=" display-6" id="prevButton">&#10094;</a>
+						<a class=" display-6" id="nextButton">&#10095;</a>
+					}
+					else
+					{
+						<p>No images available for this room.</p>
+					}
 
+				</div>
+			</div>
+		</section>
+		<p><strong>Description:</strong> @Model.Room.Description</p>
+
+		@if (Model.Room.Price.DiscountIsActive && Model.Room.Price.StartDate <= DateTime.Today && Model.Room.Price.EndDate >= DateTime.Today)
+		{
+			<!-- Code for showing the discounted price -->
+			<p class="card-text">
+				<span class="text-decoration-line-through"><strong>Price: @Model.Room.Price.BasePrice </strong></span>
+				<span class="ms-2 text-success"><strong>@((Model.Room.Price.BasePrice - (Model.Room.Price.Discount / 100 * Model.Room.Price.BasePrice)).ToString("C"))</strong></span>
+			</p>
+		}
+		else
+		{
+			<!-- Code for showing the regular price -->
+			<p class="card-text"><strong>Price: @Model.Room.Price.BasePrice.ToString("C") </strong></p>
+		}
+		<p><strong>Capacity:</strong> @Model.Room.Capacity.ToString()</p>
 		<a class="btn btn-primary" href="#">Book Now</a>
 	</div>
 </main>

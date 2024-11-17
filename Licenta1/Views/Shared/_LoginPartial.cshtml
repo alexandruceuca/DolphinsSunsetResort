@@ -7,16 +7,27 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item pt-3">
-            <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
-                @await Component.InvokeAsync("LoginInfo")
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle d-flex align-items-center text-dark" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="me-2">@await Component.InvokeAsync("LoginInfo")</span>
+                <i class="bi bi-chevron-down" style="line-height: 1; font-size: 1rem"></i>
             </a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                <li>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">
+                        Manage
+                    </a>
+                </li>
+                <li>
+                    <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button id="logout" type="submit" class="dropdown-item text-danger">Logout</button>
+                    </form>
+                </li>
+            </ul>
         </li>
-        <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark border-0">Logout</button>
-            </form>
-        </li>
+
+
+
     
     }
     else

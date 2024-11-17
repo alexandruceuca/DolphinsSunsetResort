@@ -6,9 +6,11 @@
     scroll-behavior: smooth;
     font-family: 'Tilt Neon', sans-serif;
 }
-
+.dropdown-toggle::after{
+    margin-bottom: 1rem;
+}
 main {
-    padding-top: 150px; 
+    padding-top: 150px;
 }
 
 /*-------------Navbar start----------------*/

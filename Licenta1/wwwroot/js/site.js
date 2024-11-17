@@ -10,6 +10,7 @@ function showSlide(index) {
     slides.forEach((slide, i) => {
         slide.style.display = i === index ? 'block' : 'none';
     });
+
 }
 
 function nextSlide() {
@@ -34,4 +35,13 @@ showSlide(currentSlide);
 
 
 
+
 //------------------Script for slide show--------------------------
+
+
+//-----------------Script for date-picker
+
+
+
+//-----------------
+
