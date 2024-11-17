@@ -6,14 +6,21 @@
 	<title>@ViewData["Title"] - Licenta</title>
 
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<!-- Popperjs -->
+	<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha256-BRqBN7dYgABqtY9Hd4ynE+1slnEw+roEPFzQ7TRRfcg=" crossorigin="anonymous"></script>
+	<!-- Tempus Dominus JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/@@eonasdan/tempus-dominus@6.9.4/dist/js/tempus-dominus.min.js" crossorigin="anonymous"></script>
+
+	<!-- Tempus Dominus Styles -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@eonasdan/tempus-dominus@6.9.4/dist/css/tempus-dominus.min.css" crossorigin="anonymous">
 
 	<!-- Bootstrap CDN -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-		  integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-	<!-- Bootstrap CDN -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
 	<!-- Font Awesome CDN -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-	<!-- Font Awesome CDN -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
 	<!-- Google Font -->
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -63,13 +70,9 @@
 
 						<!-- Buttons -->
 						<div class="d-flex align-items-center justify-content-end mt-3 mt-lg-0">
-							<a class="btn btn-outline-primary me-2" href="/Identity/Account/Login">
-								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
-									<path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5" />
-								</svg>
-							</a>
+							<partial name="_LoginPartial.cshtml" />
 						</div>
-						 <div class="d-flex align-items-center justify-content-end mt-3 mt-lg-0">
+						<div class="d-flex align-items-center justify-content-end mt-3 mt-lg-0">
 							<a class="btn btn-primary" href="#">
 								Book A Room
 							</a>
@@ -142,11 +145,16 @@
 			</footer>
 		</div>
 	</footer>
+
 	<!--Footer section end-->
 
-	<script src="~/lib/jquery/dist/jquery.min.js"></script>
-	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
+
 
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
