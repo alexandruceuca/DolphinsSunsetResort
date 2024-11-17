@@ -1,8 +1,8 @@
-﻿using Licenta1.Models;
+﻿using DolphinsSunsetResort.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
-namespace Licenta1.Controllers
+namespace DolphinsSunsetResort.Controllers
 {
     public class HomeController : Controller
     {

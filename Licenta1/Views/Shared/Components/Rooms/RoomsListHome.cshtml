@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Licenta1.Models.Room>
+﻿@model IEnumerable<DolphinsSunsetResort.Models.Room>
 
 
 @foreach (var room in Model)
@@ -8,6 +8,6 @@
 			<img src="@($"images/home-romes/room-{room.Number}.jpg")" alt="" class="img-fluid ">
 		</div>
 		<h3>@room.Name</h3>
-		<a class="btn btn-secondary btn-home-rooms" href="#" role="button">Book Now</a>
+		<a class="btn btn-secondary btn-home-rooms" href="@Url.Action("Info", "Room", new { id = room.RoomId })" role="button">Book Now</a>
 	</div>
 }

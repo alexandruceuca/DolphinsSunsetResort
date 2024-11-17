@@ -1,6 +1,6 @@
-﻿using Licenta1.Areas.Identity.Data;
+﻿using DolphinsSunsetResort.Areas.Identity.Data;
 
-namespace Licenta1.Models
+namespace DolphinsSunsetResort.Models
 {
 	public class BookingRoom
 	{

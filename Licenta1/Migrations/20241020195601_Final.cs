@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Licenta1.Migrations
+namespace DolphinsSunsetResort.Migrations
 {
     /// <inheritdoc />
     public partial class Final : Migration

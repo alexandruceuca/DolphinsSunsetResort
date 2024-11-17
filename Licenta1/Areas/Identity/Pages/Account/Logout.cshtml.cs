@@ -5,13 +5,13 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Licenta1.Areas.Identity.Data;
+using DolphinsSunsetResort.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 
-namespace Licenta1.Areas.Identity.Pages.Account
+namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
 {
     public class LogoutModel : PageModel
     {

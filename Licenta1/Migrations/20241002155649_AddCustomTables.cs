@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Licenta1.Migrations
+namespace DolphinsSunsetResort.Migrations
 {
     /// <inheritdoc />
     public partial class AddCustomTables : Migration

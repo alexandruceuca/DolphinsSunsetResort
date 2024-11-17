@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Licenta1.Controllers
+namespace DolphinsSunsetResort.Controllers
 {
     public class AboutController : Controller
     {
