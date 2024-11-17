@@ -1,21 +1,33 @@
-﻿@model IEnumerable<Room>
+﻿@model IEnumerable<Licenta1.Models.Room>
 
-	<table>
-		<tr>
-			<th>Room Name</th>
-			<th>Room Capacity</th>
-		</tr>
-		<tbody>
-		@foreach(var room in Model)
-		{
-			<tr>
-				<td>
-					@room.Name
-				</td>
-				<td>
-					@room.Capacity
-				</td>
-			</tr>
-		}
-		</tbody>
-	</table>
+@foreach (var room in Model)
+{
+	<div class="col-md-6 ">
+		<div class="px-2 py-2 card rooms-container">
+			<div class="img-zoom card-img-top">
+				<img src="@($"images/home-romes/room-{room.Number}.jpg")" alt="" class="img-fluid">
+			</div>
+			<div class="card-body">
+				<h3 class="card-title">@room.Name</h3>
+				<p class="card-text">@room.Description</p>
+				@if (room.Price.DiscountIsActive && room.Price.StartDate <= DateTime.Today && room.Price.EndDate >= DateTime.Today)
+				{
+					<!-- Code for showing the discounted price -->
+					<p class="card-text">
+						<span class="text-decoration-line-through">@room.Price.BasePrice</span>
+						<span class="ms-2 text-success">@((room.Price.BasePrice - (room.Price.Discount / 100 * room.Price.BasePrice)).ToString("C"))</span>
+					</p>
+				}
+				else
+				{
+					<!-- Code for showing the regular price -->
+					<p class="card-text">@room.Price.BasePrice.ToString("C")</p>
+				}
+
+
+				<a class="btn btn-secondary btn-home-rooms" href="@Url.Action("Info", "Room", new { id = room.RoomId })" role="button">Book Now</a>
+			</div>
+		</div>
+	</div>
+}
+
