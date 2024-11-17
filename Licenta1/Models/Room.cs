@@ -9,7 +9,9 @@
 		public string RoomType { get; set; }
 		public int Capacity { get; set; }
 
-		public string RoomStatus { get; set; }
+        public int Number { get; set; }
+
+        public string RoomStatus { get; set; }
 
 		public virtual Price Price { get; set; } = null;
 		public virtual ICollection<BookingRoom> BookingRooms { get; set; } = new List<BookingRoom>();

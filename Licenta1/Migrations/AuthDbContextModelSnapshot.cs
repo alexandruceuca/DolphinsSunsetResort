@@ -198,6 +198,9 @@ namespace Licenta1.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("Number")
+                        .HasColumnType("int");
+
                     b.Property<int>("PriceId")
                         .HasColumnType("int");
 

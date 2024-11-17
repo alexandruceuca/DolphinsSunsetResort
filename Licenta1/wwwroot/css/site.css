@@ -7,13 +7,17 @@
     font-family: 'Tilt Neon', sans-serif;
 }
 
+main {
+    padding-top: 150px; 
+}
+
 /*-------------Navbar start----------------*/
 .nav-container{
     max-height:100px;
 }
 
 .layout-login {
-    padding-top: 100px;
+
     justify-content:center;
 }
 .navbar {
@@ -32,7 +36,8 @@
 }
 
 .navbar-brand img {
-    height: 10rem;
+    height: 9rem;
+    width: 9rem;
 }
 
 
@@ -178,7 +183,7 @@
 }
 
 .Home {
-    padding-top: 150px;
+ 
     padding-bottom: 10px;
 }
 /*---------Home end---------------*/
@@ -230,7 +235,7 @@ footer {
 }
 /*---------Contact page start---------------*/
 .Contact {
-    padding-top: 150px;
+ 
     padding-bottom: 10px;
 }
 
@@ -243,7 +248,7 @@ footer {
 
 /*---------About us-page start---------------*/
 .About {
-    padding-top: 200px;
+
     padding-bottom: 10px;
 }
 
@@ -257,7 +262,7 @@ footer {
 
 /*---------Facilities us-page start---------------*/
 .Facilities {
-    padding-top: 150px;
+
     padding-bottom: 10px;
 }
 
