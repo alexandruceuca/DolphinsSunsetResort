@@ -1,9 +1,9 @@
-﻿using Licenta1.Areas.Identity.Data;
+﻿using DolphinsSunsetResort.Areas.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Licenta1.ViewComponents
+namespace DolphinsSunsetResort.ViewComponents
 {
     [ViewComponent]
     public class LoginInfoViewComponent : ViewComponent

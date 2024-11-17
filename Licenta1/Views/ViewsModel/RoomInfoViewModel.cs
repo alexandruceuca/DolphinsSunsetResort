@@ -1,6 +1,6 @@
-﻿using Licenta1.Models;
+﻿using DolphinsSunsetResort.Models;
 
-namespace Licenta1.Views.ViewsModel
+namespace DolphinsSunsetResort.Views.ViewsModel
 {
     public class RoomInfoViewModel
     {

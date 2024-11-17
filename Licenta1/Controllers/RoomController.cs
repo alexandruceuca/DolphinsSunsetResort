@@ -1,10 +1,10 @@
-﻿using Licenta1.Data;
-using Licenta1.Views.ViewsModel;
+﻿using DolphinsSunsetResort.Data;
+using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 
-namespace Licenta1.Controllers
+namespace DolphinsSunsetResort.Controllers
 {
 	public class RoomController : Controller
 	{

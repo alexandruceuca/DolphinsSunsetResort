@@ -1,10 +1,10 @@
-﻿using Licenta1.Areas.Identity.Data;
-using Licenta1.Data;
+﻿using DolphinsSunsetResort.Areas.Identity.Data;
+using DolphinsSunsetResort.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Licenta1.ViewComponents
+namespace DolphinsSunsetResort.ViewComponents
 {
 	public class RoomsListViewComponent : ViewComponent
 	{

@@ -1,6 +1,6 @@
 ﻿using NuGet.Versioning;
 
-namespace Licenta1.Models
+namespace DolphinsSunsetResort.Models
 {
 	public class Price
 	{

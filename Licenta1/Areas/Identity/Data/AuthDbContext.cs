@@ -1,10 +1,10 @@
-﻿using Licenta1.Areas.Identity.Data;
-using Licenta1.Models;
+﻿using DolphinsSunsetResort.Areas.Identity.Data;
+using DolphinsSunsetResort.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace Licenta1.Data;
+namespace DolphinsSunsetResort.Data;
 
 public class AuthDbContext : IdentityDbContext<AplicationUser>
 {
