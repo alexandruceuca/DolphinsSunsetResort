@@ -20,7 +20,10 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 	public DbSet<BookingRoom> BookingRooms { get; set; }
 
-	protected override void OnModelCreating(ModelBuilder builder)
+    public DbSet<Cart> Carts { get; set; }
+
+
+    protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
 		// Customize the ASP.NET Identity model and override the defaults if needed.
@@ -83,6 +86,14 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 		});
 
+        builder.Entity<Cart>(entity =>
+        {
+            entity.ToTable("Cart");
+			entity.HasKey(p => p.RecordId);
 
-	}
+
+		});
+
+
+    }
 }
