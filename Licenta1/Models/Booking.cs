@@ -11,7 +11,7 @@ namespace DolphinsSunsetResort.Models
 		public DateTime CheckInDate { get; set; }
 		public DateTime CheckOutDate { get; set;}
 
-		public float TotalPrice { get; set; }
+		public decimal TotalPrice { get; set; }
 
 		public virtual AplicationUser AplicationUser { get; set; } = null;
 		public virtual ICollection<BookingRoom> BookingRooms { get; set; } = new List<BookingRoom>();

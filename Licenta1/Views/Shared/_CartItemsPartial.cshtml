@@ -1,0 +1,34 @@
+﻿@model DolphinsSunsetResort.Views.ViewsModel.BookingCartViewModel
+
+<table id="cartTable">
+	<thead>
+		<tr>
+			<th>Room</th>
+			<th>Check-In</th>
+			<th>Check-Out</th>
+			<th>Price</th>
+		</tr>
+	</thead>
+	<tbody>
+		@if ( Model != null)
+		{
+			@foreach (var item in Model.CartItems)
+			{
+			<tr>
+					<td>@item.Room.Name</td>
+					<td>@item.CheckInDate.ToShortDateString()</td>
+					<td>@item.CheckOutDate.ToShortDateString()</td>
+					<td>@item.Price.ToString("C")</td>
+			</tr>
+			}
+		}
+	</tbody>
+</table>
+			@if (Model != null)
+			{
+<h3>Total: <span id="cartTotal">@Model.CartTotal.ToString("C")</span></h3>
+			}
+			else
+			{
+<h3>Total: <span id="cartTotal">"0"</span></h3>
+			}

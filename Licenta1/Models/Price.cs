@@ -6,9 +6,9 @@ namespace DolphinsSunsetResort.Models
 	{
 		public int PriceId { get; set; }
 
-		public float BasePrice { get; set; }
+		public decimal BasePrice { get; set; }
 
-		public float Discount { get; set; }
+		public decimal Discount { get; set; }
 
 		public DateTime StartDate { get; set; }
 		public DateTime EndDate { get; set; }

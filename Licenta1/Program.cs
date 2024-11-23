@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Areas.Identity.Data;
+using DolphinsSunsetResort.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("AuthDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AuthDbContextConnection' not found.");
@@ -9,6 +10,7 @@ var connectionString = builder.Configuration.GetConnectionString("AuthDbContextC
 builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<AplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<AuthDbContext>();
+
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -20,7 +22,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDistributedMemoryCache();  // For session state
+builder.Services.AddSession(options =>
+{
+	options.IdleTimeout = TimeSpan.FromMinutes(30);  // Adjust session timeout
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
+
 
 if (app.Environment.IsDevelopment())
 {
@@ -45,7 +56,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseHttpsRedirection();
-
+app.UseSession();
 
 app.UseAuthorization();
 app.MapControllers();

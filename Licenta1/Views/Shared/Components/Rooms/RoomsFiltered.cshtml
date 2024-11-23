@@ -25,7 +25,14 @@
 				}
 
 
-				<a class="btn btn-secondary btn-home-rooms" href="@Url.Action("Info", "Room", new { id = room.RoomId })" role="button">Book Now</a>
+				<a class="btn btn-secondary btn-home-rooms" href="@Url.Action("Info", "Room", new { id = room.RoomId })" role="button">Info</a>
+				<form method="post" action="@Url.Action("AddToCart", "BookingCart")">
+					<input type="hidden" name="roomId" value="@room.RoomId" />
+					<input type="hidden" name="checkInDate" value="2024-11-23" />
+					<input type="hidden" name="checkOutDate" value="2024-11-24" />
+					<button type="submit" class="btn btn-secondary btn-home-rooms">Book</button>
+				</form>
+
 			</div>
 		</div>
 	</div>
