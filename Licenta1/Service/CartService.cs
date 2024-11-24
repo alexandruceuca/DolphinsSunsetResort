@@ -175,7 +175,7 @@ namespace DolphinsSunsetResort.Service
             {
                 var bookingDetail = new BookingRoom
                 {
-                    BookingRoomId = item.RoomId,
+                    RoomId = item.RoomId,
                     BookingId = booking.BookingId,
                     Price = item.Price
                 };
