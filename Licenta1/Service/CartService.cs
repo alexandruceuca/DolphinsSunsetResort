@@ -187,6 +187,8 @@ namespace DolphinsSunsetResort.Service
             }
             // Set the booking's total to the orderTotal 
             booking.TotalPrice = orderTotal;
+            booking.CheckInDate=cartItems.First().CheckInDate;
+            booking.CheckOutDate = cartItems.First().CheckOutDate;
 
             // Save the booking
             _context.SaveChanges();

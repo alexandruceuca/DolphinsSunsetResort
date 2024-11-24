@@ -1,5 +1,6 @@
 ﻿using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Data;
+using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -42,29 +43,41 @@ namespace DolphinsSunsetResort.ViewComponents
 
 		public IViewComponentResult GetFilteredRooms(DateTime? startDate, DateTime? endDate)
 		{
-			var rooms = _context.Rooms.Include(p => p.Price)
-				.Include(bx => bx.BookingRooms)
-				.ThenInclude(b => b.Booking)
+			// Retrieve the rooms with necessary related data
+			var rooms = _context.Rooms
+				.Include(r => r.Price)
+				.Include(r => r.BookingRooms)
+				.ThenInclude(br => br.Booking)
 				.AsQueryable();
+
+			// Initialize the RoomFilterViewModel
+			var roomFilter = new RoomFilterViewModel
+			{
+				Rooms = rooms.ToList(), // Default to all rooms before filtering
+				CheckInDate = startDate,
+				CheckOutDate = endDate
+			};
+
+			// If both dates are null, return all rooms
 			if (startDate == null && endDate == null)
 			{
-				return View("/Views/Shared/Components/Rooms/RoomsFiltered.cshtml", rooms.ToList());
-			}
-			if (startDate == null)
-			{
-				startDate = DateTime.MinValue;
-			}
-			if (endDate == null)
-			{
-				endDate = DateTime.MaxValue;
+				return View("/Views/Shared/Components/Rooms/RoomsFiltered.cshtml", roomFilter);
 			}
 
-			// Filter the rooms based on the availability dates of bookings
+			// Set default date values if one of the dates is null
+			startDate ??= DateTime.MinValue;
+			endDate ??= DateTime.MaxValue;
+
+			// Filter rooms based on booking availability
 			rooms = rooms.Where(r => !r.BookingRooms
-									   .Any(br => br.Booking.CheckInDate < endDate && br.Booking.CheckOutDate > startDate));
+				.Any(br => br.Booking.CheckInDate < endDate && br.Booking.CheckOutDate > startDate));
 
-			return View("/Views/Shared/Components/Rooms/RoomsFiltered.cshtml", rooms.ToList());
+			// Update the RoomFilterViewModel with filtered data
+			roomFilter.Rooms = rooms.ToList();
 
+			// Return the view with the updated model
+			return View("/Views/Shared/Components/Rooms/RoomsFiltered.cshtml", roomFilter);
 		}
+
 	}
 }
