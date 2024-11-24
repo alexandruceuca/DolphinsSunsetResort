@@ -74,5 +74,10 @@ const endDatePicker = new tempusDominus.TempusDominus(document.getElementById('e
     },
     localization: {
         format: 'dd-MM-yyyy',
-    }
+    },
+    
+});
+
+endDatePicker.updateOptions({
+    useCurrent: false 
 });

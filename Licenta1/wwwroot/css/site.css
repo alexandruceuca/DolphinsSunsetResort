@@ -274,3 +274,13 @@ footer {
         text-align: center;
     }
 /*---------Facilities us-page end---------------*/
+
+
+.card {
+    position: relative;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0px 1px 5px #999;
+    overflow: hidden;
+    z-index: 10;
+}
