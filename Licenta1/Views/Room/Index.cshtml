@@ -1,63 +1,64 @@
 ﻿@model IEnumerable<DolphinsSunsetResort.Models.Room>
 @{
-	ViewData["Title"] = "Rooms";
+    ViewData["Title"] = "Rooms";
 }
 
-
 <main class="py-5">
-	<div class="Rooms">
-		<div class="container justify-content-center ">
-			<img src="~/images/rooms/rooms-list.jpg" alt="Rooms" class="img-fluid">
-			<h3 class="text-img-home display-1 pt-5">Rooms</h3>
-		</div>
-	</div>
+    <!-- Header Section -->
+    <div class="Rooms">
+        <div class="container text-center position-relative">
+            <img src="~/images/rooms/rooms-list.jpg" alt="Rooms" class="img-fluid rounded shadow">
+            <h3 class="text-img-home display-1 text-white position-absolute top-50 start-50 translate-middle">Rooms</h3>
+        </div>
+    </div>
+ 
+    <!-- Date Range Picker -->
+    <form id="filterForm" class="container mt-5">
+        <div class="row g-3 align-items-end">
+            <!-- Start Date -->
+            <div class="col-md-4">
+                <label for="startDate" class="form-label">Start Date</label>
+                <div class="input-group " id="startDatePicker">
+                    <input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" value="@Context.Request.Query["startDate"]" />
+                    <span class="input-group-text">
+                        <i class="fa-regular fa-calendar"></i>
+                    </span>
+                </div>
+            </div>
 
-	<!-- Date Range Picker -->
-	<form id="filterForm">
-		<div class="row pt-5">
-			<div class="col-md-4">
-				<div class="input-group date" id="startDatePicker">
-					<input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" value="@Context.Request.Query["startDate"]" />
-					<span class="input-group-text">
-						<i class="fa-regular fa-calendar"></i>
-					</span>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="input-group date endDatePicker" id="endDatePicker">
-					<input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate" value="@Context.Request.Query["endDate"]">
-					<span class="input-group-text">
-						<i class="fa-regular fa-calendar"></i>
-					</span>
-				</div>
-			</div>
-			<div class="col-md-2">
-				<button type="submit" class="btn btn-secondary">Filter</button>
-			</div>
-			<div class="col-md-2">
-				<button type="button" id="resetFilters" class="btn btn-secondary">Reset Filter</button>
-			</div>
-		</div>
-	</form>
+            <!-- End Date -->
+            <div class="col-md-4">
+                <label for="endDate" class="form-label">End Date</label>
+                <div class="input-group" id="endDatePicker">
+                    <input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate" value="@Context.Request.Query["endDate"]">
+                    <span class="input-group-text">
+                        <i class="fa-regular fa-calendar"></i>
+                    </span>
+                </div>
+            </div>
 
+            <!-- Buttons -->
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100">Filter</button>
+            </div>
+            <div class="col-md-2">
+                <button type="button" id="resetFilters" class="btn btn-outline-secondary w-100">Reset Filter</button>
+            </div>
+        </div>
+    </form>
 
-
-	<section class="py-3">
-		<div class="container">
-			<div class="row g-2" id="roomListContainer">
-
-				@await Component.InvokeAsync("RoomsList", new { methodName = "GetFilteredRooms" })
-			</div>
-		</div>
-	</section>
+    <!-- Rooms List -->
+    <section class="py-4">
+        <div class="container">
+            <div class="row g-4" id="roomListContainer">
+                @await Component.InvokeAsync("RoomsList", new { methodName = "GetFilteredRooms" })
+            </div>
+        </div>
+    </section>
 </main>
 
 <script>
-	var filterUrl = '@Url.Action("GetFilteredRooms", "Room")';
-
+    var filterUrl = '@Url.Action("GetFilteredRooms", "Room")';
 </script>
-
 <script src="~/js/datePicker.js" asp-append-version="true"></script>
 <script src="~/js/roomFilters.js" asp-append-version="true"></script>
-
-
