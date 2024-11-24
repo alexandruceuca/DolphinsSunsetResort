@@ -1,43 +1,47 @@
 ﻿@model DolphinsSunsetResort.Views.ViewsModel.BookingCartViewModel
-
-<h2>Your Cart</h2>
-<div id="update-message">
-</div>
-@if (Model != null)
-{
-	<table id="cartTable">
-		<thead>
-			<tr>
-				<th>Room</th>
-				<th>Check-In</th>
-				<th>Check-Out</th>
-				<th>Price</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var item in Model.CartItems)
-			{
-				<tr id="row-@item.RecordId">
-					<td>@item.Room.Name</td>
-					<td>@item.CheckInDate.ToShortDateString()</td>
-					<td>@item.CheckOutDate.ToShortDateString()</td>
-					<td>@item.Price.ToString("C")</td>
-					<td>
-						<a href="#" class="RemoveLink" data-id="@item.RecordId">
-							Remove from cart
-						</a>
+<body class="pt-5">
+	<h2>Your Cart</h2>
+@*	<p class="button">
+		@Html.ActionLink("Checkout
+		>>", "AddressAndPayment", "Checkout")
+	</p>*@
+	<div id="update-message">
+	</div>
+	@if (Model != null)
+	{
+		<table id="cartTable">
+			<thead>
+				<tr>
+					<th>Room</th>
+					<th>Check-In</th>
+					<th>Check-Out</th>
+					<th>Price</th>
 				</tr>
-			}
-		</tbody>
-	</table>
+			</thead>
+			<tbody>
+				@foreach (var item in Model.CartItems)
+				{
+					<tr id="row-@item.RecordId">
+						<td>@item.Room.Name</td>
+						<td>@item.CheckInDate.ToShortDateString()</td>
+						<td>@item.CheckOutDate.ToShortDateString()</td>
+						<td>@item.Price.ToString("C")</td>
+						<td>
+							<a href="#" class="RemoveLink" data-id="@item.RecordId">
+								Remove from cart
+							</a>
+					</tr>
+				}
+			</tbody>
+		</table>
 
-	<h3>Total: <span id="cart-total">@Model.CartTotal.ToString("C")</span></h3>
-}
-else
-{
-	<p>Your cart is empty.</p>
-}
+		<h3>Total: <span id="cart-total">@Model.CartTotal.ToString("C")</span></h3>
+	}
+	else
+	{
+		<p>Your cart is empty.</p>
+	}
 
-
+</body>
 
 <script src="~/js/cart.js" asp-append-version="true"></script>

@@ -15,6 +15,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using DolphinsSunsetResort.Service;
+using Microsoft.AspNetCore.Http;
+using DolphinsSunsetResort.Data;
 
 namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
 {
@@ -22,12 +25,15 @@ namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<AplicationUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+		private readonly AuthDbContext _context;
 
-        public LoginModel(SignInManager<AplicationUser> signInManager, ILogger<LoginModel> logger)
+		public LoginModel(SignInManager<AplicationUser> signInManager, ILogger<LoginModel> logger, AuthDbContext context)
         {
             _signInManager = signInManager;
             _logger = logger;
-        }
+            _context = context;
+
+		}
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -102,7 +108,15 @@ namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+		private void MigrateShoppingCart(string userName)
+		{
+			// Associate shopping cart items with logged-in user
+			var cart = CartService.GetCart(_context,this.HttpContext);
+            cart.MigrateCart(userName);
+			HttpContext.Session.SetString(CartService.CartSessionKey, userName);
+		}
+
+		public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
 
@@ -115,8 +129,10 @@ namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+					
+					_logger.LogInformation("User logged in.");
+					MigrateShoppingCart(Input.Email);
+					return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
                 {
