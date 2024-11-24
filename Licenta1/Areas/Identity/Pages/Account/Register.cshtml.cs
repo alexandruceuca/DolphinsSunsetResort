@@ -19,6 +19,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using DolphinsSunsetResort.Service;
+using Microsoft.EntityFrameworkCore;
+using DolphinsSunsetResort.Data;
 
 namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
 {
@@ -30,13 +33,16 @@ namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<AplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+		private readonly AuthDbContext _context;
 
-        public RegisterModel(
+
+		public RegisterModel(
             UserManager<AplicationUser> userManager,
             IUserStore<AplicationUser> userStore,
             SignInManager<AplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+			AuthDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,7 +50,8 @@ namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
-        }
+			_context = context;
+		}
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -115,8 +122,14 @@ namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         }
-
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+		private void MigrateShoppingCart(string userName)
+        {
+            // Associate shopping cart items with logged-in user
+			var cart = CartService.GetCart(_context, this.HttpContext);
+			cart.MigrateCart(userName);
+			HttpContext.Session.SetString(CartService.CartSessionKey, userName);
+		}
+		public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
@@ -146,17 +159,17 @@ namespace DolphinsSunsetResort.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
+					MigrateShoppingCart(Input.Email);
+					if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
                     }
-                    else
-                    {
+					else
+					{
                         await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     }
-                }
+				}
                 foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
