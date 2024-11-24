@@ -2,8 +2,8 @@
 
 @foreach (var room in Model.Rooms)
 {
-	<div class="col-md-6 ">
-		<div class="px-2 py-2 card rooms-container">
+	<div class="col-md-6 col-lg-4">
+		<div class="px-2 py-2 card rooms-container ">
 			<div class="img-zoom card-img-top">
 				<img src="@($"images/home-romes/room-{room.Number}.jpg")" alt="" class="img-fluid">
 			</div>
@@ -25,18 +25,32 @@
 				}
 
 
-				<a class="btn btn-secondary btn-home-rooms" href="@Url.Action("Info", "Room", new { id = room.RoomId })" role="button">Info</a>
-				<button type="button"
-					class="btn btn-secondary btn-home-rooms add-to-cart-button"
-					data-room-id="@room.RoomId"
-					data-url="@Url.Action("AddToCart", "BookingCart")"
-					data-checkin-date="@Model.CheckInDate"
-					data-checkout-date="@Model.CheckOutDate">
-					Book
-				</button>
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3">
+							<a class="btn btn-secondary  "
+						   href="@Url.Action("Info", "Room", new { id = room.RoomId })"
+						   role="button">Info</a>
+						</div>
+						<div class="col-md-3"></div>
+						<div class="col-md-3"></div>
+						<div class="col-md-3">
+							<button type="button"
+								class="btn btn-primary  add-to-cart-button  "
+								data-room-id="@room.RoomId"
+								data-url="@Url.Action("AddToCart", "BookingCart")"
+								data-checkin-date="@Model.CheckInDate"
+								data-checkout-date="@Model.CheckOutDate">
+								Book
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 }
-<script src="~/js/roomFilters.js" asp-append-version="true"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+		<script src="~/js/roomFilters.js" asp-append-version="true"></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
