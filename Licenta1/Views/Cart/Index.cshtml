@@ -2,9 +2,10 @@
 <body class="pt-5">
 	<h2>Your Cart</h2>
 
-	<a class="button" asp-controller="Checkout" asp-action="Payment">
+	<a class="button" asp-controller="Checkout" asp-action="Payment" asp-route-checkindate="@Model.CheckInDate" asp-route-checkoutdate="@Model.CheckOutDate">
 		Checkout
 	</a>
+
 
 	<div id="update-message">
 	</div>

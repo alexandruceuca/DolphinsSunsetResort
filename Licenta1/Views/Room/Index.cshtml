@@ -33,22 +33,20 @@
 			</div>
 			<div class="col-md-2">
 				<button type="submit" class="btn btn-secondary">Filter</button>
-
 			</div>
 			<div class="col-md-2">
-				<button type="submit" id="resetFilters" class="btn btn-secondary">Reset Filter</button>
-
+				<button type="button" id="resetFilters" class="btn btn-secondary">Reset Filter</button>
 			</div>
 		</div>
 	</form>
 
 
+
 	<section class="py-3">
 		<div class="container">
 			<div class="row g-2" id="roomListContainer">
-			
-					@await Component.InvokeAsync("RoomsList", new { methodName = "GetFilteredRooms" })
-				
+
+				@await Component.InvokeAsync("RoomsList", new { methodName = "GetFilteredRooms" })
 			</div>
 		</div>
 	</section>
@@ -56,6 +54,7 @@
 
 <script>
 	var filterUrl = '@Url.Action("GetFilteredRooms", "Room")';
+
 </script>
 
 <script src="~/js/datePicker.js" asp-append-version="true"></script>

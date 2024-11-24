@@ -1,6 +1,6 @@
-﻿@model IEnumerable<DolphinsSunsetResort.Models.Room>
+﻿@model DolphinsSunsetResort.Views.ViewsModel.RoomFilterViewModel
 
-@foreach (var room in Model)
+@foreach (var room in Model.Rooms)
 {
 	<div class="col-md-6 ">
 		<div class="px-2 py-2 card rooms-container">
@@ -26,15 +26,17 @@
 
 
 				<a class="btn btn-secondary btn-home-rooms" href="@Url.Action("Info", "Room", new { id = room.RoomId })" role="button">Info</a>
-				<form method="post" action="@Url.Action("AddToCart", "BookingCart")">
-					<input type="hidden" name="roomId" value="@room.RoomId" />
-					<input type="hidden" name="checkInDate" value="2024-11-23" />
-					<input type="hidden" name="checkOutDate" value="2024-11-24" />
-					<button type="submit" class="btn btn-secondary btn-home-rooms">Book</button>
-				</form>
-
+				<button type="button"
+					class="btn btn-secondary btn-home-rooms add-to-cart-button"
+					data-room-id="@room.RoomId"
+					data-url="@Url.Action("AddToCart", "BookingCart")"
+					data-checkin-date="@Model.CheckInDate"
+					data-checkout-date="@Model.CheckOutDate">
+					Book
+				</button>
 			</div>
 		</div>
 	</div>
 }
-
+<script src="~/js/roomFilters.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
