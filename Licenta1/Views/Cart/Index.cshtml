@@ -1,10 +1,11 @@
 ﻿@model DolphinsSunsetResort.Views.ViewsModel.BookingCartViewModel
 <body class="pt-5">
 	<h2>Your Cart</h2>
-@*	<p class="button">
-		@Html.ActionLink("Checkout
-		>>", "AddressAndPayment", "Checkout")
-	</p>*@
+
+	<a class="button" asp-controller="Checkout" asp-action="Payment">
+		Checkout
+	</a>
+
 	<div id="update-message">
 	</div>
 	@if (Model != null)
