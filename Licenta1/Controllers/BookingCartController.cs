@@ -39,6 +39,14 @@ public class BookingCartController : Controller
 			// Get all items in the cart
 			var cartItems = cart.GetCartItems();
 
+			// Check if the room already exists in the cart
+			if (cartItems.Any(r => r.RoomId == roomId))
+			{
+				// Room already added, return a JSON error response
+				return Json(new { success = false, message = "The room is already added" });
+			}
+
+
 			// If there are items in the cart, check the dates
 			if (cartItems.Any())
 			{
@@ -49,8 +57,16 @@ public class BookingCartController : Controller
 					return Json(new { success = false, message = "The periods are different. Please select the same dates for all rooms." });
 				}
 			}
+			try
+			{
+				cart.AddToCart(addedRoom, parsedStartDate, parsedEndDate);
+			}
+			catch (InvalidOperationException ex)
+			{
+				return Json(new { success = false, message = ex.Message });
 
-			cart.AddToCart(addedRoom, parsedStartDate, parsedEndDate);
+			}
+
 
 			// Return a JSON success response
 			return Json(new { success = true, message = "Room added to cart successfully." });

@@ -32,7 +32,10 @@ namespace DolphinsSunsetResort.Controllers
 				booking.UserId = userId;
 				booking.BookingDate = DateTime.Now;
 
-				//Save booking
+				//Check if the rooms are already book in the specified period
+
+
+				////Save booking
 				_context.Bookings.Add(booking);
 				_context.SaveChanges();
 

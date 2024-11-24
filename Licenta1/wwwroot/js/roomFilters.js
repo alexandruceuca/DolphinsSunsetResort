@@ -1,55 +1,81 @@
 ﻿$(document).ready(function () {
-    // Handle the filter form submission using AJAX
-    $("#filterForm").submit(function (e) {
-        e.preventDefault(); // Prevent form from submitting the traditional way
 
-        // Get the form data
-        var startDate = $("#startDate").val();
-        var endDate = $("#endDate").val();
+    function showPopup(success, message) {
+        Swal.fire({
+            title: success ? 'Success' : 'Error',
+            text: message,
+            icon: success ? 'success' : 'error',
+            confirmButtonText: 'OK'
+        });
+    }
 
-        // Validate that startDate and endDate are different
-        if (startDate === endDate) {
-            alert("Start Date and End Date must be different.");
-            return; // Stop execution if validation fails
+
+        // Function to fetch and update the room list
+        function fetchFilteredRooms() {
+            // Get the selected dates
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
+            // Validate that both dates are selected
+            if (!startDate || !endDate) {
+                return; // Do nothing if dates are incomplete
+            }
+
+            // Validate that startDate and endDate are different
+            if (startDate === endDate) {
+                showPopup(false, "Start Date and End Date must be different.");
+                return; // Stop execution if validation fails
+            }
+
+
+            // Send an AJAX request to filter rooms
+            $.ajax({
+                url: filterUrl, // Replace with your filtering endpoint
+                type: 'GET',
+                data: {
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                success: function (response) {
+                    // Update the room list container with the filtered results
+                    $("#roomListContainer").html(response);
+                },
+                error: function () {
+                    alert("Error while filtering rooms.");
+                }
+            });
         }
 
-        $.ajax({
-            url: filterUrl,
-            type: 'GET',
-            data: {
-                startDate: startDate,
-                endDate: endDate
-            },
-            success: function (response) {
-                // Update the room list with the filtered results
-                $("#roomListContainer").html(response);
-            },
-            error: function () {
-                alert("Error while filtering rooms.");
-            }
+        // Handle changes in the date inputs to automatically filter rooms
+        $("#startDate, #endDate").on("change", function () {
+            fetchFilteredRooms();
         });
-    });
 
-    // Reset filters when "Reset Filters" is clicked
-    $("#resetFilters").click(function () {
-        $("#startDate").val('');
-        $("#endDate").val('');
-
-        // Fetch the full list of rooms again (no filters)
-        $.ajax({
-            url: filterUrl,
-            type: 'GET',
-            success: function (response) {
-                // Reset the room list container to the full list
-                $("#roomListContainer").html(response);
-            },
-            error: function () {
-                alert("Error while resetting filters.");
-            }
+        // Handle the filter form submission using AJAX
+        $("#filterForm").submit(function (e) {
+            e.preventDefault(); // Prevent form from submitting the traditional way
+            fetchFilteredRooms(); // Trigger filtering manually on form submission
         });
-    });
 
-    $(document).ready(function () {
+        // Reset filters when "Reset Filters" is clicked
+        $("#resetFilters").click(function () {
+            $("#startDate").val('');
+            $("#endDate").val('');
+
+            // Fetch the full list of rooms again (no filters)
+            $.ajax({
+                url: filterUrl,
+                type: 'GET',
+                success: function (response) {
+                    // Reset the room list container to the full list
+                    $("#roomListContainer").html(response);
+                },
+                error: function () {
+                    alert("Error while resetting filters.");
+                }
+            });
+        });
+
         $(".add-to-cart-button").click(function (e) {
             e.preventDefault();  // Prevent the form from submitting the traditional way
 
@@ -58,11 +84,21 @@
             var checkOutDate = $(this).data("checkout-date");
             var actionUrl = $(this).data("url"); // Get the URL for the action
 
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
+
             // Optional: Add validation for dates if necessary
             if (!checkInDate || !checkOutDate) {
                 showPopup(false, "Please select both check-in and check-out dates.");
                 return;
             }
+
+            // Validate that startDate and endDate are different
+            if (startDate === endDate) {
+                showPopup(false, "Start Date and End Date must be different.");
+                return; // Stop execution if validation fails
+            }
+
 
             $.ajax({
                 url: actionUrl,  // Use the URL for the action method
@@ -82,15 +118,6 @@
             });
         });
 
-        function showPopup(success, message) {
-            Swal.fire({
-                title: success ? 'Success' : 'Error',
-                text: message,
-                icon: success ? 'success' : 'error',
-                confirmButtonText: 'OK'
-            });
-        }
-    });
 
 
 });

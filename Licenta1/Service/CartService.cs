@@ -163,16 +163,35 @@ namespace DolphinsSunsetResort.Service
             // Return 0 if all entries are null
             return count ?? 0;
         }
+		public bool IsRoomBooked(int roomId, DateTime checkInDate, DateTime checkOutDate)
+		{
+			// Get bookings that have a room with the given roomId
+			var checkRoom = _context.Bookings
+				.Include(b => b.BookingRooms) 
+				.AsQueryable();
 
-        public int CreateBooking(Booking booking)
+			// Check if any booking already exists for this room within the date range
+			var roomIsBooked = checkRoom.Any(b =>
+				b.BookingRooms.Any(br => br.RoomId == roomId) && // RoomId matches
+																 // Check if the new booking date range overlaps with an existing one
+				!(checkOutDate <= b.CheckInDate || checkInDate >= b.CheckOutDate) // No overlap condition
+			);
+
+			return roomIsBooked;
+		}
+
+		public int CreateBooking(Booking booking)
         {
             decimal orderTotal = 0;
-
             var cartItems = GetCartItems();
             // Iterate over the items in the cart, 
             // adding the order details for each
             foreach (var item in cartItems)
             {
+                if (IsRoomBooked(item.RoomId, cartItems.First().CheckInDate, cartItems.First().CheckOutDate))
+                {
+					throw new InvalidOperationException($"Room {item.RoomId} is already booked for the selected dates.");
+				}
                 var bookingDetail = new BookingRoom
                 {
                     RoomId = item.RoomId,
@@ -185,7 +204,7 @@ namespace DolphinsSunsetResort.Service
                 _context.BookingRooms.Add(bookingDetail);
 
             }
-            // Set the booking's total to the orderTotal 
+            // Set the booking's total to the orderTotal checkin and checkout
             booking.TotalPrice = orderTotal;
             booking.CheckInDate=cartItems.First().CheckInDate;
             booking.CheckOutDate = cartItems.First().CheckOutDate;
