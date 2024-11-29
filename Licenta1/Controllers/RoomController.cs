@@ -56,6 +56,7 @@ namespace DolphinsSunsetResort.Controllers
 									  .ToList();
 			}
 
+			//Ensure the DateTime format is the same
 			DateTime? parsedStartDate = string.IsNullOrEmpty(startDate)
 				? (DateTime?)null
 	:			DateTime.ParseExact(startDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);

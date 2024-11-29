@@ -9,10 +9,7 @@
         });
     }
 
-
-
-
-    $(".add-to-cart-button").click(function (e) {
+    $(".add-to-cart-button-info").click(function (e) {
         e.preventDefault();  // Prevent the form from submitting the traditional way
 
         var roomId = $(this).data("room-id");
@@ -58,7 +55,5 @@
             }
         });
     });
-
-
 
 });
