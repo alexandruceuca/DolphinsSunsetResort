@@ -29,7 +29,7 @@
 					<div class="row">
 						<div class="col-md-3">
 							<a class="btn btn-secondary  "
-						   href="@Url.Action("Info", "Room", new { id = room.RoomId })"
+						   href="@Url.Action("Info", "Room", new { id = room.RoomId,startDate=Model.CheckInDate,endDate=Model.CheckOutDate })"
 						   role="button">Info</a>
 						</div>
 						<div class="col-md-3"></div>

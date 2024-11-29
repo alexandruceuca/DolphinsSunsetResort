@@ -2,62 +2,91 @@
 @model RoomInfoViewModel
 
 @{
-    ViewData["Title"] = @Model.Room.Name;
+	ViewData["Title"] = @Model.Room.Name;
 }
 <main class="py-5">
-    <div class="room-info container">
-        <div class="row">
-            <div class="col-md-8">
-                <!-- Room Name -->
-                <h1 class="display-4 text-primary">@Model.Room.Name</h1>
-                <hr class="my-4">
+	<div class="room-info container">
+		<div class="row">
+			<div class="col-md-8">
+				<!-- Room Name -->
+				<h1 class="display-4 text-primary">@Model.Room.Name</h1>
+				<hr class="my-4">
 
-                <!-- Slideshow -->
-                <section class="Home">
-                    <div class="slide-show position-relative">
-                        <div class="img-slide-show overflow-hidden position-relative">
-                            @if (Model.ImagePaths != null && Model.ImagePaths.Any())
-                            {
-                                @foreach (var image in Model.ImagePaths)
-                                {
-                                    <div class="img-slide fade-animation">
-                                        <img src="~/images/rooms/room-@Model.Room.RoomId/@image"
-                                     alt="Room Image"
-                                     class="d-block w-100 rounded mb-2 shadow-sm">
-                                    </div>
-                                }
-                                <!-- Navigation buttons -->
-                                <a class="position-absolute top-50 start-0 translate-middle-y text-dark fs-2 text-decoration-none px-3" id="prevButton">&#10094;</a>
-                                <a class="position-absolute top-50 end-0 translate-middle-y text-dark fs-2 text-decoration-none px-3" id="nextButton">&#10095;</a>
-                            }
-                            else
-                            {
-                                <p class="text-muted text-center">No images available for this room.</p>
-                            }
-                        </div>
-                    </div>
-                </section>
-            </div>
+				<!-- Slideshow -->
+				<section class="Home">
+					<div class="slide-show position-relative">
+						<div class="img-slide-show overflow-hidden position-relative">
+							@if (Model.ImagePaths != null && Model.ImagePaths.Any())
+							{
+								@foreach (var image in Model.ImagePaths)
+								{
+									<div class="img-slide fade-animation">
+										<img src="~/images/rooms/room-@Model.Room.RoomId/@image"
+									 alt="Room Image"
+									 class="d-block w-100 rounded mb-2 shadow-sm">
+									</div>
+								}
+								<!-- Navigation buttons -->
+								<a class="position-absolute top-50 start-0 translate-middle-y text-dark fs-2 text-decoration-none px-3" id="prevButton">&#10094;</a>
+								<a class="position-absolute top-50 end-0 translate-middle-y text-dark fs-2 text-decoration-none px-3" id="nextButton">&#10095;</a>
+							}
+							else
+							{
+								<p class="text-muted text-center">No images available for this room.</p>
+							}
+						</div>
+					</div>
+				</section>
+			</div>
 
-            <!-- Room Details -->
-            <div class="col-md-4">
-                <div class="card shadow-sm p-4">
-                    <p><strong>Description:</strong> @Model.Room.Description</p>
-                    @if (Model.Room.Price.DiscountIsActive && Model.Room.Price.StartDate <= DateTime.Today && Model.Room.Price.EndDate >= DateTime.Today)
-                    {
-                        <p class="card-text">
-                            <span class="text-decoration-line-through"><strong>Price: @Model.Room.Price.BasePrice.ToString("C")</strong></span>
-                            <span class="ms-2 text-success"><strong>@((Model.Room.Price.BasePrice - (Model.Room.Price.Discount / 100 * Model.Room.Price.BasePrice)).ToString("C"))</strong></span>
-                        </p>
-                    }
-                    else
-                    {
-                        <p class="card-text"><strong>Price: @Model.Room.Price.BasePrice.ToString("C")</strong></p>
-                    }
-                    <p><strong>Capacity:</strong> @Model.Room.Capacity.ToString()</p>
-                    <a class="btn btn-primary w-100 mt-3" href="#">Book Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
+			<!-- Room Details -->
+			<div class="col-md-4">
+				<div class="card shadow-sm p-4">
+					<p><strong>Description:</strong> @Model.Room.Description</p>
+					@if (Model.Room.Price.DiscountIsActive && Model.Room.Price.StartDate <= DateTime.Today && Model.Room.Price.EndDate >= DateTime.Today)
+					{
+						<p class="card-text">
+							<span class="text-decoration-line-through"><strong>Price: @Model.Room.Price.BasePrice.ToString("C")</strong></span>
+							<span class="ms-2 text-success"><strong>@((Model.Room.Price.BasePrice - (Model.Room.Price.Discount / 100 * Model.Room.Price.BasePrice)).ToString("C"))</strong></span>
+						</p>
+					}
+					else
+					{
+						<p class="card-text"><strong>Price: @Model.Room.Price.BasePrice.ToString("C")</strong></p>
+					}
+					<p><strong>Capacity:</strong> @Model.Room.Capacity.ToString()</p>
+
+					<!-- Date Range Picker -->
+					<form id="filterForm" class="container mt-5">
+						<div class="row g-3 align-items-end">
+							<!-- Start Date -->
+							<div class="col-md-4">
+								<label for="startDateInfo" class="form-label">Start Date</label>
+								<div class="input-group " id="startDatePicker">
+									<input type="text" class="form-control" placeholder="Start Date" id="startDateInfo" name="startDateInfo" value="@Model.CheckInDate" />
+									<span class="input-group-text">
+										<i class="fa-regular fa-calendar"></i>
+									</span>
+								</div>
+							</div>
+
+							<!-- End Date -->
+							<div class="col-md-4">
+								<label for="endDateInfo" class="form-label">End Date</label>
+								<div class="input-group" id="endDatePicker">
+									<input type="text" class="form-control" placeholder="End Date" id="endDateInfo" name="endDateInfo" value="@Model.CheckOutDate">
+									<span class="input-group-text">
+										<i class="fa-regular fa-calendar"></i>
+									</span>
+								</div>
+							</div>
+						</div>
+					</form>
+					<a class="btn btn-primary w-100 mt-3" href="#">Book Now</a>
+				</div>
+			</div>
+		</div>
+	</div>
 </main>
+
+<script src="~/js/datePicker.js" asp-append-version="true"></script>
