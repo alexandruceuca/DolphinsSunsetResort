@@ -57,10 +57,10 @@
 					<p><strong>Capacity:</strong> @Model.Room.Capacity.ToString()</p>
 
 					<!-- Date Range Picker -->
-					<form id="filterForm" class="container mt-5">
+					<form id="filterForm" class="container mt-5  pb-3">
 						<div class="row g-3 align-items-end">
 							<!-- Start Date -->
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<label for="startDate" class="form-label">Start Date</label>
 								<div class="input-group " id="startDatePicker">
 									<input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" value="@Model.CheckInDate" />
@@ -71,7 +71,7 @@
 							</div>
 
 							<!-- End Date -->
-							<div class="col-md-4">
+							<div class="col-md-6">
 								<label for="endDate" class="form-label">End Date</label>
 								<div class="input-group" id="endDatePicker">
 									<input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate" value="@Model.CheckOutDate">
@@ -86,8 +86,7 @@
 							class="btn btn-primary  add-to-cart-button-info"
 							data-room-id="@Model.Room.RoomId"
 							data-url="@Url.Action("AddToCart", "BookingCart")"
-							data-checkin-date="@Model.CheckInDate"
-							data-checkout-date="@Model.CheckOutDate">
+							>
 						Book
 					</button>
 				</div>

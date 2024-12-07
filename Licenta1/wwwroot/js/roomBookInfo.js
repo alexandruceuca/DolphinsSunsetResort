@@ -13,12 +13,9 @@
         e.preventDefault();  // Prevent the form from submitting the traditional way
 
         var roomId = $(this).data("room-id");
-        var checkInDate = $(this).data("checkin-date");
-        var checkOutDate = $(this).data("checkout-date");
+        var checkInDate = $("#startDate").val();
+        var checkOutDate = $("#endDate").val();
         var actionUrl = $(this).data("url"); // Get the URL for the action
-
-        var startDate = $("#startDate").val();
-        var endDate = $("#endDate").val();
 
 
         if (!checkInDate || !checkOutDate) {
