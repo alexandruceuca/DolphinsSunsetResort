@@ -1,0 +1,46 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "All Accounts";
+}
+
+<div class="container mt-4">
+    <h1>@ViewData["Title"]</h1>
+
+    @if (Model != null && Model.Any())
+    {
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>UserName</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr data-user-id="@user.Id">
+                        <td>@user.UserName</td>
+                        <td>@user.Email</td>
+                        <td>@user.Role</td>
+                        <td>
+                            <a href="@Url.Action("EditRoles", "Roles", new { id = user.Id })" class="btn btn-warning btn-sm">Edit</a>
+                            <button data-id="@user.Id" class="btn btn-danger btn-sm delete-btn" data-url="@Url.Action("DeleteAccount", "Roles")">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info" role="alert">
+            No accounts found.
+        </div>
+    }
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/userRoles.js" asp-append-version="true"></script>
