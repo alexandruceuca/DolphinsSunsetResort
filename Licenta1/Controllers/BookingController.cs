@@ -1,7 +1,9 @@
 ﻿using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Dictionaries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 using System.Security.Claims;
 
 namespace DolphinsSunsetResort.Controllers
@@ -14,7 +16,8 @@ namespace DolphinsSunsetResort.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+
+		public IActionResult Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
