@@ -15,7 +15,7 @@ namespace DolphinsSunsetResort.ViewComponents
 		{
 			_context = context;
 		}
-		public async Task<IViewComponentResult> InvokeAsync(string methodName, DateTime? startDate, DateTime? endDate)
+		public async Task<IViewComponentResult> InvokeAsync(string methodName, string startDate, string endDate)
 		{
 			if (methodName == "DisplayRoomListHomeAsync")
 				return await DisplayRoomListHomeAsync();
@@ -41,7 +41,7 @@ namespace DolphinsSunsetResort.ViewComponents
 
 		}
 
-		public IViewComponentResult GetFilteredRooms(DateTime? startDate, DateTime? endDate)
+		public IViewComponentResult GetFilteredRooms(string startDate, string endDate)
 		{
 			// Retrieve the rooms with necessary related data
 			var rooms = _context.Rooms
@@ -53,9 +53,7 @@ namespace DolphinsSunsetResort.ViewComponents
 			// Initialize the RoomFilterViewModel
 			var roomFilter = new RoomFilterViewModel
 			{
-				Rooms = rooms.ToList(), // Default to all rooms before filtering
-				CheckInDate = startDate,
-				CheckOutDate = endDate
+				Rooms = rooms.ToList() // Default to all rooms before filterin
 			};
 
 			// If both dates are null, return all rooms
@@ -64,16 +62,22 @@ namespace DolphinsSunsetResort.ViewComponents
 				return View("/Views/Shared/Components/Rooms/RoomsFiltered.cshtml", roomFilter);
 			}
 
-			// Set default date values if one of the dates is null
-			startDate ??= DateTime.MinValue;
-			endDate ??= DateTime.MaxValue;
+			// Parse the dates
+			DateTime parsedStartDate = string.IsNullOrEmpty(startDate) ? DateTime.MinValue : DateTime.Parse(startDate);
+			DateTime parsedEndDate = string.IsNullOrEmpty(endDate) ? DateTime.MaxValue : DateTime.Parse(endDate);
+
+			//Set time
+			parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
+			parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
 
 			// Filter rooms based on booking availability
 			rooms = rooms.Where(r => !r.BookingRooms
-				.Any(br => br.Booking.CheckInDate < endDate && br.Booking.CheckOutDate > startDate));
+				.Any(br => br.Booking.CheckInDate < parsedEndDate && br.Booking.CheckOutDate > parsedStartDate));
 
 			// Update the RoomFilterViewModel with filtered data
 			roomFilter.Rooms = rooms.ToList();
+			roomFilter.CheckInDate = parsedStartDate;
+			roomFilter.CheckOutDate = parsedEndDate;
 
 			// Return the view with the updated model
 			return View("/Views/Shared/Components/Rooms/RoomsFiltered.cshtml", roomFilter);

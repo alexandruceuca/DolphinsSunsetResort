@@ -25,9 +25,8 @@ namespace DolphinsSunsetResort.Controllers
 
 		public IActionResult GetFilteredRooms(string startDate, string endDate)
 		{
-			DateTime? parsedStartDate = string.IsNullOrEmpty(startDate) ? (DateTime?)null : DateTime.Parse(startDate);
-			DateTime? parsedEndDate = string.IsNullOrEmpty(endDate) ? (DateTime?)null : DateTime.Parse(endDate);
-			return ViewComponent("RoomsList", new { methodName = "GetFilteredRooms", startDate = parsedStartDate, endDate = parsedEndDate });
+
+			return ViewComponent("RoomsList", new { methodName = "GetFilteredRooms",  startDate,  endDate });
 
 		}
 

@@ -26,8 +26,25 @@ public class BookingCartController : Controller
 		try
 		{
 			// Parse the dates
-			DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.Today : DateTime.Parse(checkInDate);
-			DateTime parsedEndDate = string.IsNullOrEmpty(checkOutDate) ? DateTime.Today : DateTime.Parse(checkOutDate);
+			DateTime parsedStartDate =  DateTime.Parse(checkInDate);
+			DateTime parsedEndDate =  DateTime.Parse(checkOutDate);
+
+			//Set time
+			parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
+			parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
+
+			var checkRoom = _context.BookingRooms.Include(b => b.Booking)
+				.Where(br => br.RoomId == roomId &&
+				 (parsedStartDate < br.Booking.CheckOutDate &&
+				  parsedEndDate > br.Booking.CheckInDate)
+				 ).Any();
+
+			if (checkRoom)
+			{
+				// Room already booked
+				return Json(new { success = false, message = "The room is already booked" });
+
+			}
 
 			// Retrieve the room and price from the database
 			var addedRoom = _context.Rooms.Include(p => p.Price)
@@ -42,7 +59,7 @@ public class BookingCartController : Controller
 			// Check if the room already exists in the cart
 			if (cartItems.Any(r => r.RoomId == roomId))
 			{
-				// Room already added, return a JSON error response
+				// Room already added
 				return Json(new { success = false, message = "The room is already added" });
 			}
 
