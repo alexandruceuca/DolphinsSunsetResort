@@ -1,0 +1,56 @@
+﻿@using DolphinsSunsetResort.Dictionaries;
+@model IEnumerable<DolphinsSunsetResort.Models.Booking>
+
+@{
+	ViewData["Title"] = "My Bookings";
+}
+
+<div class="container mt-4">
+	<h1>@ViewData["Title"]</h1>
+
+	@if (Model != null && Model.Any())
+	{
+		<div class="list-group">
+			@foreach (var booking in Model)
+			{
+				<div class="list-group-item p-4 mb-4 shadow-sm rounded-3">
+					<h5 class="fs-5">Booking Number: @booking.BookingId</h5>
+					<small class="text-muted">Booking Date: @booking.BookingDate.ToString("yyyy-MM-dd")</small><br />
+					<small class="text-muted">Check-In: @booking.CheckInDate.ToString("yyyy-MM-dd 13:00")</small><br />
+					<small class="text-muted">Check-Out: @booking.CheckOutDate.ToString("yyyy-MM-dd 09:00")</small><br />
+					<p><strong>Total Price:</strong> $@booking.TotalPrice</p>
+					<p class="status-text">Status: @booking.Status</p>
+					@if (booking.Status == BookingStatus.Confirmed)
+					{
+
+						<button class="btn btn-primary  cancel-booking"
+					data-booking-id="@booking.BookingId"
+					data-url="@Url.Action("CancelBooking", "Booking")">
+							Cancel Booking
+						</button>
+					}
+					<!-- List the rooms for this booking -->
+					<h6 class="mt-3">Rooms in this Booking:</h6>
+					<ul class="list-group list-group-flush">
+						@foreach (var bookingRoom in booking.BookingRooms)
+						{
+							<li class="list-group-item py-3 px-4 mb-2">
+								<strong>@bookingRoom.Room.Name</strong>
+								(<span>@bookingRoom.Room.RoomType</span>) -
+								<span>Price: $@bookingRoom.Price</span>
+							</li>
+						}
+					</ul>
+				</div>
+			}
+		</div>
+	}
+	else
+	{
+		<div class="alert alert-info" role="alert">
+			You have no bookings at the moment.
+		</div>
+	}
+</div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/cancelBooking.js" asp-append-version="true"></script>

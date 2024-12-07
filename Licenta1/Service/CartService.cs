@@ -201,6 +201,7 @@ namespace DolphinsSunsetResort.Service
 			booking.TotalPrice = orderTotal;
 			booking.CheckInDate = cartItems.First().CheckInDate;
 			booking.CheckOutDate = cartItems.First().CheckOutDate;
+			booking.Status = Dictionaries.BookingStatus.Confirmed;
 
 			// Save the booking
 			_context.SaveChanges();
