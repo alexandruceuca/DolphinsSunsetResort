@@ -23,21 +23,36 @@ namespace DolphinsSunsetResort.Controllers
 			_roleManager = roleManager;
 		}
 
-		[Authorize(Roles = "Admin")]
-		public IActionResult GetAllAccounts()
-		{
-			var users = _userManager.Users
-			.Select(user => new
-			{
-				user.Id,
-				user.UserName,
-				user.Email,
-				Role = _userManager.GetRolesAsync(user).Result.FirstOrDefault()  // Fetch the first role
-			}).ToList();
-			return View("/Views/Roles/Admin/Index.cshtml",users);
-		}
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAllAccounts()
+        {
+            // Fetch all users first
+            var users = await _userManager.Users.ToListAsync();  
 
-		[Authorize(Roles = "Admin")]
+            // Now fetch roles asynchronously for each user
+            var usersWithRoles = new List<UserWithRolesViewModel>();
+
+            foreach (var user in users)
+            {
+                var roles = await _userManager.GetRolesAsync(user);
+                var userWithRoles = new UserWithRolesViewModel
+                {
+                    Id = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    Email = user.Email,
+                    Roles = roles.ToList() 
+                };
+
+                usersWithRoles.Add(userWithRoles);
+            }
+
+            return View("/Views/Roles/Admin/Index.cshtml", usersWithRoles);
+        }
+
+
+
+        [Authorize(Roles = "Admin")]
 		public async Task<IActionResult> EditRoles(string id)
 		{
 			var user = await _userManager.FindByIdAsync(id);
@@ -53,7 +68,8 @@ namespace DolphinsSunsetResort.Controllers
 			var model = new EditRolesViewModel
 			{
 				UserId = user.Id,
-				UserName = user.UserName,
+				FristName = user.FirstName,
+				LastName = user.LastName,
 				Roles = roles,
                 UserRoles = userRoles
             };
