@@ -32,15 +32,11 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-
-if (app.Environment.IsDevelopment())
+using (var scope = app.Services.CreateScope())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-       // c.RoutePrefix = string.Empty; // This makes Swagger UI accessible at the root URL
-    });
+	var services = scope.ServiceProvider;
+	var userManager = services.GetRequiredService<UserManager<AplicationUser>>();
+	await SeedRoles.Initialize(services, userManager);  // Seed the roles
 }
 
 // Configure the HTTP request pipeline.
