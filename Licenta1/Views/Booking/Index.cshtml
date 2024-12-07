@@ -14,11 +14,11 @@
 			@foreach (var booking in Model)
 			{
 				<div class="list-group-item p-4 mb-4 shadow-sm rounded-3">
-					<h5 class="fs-5">Booking Number: @booking.BookingId</h5>
-					<small class="text-muted">Booking Date: @booking.BookingDate.ToString("yyyy-MM-dd")</small><br />
-					<small class="text-muted">Check-In: @booking.CheckInDate.ToString("yyyy-MM-dd 13:00")</small><br />
-					<small class="text-muted">Check-Out: @booking.CheckOutDate.ToString("yyyy-MM-dd 09:00")</small><br />
-					<p><strong>Total Price:</strong> $@booking.TotalPrice</p>
+					<h4 class="fs-5">Booking Number: @booking.BookingId</h4>
+					<h6 class="text-muted">Booking Date: @booking.BookingDate.ToString("yyyy-MM-dd")</h6><br />
+					<h6 class="text-muted">Check-In: @booking.CheckInDate.ToString("yyyy-MM-dd 13:00")</h6><br />
+					<h6 class="text-muted">Check-Out: @booking.CheckOutDate.ToString("yyyy-MM-dd 09:00")</h6><br />
+					<p><strong>Total Price:</strong> $@booking.TotalPrice.ToString("C")</p>
 					<p class="status-text">Status: @booking.Status</p>
 					@if (booking.Status == BookingStatus.Confirmed)
 					{
@@ -37,7 +37,7 @@
 							<li class="list-group-item py-3 px-4 mb-2">
 								<strong>@bookingRoom.Room.Name</strong>
 								(<span>@bookingRoom.Room.RoomType</span>) -
-								<span>Price: $@bookingRoom.Price</span>
+								<span>Price: $@bookingRoom.Price.ToString("C")</span>
 							</li>
 						}
 					</ul>
