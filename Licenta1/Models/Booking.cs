@@ -1,4 +1,5 @@
 ﻿using DolphinsSunsetResort.Areas.Identity.Data;
+using DolphinsSunsetResort.Dictionaries;
 
 namespace DolphinsSunsetResort.Models
 {
@@ -12,8 +13,9 @@ namespace DolphinsSunsetResort.Models
 		public DateTime CheckOutDate { get; set;}
 
 		public decimal TotalPrice { get; set; }
+        public BookingStatus Status { get; set; }
 
-		public virtual AplicationUser AplicationUser { get; set; } = null;
+        public virtual AplicationUser AplicationUser { get; set; } = null;
 		public virtual ICollection<BookingRoom> BookingRooms { get; set; } = new List<BookingRoom>();
 	}
 }

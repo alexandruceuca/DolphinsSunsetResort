@@ -3,6 +3,7 @@ using DolphinsSunsetResort.Models;
 using DolphinsSunsetResort.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace DolphinsSunsetResort.Controllers
 {
@@ -32,10 +33,7 @@ namespace DolphinsSunsetResort.Controllers
 				booking.UserId = userId;
 				booking.BookingDate = DateTime.Now;
 
-				//Check if the rooms are already book in the specified period
-
-
-				////Save booking
+				//Save booking
 				_context.Bookings.Add(booking);
 				_context.SaveChanges();
 

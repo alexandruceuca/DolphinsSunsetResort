@@ -2,7 +2,9 @@
 using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel;
+using System.Globalization;
 
 namespace DolphinsSunsetResort.Controllers
 {
@@ -23,13 +25,12 @@ namespace DolphinsSunsetResort.Controllers
 
 		public IActionResult GetFilteredRooms(string startDate, string endDate)
 		{
-			DateTime? parsedStartDate = string.IsNullOrEmpty(startDate) ? (DateTime?)null : DateTime.Parse(startDate);
-			DateTime? parsedEndDate = string.IsNullOrEmpty(endDate) ? (DateTime?)null : DateTime.Parse(endDate);
-			return ViewComponent("RoomsList", new { methodName = "GetFilteredRooms", startDate = parsedStartDate, endDate = parsedEndDate });
+
+			return ViewComponent("RoomsList", new { methodName = "GetFilteredRooms",  startDate,  endDate });
 
 		}
 
-		public async Task<IActionResult> Info(int id)
+		public async Task<IActionResult> Info(int id, string startDate, string endDate)
 		{
 			// Fetch the room from the database using the provided RoomId
 			var room = await _context.Rooms
@@ -54,11 +55,22 @@ namespace DolphinsSunsetResort.Controllers
 									  .ToList();
 			}
 
+			//Ensure the DateTime format is the same
+			DateTime? parsedStartDate = string.IsNullOrEmpty(startDate)
+				? (DateTime?)null
+	:			DateTime.ParseExact(startDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
+			DateTime? parsedEndDate = string.IsNullOrEmpty(endDate)
+				? (DateTime?)null
+				: DateTime.ParseExact(endDate, "MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture);
+
 			// Create a ViewModel to hold both room and images
 			var viewModel = new RoomInfoViewModel
 			{
 				Room = room,
-				ImagePaths = imageFiles
+				ImagePaths = imageFiles,
+				CheckInDate = parsedStartDate,
+				CheckOutDate = parsedEndDate
 			};
 
 			// Pass the ViewModel to the Info view

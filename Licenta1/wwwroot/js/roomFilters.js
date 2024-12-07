@@ -16,6 +16,7 @@
             var startDate = $("#startDate").val();
             var endDate = $("#endDate").val();
 
+
             // Validate that both dates are selected
             if (!startDate || !endDate) {
                 return; // Do nothing if dates are incomplete
@@ -128,7 +129,6 @@
                 }
             });
         });
-
 
 
 });
