@@ -1,4 +1,6 @@
-﻿namespace DolphinsSunsetResort.Models
+﻿using DolphinsSunsetResort.Dictionaries;
+
+namespace DolphinsSunsetResort.Models
 {
 	public class Room
 	{
@@ -11,7 +13,7 @@
 
         public int Number { get; set; }
 
-        public string RoomStatus { get; set; }
+        public RoomStatus RoomStatus { get; set; }
 
 		public virtual Price Price { get; set; } = null;
 		public virtual ICollection<BookingRoom> BookingRooms { get; set; } = new List<BookingRoom>();

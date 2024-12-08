@@ -1,5 +1,6 @@
 ﻿using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Data;
+using DolphinsSunsetResort.Dictionaries;
 using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -44,10 +45,6 @@ namespace DolphinsSunsetResort.Controllers
 
             return View("/Views/Roles/Admin/Index.cshtml");
         }
-
-
-
-
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> EditRoles(string id)
@@ -123,6 +120,28 @@ namespace DolphinsSunsetResort.Controllers
             return Json(new { success = false });
         }
 
+        [Authorize(Roles = "Admin,Manager,Reception,RoomCleaner")]
+        public async Task<IActionResult> GetRoomsToClean()
+        {
+            return View("/Views/Roles/RoomCleaner/Index.cshtml");
+        }
+
+        [Authorize(Roles = "Admin,Manager,Reception,RoomCleaner")]
+        [HttpPost]
+        public async Task<IActionResult> MarkAsReadyForCheckIn(int roomId)
+        {
+            var room = await _context.Rooms.FindAsync(roomId);
+            if (room == null)
+            {
+                return Json(new { success = false, message = "Room not found" });
+            }
+
+            room.RoomStatus = RoomStatus.ReadyForCheckIn;
+            await _context.SaveChangesAsync();
+
+            // Return success response
+            return Json(new { success = true });
+        }
 
     }
 }
