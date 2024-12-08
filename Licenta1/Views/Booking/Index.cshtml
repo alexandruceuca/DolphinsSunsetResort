@@ -8,68 +8,67 @@
 <div class="container mt-4">
 	<h1>@ViewData["Title"]</h1>
 
-	@if (Model != null && Model.Any())
-	{
-		<div class="list-group">
-			@foreach (var booking in Model)
-			{
-				<div class="list-group-item p-3 shadow-sm rounded-3 mb-3">
-					<div class="mb-3">
-						<h5 class="mb-2">Booking Number: @booking.BookingId</h5>
-					</div>
-
-					<div class="row">
-						<div class="col-md-8">
-							<div class="d-flex mb-3">
-								<div class="me-3">
-									<p class="mb-1"><strong>Check-In:</strong> @booking.CheckInDate.ToString("yyyy-MM-dd 13:00")</p>
-								</div>
-								<div class="ms-3">
-									<p class="mb-1"><strong>Check-Out:</strong> @booking.CheckOutDate.ToString("yyyy-MM-dd 09:00")</p>
-								</div>
-							</div>
-
-
-							<p class="mb-1"><strong>Booking Date:</strong> @booking.BookingDate.ToString("yyyy-MM-dd")</p>
-							<p class="mb-1"><strong>Total Price:</strong> @booking.TotalPrice.ToString("C")</p>
-							<p class="mb-1"><strong>Status:</strong> @booking.Status</p>
-						</div>
-
-
-						<div class="col-md-4">
-							<!-- Rooms in this Booking -->
-							<div class="mb-3">
-								<h6>Rooms in this Booking:</h6>
-								<ul class="list-group list-group-flush">
-									@foreach (var bookingRoom in booking.BookingRooms)
-									{
-										<li class="list-group-item py-2">
-											<strong>@bookingRoom.Room.Name</strong> (<span>@bookingRoom.Room.RoomType</span>) - <span>Price: @bookingRoom.Price.ToString("C")</span>
-										</li>
-									}
-								</ul>
-							</div>
-							@if (booking.Status == BookingStatus.Confirmed)
-							{
-								<button class="btn btn-danger cancel-booking w-100"
-							data-booking-id="@booking.BookingId"
-							data-url="@Url.Action("CancelBooking", "Booking")">
-									Cancel Booking
-								</button>
-							}
-						</div>
-					</div>
+	<!-- Date Range Picker -->
+	<form id="filterForm" class="container mt-5">
+		<div class="row g-3 align-items-end">
+			<!-- Start Date -->
+			<div class="col-md-4">
+				<label for="startDate" class="form-label">Start Date</label>
+				<div class="input-group" id="startDatePicker">
+					<input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" />
+					<span class="input-group-text">
+						<i class="fa-regular fa-calendar"></i>
+					</span>
 				</div>
-			}
+			</div>
+
+			<!-- End Date -->
+			<div class="col-md-4">
+				<label for="endDate" class="form-label">End Date</label>
+				<div class="input-group" id="endDatePicker">
+					<input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate">
+					<span class="input-group-text">
+						<i class="fa-regular fa-calendar"></i>
+					</span>
+				</div>
+			</div>
+
+			<!-- Status Filter -->
+			<div class="col-md-3">
+				<label for="statusFilter">Status</label>
+				<select id="statusFilter" class="form-control">
+					<option value="">All</option>
+					@foreach (var status in ViewBag.bookingStatus as List<DolphinsSunsetResort.Dictionaries.BookingStatus>)
+					{
+						<option value="@status">@status</option>
+					}
+				</select>
+			</div>
+
+			<!-- Buttons aligned next to each other -->
+			<div class="col-md-2 d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary w-100">Filter</button>
+			</div>
+			<div class="col-md-2 d-flex justify-content-end">
+				<button type="button" id="resetFilters" class="btn btn-outline-secondary w-100">Reset Filter</button>
+			</div>
 		</div>
-	}
-	else
-	{
-		<div class="alert alert-info" role="alert">
-			You have no bookings at the moment.
-		</div>
-	}
+	</form>
+	<div id="bookingList">
+		@await Component.InvokeAsync("BookingFilter")
+	</div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+	var filterUrl = '@Url.Action("Index", "Booking")';
+</script>
 <script src="~/js/cancelBooking.js" asp-append-version="true"></script>
+<script src="~/js/datePicker.js" asp-append-version="true"></script>
+<script src="~/js/removeRestrictionsDatePicker.js" asp-append-version="true"></script>
+<script src="~/js/bookingFilter.js" asp-append-version="true"></script>
+
+
+
+
+
