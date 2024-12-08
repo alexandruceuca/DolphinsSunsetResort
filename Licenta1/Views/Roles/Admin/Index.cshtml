@@ -8,14 +8,14 @@
     <h1>@ViewData["Title"]</h1>
 
     <!-- Filter Inputs -->
-    <div class="row mb-3">
-        <div class="col-md-4">
+    <div class="row mb-4">
+        <div class="col-12 col-md-4 mb-3 mb-md-0">
             <input type="text" id="emailFilter" class="form-control" data-url="@Url.Action("GetAllAccounts", "Roles")" placeholder="Filter by email..." />
         </div>
-        <div class="col-md-4">
+        <div class="col-12 col-md-4 mb-3 mb-md-0">
             <input type="text" id="phoneFilter" class="form-control" placeholder="Filter by phone number..." />
         </div>
-        <div class="col-md-4">
+        <div class="col-12 col-md-4">
             <select id="roleFilter" class="form-select">
                 <option value="">Select Role</option>
                 @foreach (var role in ViewBag.Roles)
@@ -25,23 +25,21 @@
             </select>
         </div>
     </div>
-    <!-- Filter and Reset Buttons -->
-    <div class="row">
-        <div class="col-md-6">
-            <button id="filterButton" class="btn btn-primary">Filter</button>
-        </div>
-        <div class="col-md-6">
-            <button id="resetButton" class="btn btn-secondary">Reset Filter</button>
+
+    <!-- Filter and Reset Buttons (next to each other) -->
+    <div class="row mb-4">
+        <div class="col-12 col-md-12 d-flex justify-content-start justify-content-md-end gap-2">
+            <button id="filterButton" class="btn btn-primary btn-sm">Filter</button>
+            <button id="resetButton" class="btn btn-secondary btn-sm">Reset Filter</button>
         </div>
     </div>
 
+    <!-- Accounts Table -->
     <div id="accountsTable">
         @await Component.InvokeAsync("UserList")
     </div>
 </div>
 
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="~/js/userRoles.js" asp-append-version="true"></script>
 <script src="~/js/filterUserList.js" asp-append-version="true"></script>
-
