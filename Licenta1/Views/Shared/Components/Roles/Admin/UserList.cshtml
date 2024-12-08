@@ -1,0 +1,34 @@
+﻿@using DolphinsSunsetResort.Views.ViewsModel
+@model List<UserWithRolesViewModel>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody id="userTableBody">
+        @foreach (var user in Model)
+        {
+                <tr>
+                    <td>@user.FirstName @user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.PhoneNumber</td>
+                    <td>
+                    @foreach (var role in user.Roles)
+                    {
+                                <span class="badge bg-secondary">@role</span>
+                    }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("EditRoles", "Roles", new { id = user.Id })" class="btn btn-warning btn-sm">Edit</a>
+                        <button class="btn btn-danger btn-sm delete-btn" data-id="@user.Id" data-url="@Url.Action("DeleteAccount", "Roles")">Delete</button>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>

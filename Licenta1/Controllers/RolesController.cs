@@ -10,102 +10,99 @@ using System.Data;
 namespace DolphinsSunsetResort.Controllers
 {
 
-	public class RolesController : Controller
-	{
-		private readonly AuthDbContext _context;
-		private readonly UserManager<AplicationUser> _userManager;
-		private readonly RoleManager<IdentityRole> _roleManager;
+    public class RolesController : Controller
+    {
+        private readonly AuthDbContext _context;
+        private readonly UserManager<AplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-		public RolesController(AuthDbContext context, UserManager<AplicationUser> userManager, RoleManager<IdentityRole> roleManager)
-		{
-			_context = context;
-			_userManager = userManager;
-			_roleManager = roleManager;
-		}
+        public RolesController(AuthDbContext context, UserManager<AplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            _context = context;
+            _userManager = userManager;
+            _roleManager = roleManager;
+        }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllAccounts()
+        public async Task<IActionResult> GetAllAccounts(string emailFilter,string phoneFilter,string roleFilter)
         {
-            // Fetch all users first
-            var users = await _userManager.Users.ToListAsync();  
+			ViewBag.roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
 
-            // Now fetch roles asynchronously for each user
-            var usersWithRoles = new List<UserWithRolesViewModel>();
-
-            foreach (var user in users)
+            var userFilters = new UserFilterViewModel
             {
-                var roles = await _userManager.GetRolesAsync(user);
-                var userWithRoles = new UserWithRolesViewModel
-                {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Roles = roles.ToList() 
-                };
+                EmailFilter= emailFilter,
+                PhoneNumberFilter= phoneFilter,
+                RoleFilter= roleFilter
 
-                usersWithRoles.Add(userWithRoles);
+            };
+
+			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+
+                return ViewComponent("UserList", new { methodName = "InvokeAsync", userFilters = userFilters });
             }
 
-            return View("/Views/Roles/Admin/Index.cshtml", usersWithRoles);
+            return View("/Views/Roles/Admin/Index.cshtml");
         }
 
 
 
+
+
         [Authorize(Roles = "Admin")]
-		public async Task<IActionResult> EditRoles(string id)
-		{
-			var user = await _userManager.FindByIdAsync(id);
-			if (user == null) return NotFound();
+        public async Task<IActionResult> EditRoles(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound();
 
-			// Get all roles in the system
-			var roles = await _roleManager.Roles.ToListAsync();
+            // Get all roles in the system
+            var roles = await _roleManager.Roles.ToListAsync();
 
-			// Get the user's currently assigned roles
-			var userRoles = await _userManager.GetRolesAsync(user);
+            // Get the user's currently assigned roles
+            var userRoles = await _userManager.GetRolesAsync(user);
 
-			// Prepare the model for the view
-			var model = new EditRolesViewModel
-			{
-				UserId = user.Id,
-				FristName = user.FirstName,
-				LastName = user.LastName,
-				Roles = roles,
+            // Prepare the model for the view
+            var model = new EditRolesViewModel
+            {
+                UserId = user.Id,
+                FristName = user.FirstName,
+                LastName = user.LastName,
+                Roles = roles,
                 UserRoles = userRoles
             };
 
-			return View("/Views/Roles/Admin/EditRoles.cshtml",model);
-		}
+            return View("/Views/Roles/Admin/EditRoles.cshtml", model);
+        }
 
-		[HttpPost]
-		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> EditRoles(string userId, List<string> selectedRoles)
-		{
-			var user = await _userManager.FindByIdAsync(userId);
-			if (user == null) return NotFound();
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> EditRoles(string userId, List<string> selectedRoles)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
 
-			// Get the current roles for the user
-			var currentRoles = await _userManager.GetRolesAsync(user);
+            // Get the current roles for the user
+            var currentRoles = await _userManager.GetRolesAsync(user);
 
-			// Determine the roles to add and remove
-			var rolesToAdd = selectedRoles.Except(currentRoles).ToList();
-			var rolesToRemove = currentRoles.Except(selectedRoles).ToList();
+            // Determine the roles to add and remove
+            var rolesToAdd = selectedRoles.Except(currentRoles).ToList();
+            var rolesToRemove = currentRoles.Except(selectedRoles).ToList();
 
-			// Add new roles
-			if (rolesToAdd.Any())
-			{
-				await _userManager.AddToRolesAsync(user, rolesToAdd);
-			}
+            // Add new roles
+            if (rolesToAdd.Any())
+            {
+                await _userManager.AddToRolesAsync(user, rolesToAdd);
+            }
 
-			// Remove old roles
-			if (rolesToRemove.Any())
-			{
-				await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
-			}
+            // Remove old roles
+            if (rolesToRemove.Any())
+            {
+                await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+            }
 
 
-			return RedirectToAction("GetAllAccounts", "Roles");
-		}
+            return RedirectToAction("GetAllAccounts", "Roles");
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpPost]
