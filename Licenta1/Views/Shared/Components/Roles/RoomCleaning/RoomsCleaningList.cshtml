@@ -1,17 +1,19 @@
 ﻿@model IEnumerable<Room>
 
-@foreach (var room in Model)
-{
-    <div class="list-group-item d-flex justify-content-between align-items-center mb-3 " data-room-id="@room.RoomId">
-        <!-- Room name and Room number -->
-        <div>
-            <strong>@room.Name</strong>
-            <div class="text-muted">Room Number: @room.Number</div> <!-- Room number displayed below the name -->
-        </div>
+<div class="list-group">
+    @foreach (var room in Model)
+    {
+        <div class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-sm bg-white rounded" data-room-id="@room.RoomId">
+            <!-- Room name and Room number -->
+            <div>
+                <strong>@room.Name</strong>
+                <div class="text-muted">Room Number: @room.Number</div>
+            </div>
 
-        <!-- Mark as Ready for Check-In Button -->
-        <button class="btn btn-success btn-sm btn-mark-ready" data-room-id="@room.RoomId" data-url="@Url.Action("MarkAsReadyForCheckIn", "Roles")">
-            Mark as Ready for Check-In
-        </button>
-    </div>
-}
+            <!-- Mark as Ready for Check-In Button -->
+            <button class="btn btn-success btn-sm btn-mark-ready small-btn" data-room-id="@room.RoomId" data-url="@Url.Action("MarkAsReadyForCheckIn", "Roles")">
+                Mark as Ready for Check-In
+            </button>
+        </div>
+    }
+</div>
