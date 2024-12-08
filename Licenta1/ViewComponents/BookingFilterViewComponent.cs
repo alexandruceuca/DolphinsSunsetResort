@@ -8,59 +8,48 @@ using System.Security.Claims;
 
 namespace DolphinsSunsetResort.ViewComponents
 {
-	public class BookingFilterViewComponent : ViewComponent
-	{
-		private readonly AuthDbContext _context;
-		private readonly IHttpContextAccessor _httpContextAccessor;
-		public BookingFilterViewComponent(AuthDbContext context, IHttpContextAccessor httpContextAccessor)
-		{
-			_context = context;
-			_httpContextAccessor = httpContextAccessor;
-		}
+    public class BookingFilterViewComponent : ViewComponent
+    {
+        private readonly AuthDbContext _context;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public BookingFilterViewComponent(AuthDbContext context, IHttpContextAccessor httpContextAccessor)
+        {
+            _context = context;
+            _httpContextAccessor = httpContextAccessor;
+        }
 
-		public async Task<IViewComponentResult> InvokeAsync(BookingFilterViewModel filterBookings)
-		{
-			var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+        public async Task<IViewComponentResult> InvokeAsync(BookingFilterViewModel filterBookings)
+        {
+            var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-			var bookings = _context.Bookings.Include(b => b.BookingRooms)
-				.ThenInclude(r => r.Room)
-				.Where(b => b.UserId == userId)
-				.AsQueryable();
+            var bookings = _context.Bookings.Include(b => b.BookingRooms)
+                .ThenInclude(r => r.Room)
+                .Where(b => b.UserId == userId)
+                .AsQueryable();
 
-			if (filterBookings != null)
-			{
-				// Apply CheckInDate filter
-				if (filterBookings.CheckInDate != default)
-				{
-					bookings = bookings.Where(b => b.CheckInDate >= filterBookings.CheckInDate);
-				}
+            if (filterBookings == null)
+            {
+                filterBookings = new BookingFilterViewModel()
+                {
+                    Bookings = await bookings.ToListAsync()
+                };
+                return View("/Views/Shared/Components/Booking/BookingFilterList.cshtml", filterBookings);
+            }
+            bookings = bookings.Where(b => b.CheckInDate >= filterBookings.CheckInDate);
 
-				// Apply CheckOutDate filter
-				if (filterBookings.CheckOutDate != default)
-				{
-					bookings = bookings.Where(b => b.CheckOutDate <= filterBookings.CheckOutDate);
-				}
+            bookings = bookings.Where(b => b.CheckOutDate <= filterBookings.CheckOutDate);
 
-				// Apply Status filter
-				if (filterBookings.Status != BookingStatus.None)
-				{
-					bookings = bookings.Where(b => b.Status == filterBookings.Status);
-				}
-			}
-			if (filterBookings == null)
-			{
-				filterBookings = new BookingFilterViewModel()
-				{
-					Bookings = await bookings.ToListAsync()
-				};
-			}
-			else
-			{
-				filterBookings.Bookings = await bookings.ToListAsync();
-			}
+            // Apply Status filter
+            if (filterBookings.Status != BookingStatus.None)
+            {
+                bookings = bookings.Where(b => b.Status == filterBookings.Status);
+            }
 
-			return View("/Views/Shared/Components/Booking/BookingFilterList.cshtml", filterBookings);
-		}
+            filterBookings.Bookings = await bookings.ToListAsync();
 
-	}
+
+            return View("/Views/Shared/Components/Booking/BookingFilterList.cshtml", filterBookings);
+        }
+
+    }
 }

@@ -4,59 +4,59 @@
 @{
 	ViewData["Title"] = "My Bookings";
 }
-
 <div class="container mt-4">
-	<h1>@ViewData["Title"]</h1>
+    <h1>@ViewData["Title"]</h1>
 
-	<!-- Date Range Picker -->
-	<form id="filterForm" class="container mt-5">
-		<div class="row g-3 align-items-end">
-			<!-- Start Date -->
-			<div class="col-md-4">
-				<label for="startDate" class="form-label">Start Date</label>
-				<div class="input-group" id="startDatePicker">
-					<input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" />
-					<span class="input-group-text">
-						<i class="fa-regular fa-calendar"></i>
-					</span>
-				</div>
-			</div>
+    <!-- Date Range Picker -->
+    <form id="filterForm" class="container mt-5">
+        <div class="row g-3 align-items-end">
+            <!-- Start Date -->
+            <div class="col-md-4">
+                <label for="startDate" class="form-label">Start Date</label>
+                <div class="input-group" id="startDatePicker">
+                    <input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" />
+                    <span class="input-group-text">
+                        <i class="fa-regular fa-calendar"></i>
+                    </span>
+                </div>
+            </div>
 
-			<!-- End Date -->
-			<div class="col-md-4">
-				<label for="endDate" class="form-label">End Date</label>
-				<div class="input-group" id="endDatePicker">
-					<input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate">
-					<span class="input-group-text">
-						<i class="fa-regular fa-calendar"></i>
-					</span>
-				</div>
-			</div>
+            <!-- End Date -->
+            <div class="col-md-4">
+                <label for="endDate" class="form-label">End Date</label>
+                <div class="input-group" id="endDatePicker">
+                    <input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate">
+                    <span class="input-group-text">
+                        <i class="fa-regular fa-calendar"></i>
+                    </span>
+                </div>
+            </div>
 
-			<!-- Status Filter -->
-			<div class="col-md-3">
-				<label for="statusFilter">Status</label>
-				<select id="statusFilter" class="form-control">
-					<option value="">All</option>
-					@foreach (var status in ViewBag.bookingStatus as List<DolphinsSunsetResort.Dictionaries.BookingStatus>)
-					{
-						<option value="@status">@status</option>
-					}
-				</select>
-			</div>
+            <!-- Status Filter -->
+            <div class="col-md-3">
+                <label for="statusFilter">Status</label>
+                <select id="statusFilter" class="form-select">
+                    <option value="">All</option>
+                    @foreach (var status in ViewBag.bookingStatus as List<DolphinsSunsetResort.Dictionaries.BookingStatus>)
+                    {
+                        <option value="@status">@status</option>
+                    }
+                </select>
+            </div>
 
-			<!-- Buttons aligned next to each other -->
-			<div class="col-md-2 d-flex justify-content-end">
-				<button type="submit" class="btn btn-primary w-100">Filter</button>
-			</div>
-			<div class="col-md-2 d-flex justify-content-end">
-				<button type="button" id="resetFilters" class="btn btn-outline-secondary w-100">Reset Filter</button>
-			</div>
-		</div>
-	</form>
-	<div id="bookingList">
-		@await Component.InvokeAsync("BookingFilter")
-	</div>
+            <!-- Buttons aligned to the right -->
+            <div class="col-md-12">
+                <div class="d-flex justify-content-end gap-2">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <button type="button" id="resetFilters" class="btn btn-outline-secondary resetFilters">Reset</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div id="bookingList">
+        @await Component.InvokeAsync("BookingFilter")
+    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

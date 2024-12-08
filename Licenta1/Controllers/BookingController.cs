@@ -20,9 +20,14 @@ namespace DolphinsSunsetResort.Controllers
 		}
 
 		public async Task<IActionResult> Index(string checkInDate, string checkOutDate, BookingStatus bookingStatus)
-		{		
-			// Parse the dates
-			DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
+		{
+            // Check if the bookingStatus is not set (default value)
+            if (string.IsNullOrEmpty(Request.Query["bookingStatus"]))
+            {
+                bookingStatus = BookingStatus.None; // Set to None when not provided
+            }
+            // Parse the dates
+            DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
 			DateTime parsedEndDate = string.IsNullOrEmpty(checkOutDate) ? DateTime.MaxValue : DateTime.Parse(checkOutDate);
 
 			//Set time

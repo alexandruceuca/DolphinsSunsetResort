@@ -19,6 +19,7 @@
         var endDate = $('#endDate').val();
         var status = $('#statusFilter').val();
 
+        console.log(status);
 
         $.ajax({
             url: filterUrl,
