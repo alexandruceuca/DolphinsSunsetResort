@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace DolphinsSunsetResort.ViewComponents
+﻿namespace DolphinsSunsetResort.ViewComponents
 {
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Identity;
