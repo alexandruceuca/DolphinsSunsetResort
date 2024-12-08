@@ -24,13 +24,22 @@ namespace DolphinsSunsetResort.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllAccounts(string emailFilter)
+        public async Task<IActionResult> GetAllAccounts(string emailFilter,string phoneFilter,string roleFilter)
         {
+			ViewBag.roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
 
-            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            var userFilters = new UserFilterViewModel
+            {
+                EmailFilter= emailFilter,
+                PhoneNumberFilter= phoneFilter,
+                RoleFilter= roleFilter
+
+            };
+
+			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
 
-                return ViewComponent("UserList", new { methodName = "InvokeAsync", emailFilter = emailFilter });
+                return ViewComponent("UserList", new { methodName = "InvokeAsync", userFilters = userFilters });
             }
 
             return View("/Views/Roles/Admin/Index.cshtml");

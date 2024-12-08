@@ -7,8 +7,32 @@
 <div class="container mt-4">
     <h1>@ViewData["Title"]</h1>
 
-    <div class="mb-3">
-        <input type="text" id="emailFilter" class="form-control" data-url="@Url.Action("GetAllAccounts", "Roles")" placeholder="Filter by email..." />
+    <!-- Filter Inputs -->
+    <div class="row mb-3">
+        <div class="col-md-4">
+            <input type="text" id="emailFilter" class="form-control" data-url="@Url.Action("GetAllAccounts", "Roles")" placeholder="Filter by email..." />
+        </div>
+        <div class="col-md-4">
+            <input type="text" id="phoneFilter" class="form-control" placeholder="Filter by phone number..." />
+        </div>
+        <div class="col-md-4">
+            <select id="roleFilter" class="form-select">
+                <option value="">Select Role</option>
+                @foreach (var role in ViewBag.Roles)
+                {
+                    <option value="@role">@role</option>
+                }
+            </select>
+        </div>
+    </div>
+    <!-- Filter and Reset Buttons -->
+    <div class="row">
+        <div class="col-md-6">
+            <button id="filterButton" class="btn btn-primary">Filter</button>
+        </div>
+        <div class="col-md-6">
+            <button id="resetButton" class="btn btn-secondary">Reset Filter</button>
+        </div>
     </div>
 
     <div id="accountsTable">
