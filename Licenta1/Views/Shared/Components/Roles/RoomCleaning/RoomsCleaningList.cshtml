@@ -1,17 +1,36 @@
 ﻿@model IEnumerable<Room>
 
+@{
+    // Extract the booking times from the ViewBag
+    var nextBookingTimes = ViewBag.NextBookingTimes as Dictionary<int, DateTime?>;
+}
+
 <div class="list-group">
     @foreach (var room in Model)
     {
+        var nextBooking = nextBookingTimes.ContainsKey(room.RoomId) ? nextBookingTimes[room.RoomId] : null;
+
         <div class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-sm bg-white rounded" data-room-id="@room.RoomId">
-            <!-- Room name and Room number -->
+            <!-- Room name and details -->
             <div>
                 <strong>@room.Name</strong>
                 <div class="text-muted">Room Number: @room.Number</div>
+
+                <!-- Next booking information -->
+                @if (nextBooking.HasValue && nextBooking!=DateTime.MinValue)
+                {
+                    <div class="text-muted">
+                        Next Booking: @nextBooking.Value.ToString("yyyy-MM-dd HH:mm")
+                    </div>
+                }
+                else
+                {
+                    <div class="text-muted">No upcoming bookings</div>
+                }
             </div>
 
             <!-- Mark as Ready for Check-In Button -->
-            <button class="btn btn-success btn-sm btn-mark-ready small-btn" data-room-id="@room.RoomId" data-url="@Url.Action("MarkAsReadyForCheckIn", "Roles")">
+            <button class="btn btn-success btn-sm btn-mark-ready" data-room-id="@room.RoomId" data-url="@Url.Action("MarkAsReadyForCheckIn", "Roles")">
                 Mark as Ready for Check-In
             </button>
         </div>
