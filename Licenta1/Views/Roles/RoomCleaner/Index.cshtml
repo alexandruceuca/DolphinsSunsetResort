@@ -1,5 +1,17 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<Room>
+
 @{
+    ViewData["Title"] = "Rooms Needing Cleaning";
 }
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Rooms Needing Cleaning</h2>
+
+        <div id="roomsList" class="list-group">
+            @await Component.InvokeAsync("RoomsCleaningList") 
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/markRoomAsClean.js" asp-append-version="true"></script>

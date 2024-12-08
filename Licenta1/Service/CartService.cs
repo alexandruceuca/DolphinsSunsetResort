@@ -165,9 +165,10 @@ namespace DolphinsSunsetResort.Service
 
 			// Check if any booking already exists for this room within the date range
 			var roomIsBooked = checkRoom.Any(b =>
-				b.BookingRooms.Any(br => br.RoomId == roomId) && // RoomId matches
-																 // Check if the new booking date range overlaps with an existing one
-				!(checkOutDate <= b.CheckInDate || checkInDate >= b.CheckOutDate) // No overlap condition
+				b.BookingRooms.Any(br => br.RoomId == roomId) && 
+																
+				!(checkOutDate <= b.CheckInDate || checkInDate >= b.CheckOutDate) 
+				&& b.Status==Dictionaries.BookingStatus.Confirmed
 			);
 
 			return roomIsBooked;
@@ -203,11 +204,11 @@ namespace DolphinsSunsetResort.Service
 			booking.CheckOutDate = cartItems.First().CheckOutDate;
 			booking.Status = Dictionaries.BookingStatus.Confirmed;
 
-			// Save the booking
+			
 			_context.SaveChanges();
-			// Empty the shopping cart
+		
 			EmptyCart();
-			// Return the BookingId as the confirmation number
+		
 			return booking.BookingId;
 		}
 

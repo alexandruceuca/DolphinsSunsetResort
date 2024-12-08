@@ -11,7 +11,7 @@
         cancelButtonText: 'Cancel'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Perform the delete action (you can use an AJAX request here)
+
             $.ajax({
                 url: actionUrl,
                 type: 'POST',
