@@ -23,6 +23,27 @@ namespace DolphinsSunsetResort.ViewComponents
                 .Where(r => r.RoomStatus == Dictionaries.RoomStatus.NeedsCleaning)
                 .ToListAsync();
 
+            // Dictionary to store next booking for each room
+            var nextBookingTimes = new Dictionary<int, DateTime?>();
+
+            foreach (var room in roomsNeedingCleaning)
+            {
+                // Find the earliest booking with a check-in date in the future
+                var nextBooking = await _context.BookingRooms
+                    .Where(br => br.RoomId == room.RoomId 
+                    && br.Booking.CheckInDate > DateTime.Now
+                    && br.Booking.CheckInDate != DateTime.MinValue
+                    && br.Booking.Status == Dictionaries.BookingStatus.Confirmed)
+                    .OrderBy(br => br.Booking.CheckInDate)
+                    .Select(br => br.Booking.CheckInDate)
+                    .FirstOrDefaultAsync();
+
+                nextBookingTimes[room.RoomId] = nextBooking;
+            }
+
+
+            ViewBag.NextBookingTimes = nextBookingTimes;
+
             return View("/Views/Shared/Components/Roles/RoomCleaning/RoomsCleaningList.cshtml", roomsNeedingCleaning);
         }
     }
