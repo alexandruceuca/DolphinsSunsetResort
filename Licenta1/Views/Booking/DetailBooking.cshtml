@@ -20,7 +20,6 @@
                 </button>
             </div>
         }
-
     </div>
 
     <div class="card mt-4">
@@ -40,6 +39,10 @@
                 <dt class="col-sm-4 col-md-3">Booking Status:</dt>
                 <dd class="col-sm-8 col-md-9" id="bookingStatus">
                     @Model.Status
+                </dd>
+                <dt class="col-sm-4 col-md-3">Total Price:</dt>
+                <dd class="col-sm-8 col-md-9" ">
+                    @Model.TotalPrice.ToString("C")
                 </dd>
             </dl>
             <hr>
@@ -75,11 +78,17 @@
                         {
                             foreach (var bookingRoom in Model.BookingRooms)
                             {
+                                // Calculate the number of nights
+                                var nights = (Model.CheckOutDate - Model.CheckInDate).Days;
+
+                                // Calculate the total price for the room
+                                var totalPrice = bookingRoom.Price * nights;
+
                                 <tr>
                                     <td>@bookingRoom.Room.Name</td>
                                     <td>@bookingRoom.Price.ToString("C")</td>
-@*                                    <td>@bookingRoom.Nights</td>
-                                    <td>@(bookingRoom.Price * bookingRoom.Nights).ToString("C")</td>*@
+                                    <td>@nights</td>
+                                    <td>@totalPrice.ToString("C")</td>
                                 </tr>
                             }
                         }
