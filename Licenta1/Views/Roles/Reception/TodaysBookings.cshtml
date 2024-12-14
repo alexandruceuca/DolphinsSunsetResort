@@ -1,0 +1,47 @@
+﻿@using DolphinsSunsetResort.Dictionaries
+@model IEnumerable<DolphinsSunsetResort.Models.Booking>
+@{
+    Layout = "/Views/Shared/_MenuLayout.cshtml";
+}
+
+<h3>Today's Bookings</h3>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Booking Number</th>
+            <th>CheckIn Date</th>
+            <th>CheckOut Date</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            <th>Booking Status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.BookingId</td>
+                    <td>@booking.CheckInDate.ToShortDateString()</td>
+                    <td>@booking.CheckOutDate.ToShortDateString()</td>
+                    <td>@booking.AplicationUser.Email</td>
+                    <td>@booking.AplicationUser.PhoneNumber</td>
+                    <td>@booking.Status</td>
+                    <td>
+                        <a asp-controller="Booking" asp-action="DetailBooking" asp-route-bookingId="@booking.BookingId" class="btn btn-primary btn-sm">
+                            More Info
+                        </a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="7">No bookings found for today.</td>
+            </tr>
+        }
+    </tbody>
+</table>

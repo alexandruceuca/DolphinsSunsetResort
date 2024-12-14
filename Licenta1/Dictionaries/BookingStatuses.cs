@@ -4,6 +4,7 @@
     {
         Confirmed,
         Cancelled,
+        CheckIn,
         NoShow,
 		None
 	}

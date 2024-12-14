@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using Twilio.TwiML.Messaging;
 
 namespace DolphinsSunsetResort.Controllers
 {
@@ -23,6 +24,9 @@ namespace DolphinsSunsetResort.Controllers
             _userManager = userManager;
             _roleManager = roleManager;
         }
+
+        #region Admin
+
 
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllAccounts(string emailFilter,string phoneFilter,string roleFilter)
@@ -120,6 +124,11 @@ namespace DolphinsSunsetResort.Controllers
             return Json(new { success = false });
         }
 
+        #endregion
+
+        #region RoomCleaner
+
+
         [Authorize(Roles = "Admin,Manager,Reception,RoomCleaner")]
         public async Task<IActionResult> GetRoomsToClean()
         {
@@ -143,5 +152,20 @@ namespace DolphinsSunsetResort.Controllers
             return Json(new { success = true });
         }
 
+        #endregion
+
+
+        #region Reception
+
+        [Authorize(Roles = "Admin,Manager,Reception")]
+        public IActionResult GetBookingsToday()
+        {
+            //Get todays bookings, we add 13h so we can compere
+            var todayBookings = _context.Bookings.Include(u => u.AplicationUser)
+                .Where(b => b.CheckInDate.Date == DateTime.Today.Date).ToList();
+
+            return View("/Views/Roles/Reception/TodaysBookings.cshtml", todayBookings);
+        }
+        #endregion
     }
 }
