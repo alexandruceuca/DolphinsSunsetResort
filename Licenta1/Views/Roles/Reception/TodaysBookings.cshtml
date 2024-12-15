@@ -1,10 +1,34 @@
-﻿@using DolphinsSunsetResort.Dictionaries
+﻿@using DolphinsSunsetResort.Models
 @model IEnumerable<DolphinsSunsetResort.Models.Booking>
+
 @{
     Layout = "/Views/Shared/_MenuLayout.cshtml";
 }
 
 <h3>Today's Bookings</h3>
+
+<!-- Filter Inputs for Booking ID, Email, and Phone Number -->
+<div class="row mb-4">
+    <div class="col-12 col-md-4 mb-3 mb-md-0">
+        <input type="text" id="bookingIdFilter" class="form-control" placeholder="Filter by Booking ID..." />
+    </div>
+    <div class="col-12 col-md-4 mb-3 mb-md-0">
+        <input type="text" id="phoneFilter" class="form-control" placeholder="Filter by Phone Number..." />
+    </div>
+    <div class="col-12 col-md-4">
+        <input type="text" id="emailFilter" class="form-control" placeholder="Filter by Email..." />
+    </div>
+</div>
+
+<!-- Filter and Reset Buttons -->
+<div class="row mb-4">
+    <div class="col-12 col-md-12 d-flex justify-content-start justify-content-md-end gap-2">
+        <button id="filterButton" class="btn btn-primary btn-sm">Filter</button>
+        <button id="resetButton" class="btn btn-secondary btn-sm">Reset Filter</button>
+    </div>
+</div>
+
+<!-- Bookings Table -->
 <table class="table">
     <thead>
         <tr>
@@ -17,31 +41,8 @@
             <th></th>
         </tr>
     </thead>
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            @foreach (var booking in Model)
-            {
-                <tr>
-                    <td>@booking.BookingId</td>
-                    <td>@booking.CheckInDate.ToShortDateString()</td>
-                    <td>@booking.CheckOutDate.ToShortDateString()</td>
-                    <td>@booking.AplicationUser.Email</td>
-                    <td>@booking.AplicationUser.PhoneNumber</td>
-                    <td>@booking.Status</td>
-                    <td>
-                        <a asp-controller="Booking" asp-action="DetailBooking" asp-route-bookingId="@booking.BookingId" class="btn btn-primary btn-sm">
-                            More Info
-                        </a>
-                    </td>
-                </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="7">No bookings found for today.</td>
-            </tr>
-        }
-    </tbody>
+    @await Component.InvokeAsync("TodaysBookingsList")
 </table>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/filterTodaysBookings.js" asp-append-version="true"></script>

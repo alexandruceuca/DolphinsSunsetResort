@@ -68,6 +68,7 @@
                     <thead>
                         <tr>
                             <th>Room Type</th>
+                            <th>Room Status </th>
                             <th>Price Per Night</th>
                             <th>Nights</th>
                             <th>Total Price</th>
@@ -86,6 +87,7 @@
 
                                 <tr>
                                     <td>@bookingRoom.Room.Name</td>
+                                    <td>@bookingRoom.Room.RoomStatus.ToString()</td>
                                     <td>@bookingRoom.Price.ToString("C")</td>
                                     <td>@nights</td>
                                     <td>@totalPrice.ToString("C")</td>

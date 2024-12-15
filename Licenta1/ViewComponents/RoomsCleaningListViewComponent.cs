@@ -28,7 +28,7 @@ namespace DolphinsSunsetResort.ViewComponents
 
             foreach (var room in roomsNeedingCleaning)
             {
-                // Find the earliest booking with a check-in date in the future
+
                 var nextBooking = await _context.BookingRooms
                     .Where(br => br.RoomId == room.RoomId 
                     && br.Booking.CheckInDate > DateTime.Now

@@ -158,14 +158,27 @@ namespace DolphinsSunsetResort.Controllers
         #region Reception
 
         [Authorize(Roles = "Admin,Manager,Reception")]
-        public IActionResult GetBookingsToday()
+        public async Task<IActionResult> GetBookingsToday(string bookingIdFilter, string phoneFilter, string emailFilter)
         {
-            //Get todays bookings, we add 13h so we can compere
-            var todayBookings = _context.Bookings.Include(u => u.AplicationUser)
-                .Where(b => b.CheckInDate.Date == DateTime.Today.Date).ToList();
 
-            return View("/Views/Roles/Reception/TodaysBookings.cshtml", todayBookings);
+			var bookingFilters = new BookingFilterViewModel
+			{
+				EmailFilter = emailFilter,
+				PhoneNumberFilter = phoneFilter,
+
+			};
+
+
+			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+               
+                return ViewComponent("TodaysBookingsList");
+            }
+
+            
+            return View("/Views/Roles/Reception/TodaysBookings.cshtml");
         }
+
         #endregion
     }
 }

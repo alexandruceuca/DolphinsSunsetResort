@@ -4,7 +4,7 @@
         const emailFilter = $('#emailFilter').val();
         const phoneFilter = $('#phoneFilter').val();
         const roleFilter = $('#roleFilter').val();
-        const url = $('#emailFilter').data('url'); // URL from the data attribute
+        const url = $('#emailFilter').data('url'); 
 
         console.log(roleFilter);
         // Send AJAX request with the filter parameters

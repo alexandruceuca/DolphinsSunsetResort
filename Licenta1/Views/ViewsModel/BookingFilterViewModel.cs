@@ -8,6 +8,12 @@ namespace DolphinsSunsetResort.Views.ViewsModel
 		public DateTime? CheckInDate { get; set; }
 		public DateTime? CheckOutDate { get; set; }
 
+		public string? EmailFilter { get; set; }
+
+		public string? PhoneNumberFilter { get; set; }
+
+		public int? BookingIdFilter { get; set; }
+
 		public BookingStatus? Status { get; set; }
 	}
 }

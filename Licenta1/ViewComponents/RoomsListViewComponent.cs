@@ -70,13 +70,16 @@ namespace DolphinsSunsetResort.ViewComponents
             parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
             parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
 
-            // Filter rooms based on booking availability
-            rooms = rooms.Where(r => !r.BookingRooms
-                .Any(br => br.Booking.CheckInDate < parsedEndDate && br.Booking.CheckOutDate > parsedStartDate
-                    && br.Booking.Status != Dictionaries.BookingStatus.Confirmed));
+			// Filter rooms based on booking availability
+			rooms = rooms.Where(r => !r.BookingRooms
+	                .Any(br => br.Booking.CheckInDate < parsedEndDate
+		                 && br.Booking.CheckOutDate > parsedStartDate
+		                 && (br.Booking.Status == Dictionaries.BookingStatus.Confirmed
+			             || br.Booking.Status == Dictionaries.BookingStatus.CheckIn)));
 
-            // Update the RoomFilterViewModel with filtered data
-            roomFilter.Rooms = rooms.ToList();
+
+			// Update the RoomFilterViewModel with filtered data
+			roomFilter.Rooms = rooms.ToList();
             roomFilter.CheckInDate = parsedStartDate;
             roomFilter.CheckOutDate = parsedEndDate;
 
