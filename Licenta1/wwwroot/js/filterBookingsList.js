@@ -4,6 +4,8 @@
         const bookingIdFilter = $('#bookingIdFilter').val();
         const phoneFilter = $('#phoneFilter').val();
         const emailFilter = $('#emailFilter').val();
+        var startDate = $('#startDate').val();
+        var endDate = $('#endDate').val();
         const url = $('#bookingIdFilter').data('url');  
 
    
@@ -13,7 +15,9 @@
             data: {
                 bookingIdFilter: bookingIdFilter,
                 phoneFilter: phoneFilter,
-                emailFilter: emailFilter
+                emailFilter: emailFilter,
+                checkInDate: startDate,
+                checkOutDate: endDate,
             },
             success: function (result) {
                 $('#bookingsTableBody').html(result); 
@@ -30,6 +34,8 @@
         $('#bookingIdFilter').val('');
         $('#phoneFilter').val('');
         $('#emailFilter').val('');
+        $('#startDate').val('');
+        $('#endDate').val('');
 
         const url = $('#bookingIdFilter').data('url');
 
@@ -39,7 +45,9 @@
             data: {
                 bookingIdFilter: '',
                 phoneFilter: '',
-                emailFilter: ''
+                emailFilter: '',
+                checkInDate: '',
+                checkOutDate: '',
             },
             success: function (result) {
                 $('#bookingsTableBody').html(result);  // Reset the table

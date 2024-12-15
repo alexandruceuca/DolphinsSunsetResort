@@ -1,18 +1,19 @@
 ﻿@using DolphinsSunsetResort.Models
+@using DolphinsSunsetResort.Views.ViewsModel
 @model IEnumerable<DolphinsSunsetResort.Models.Booking>
 
 @{
-    Layout = "/Views/Shared/_MenuLayout.cshtml";
+    Layout = "/Views/Shared/_ReceptionMenuLayout.cshtml";
 }
 
-<h3>Today's Bookings</h3>
+<h3 class="text-center mb-4">Today's Bookings</h3>
 
 <!-- Filter Inputs for Booking ID, Email, and Phone Number -->
-<div class="row mb-4">
-    <div class="col-12 col-md-4 mb-3 mb-md-0">
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-4">
         <input type="text" id="bookingIdFilter" class="form-control" data-url="@Url.Action("GetBookingsToday", "Roles")" placeholder="Filter by Booking ID..." />
     </div>
-    <div class="col-12 col-md-4 mb-3 mb-md-0">
+    <div class="col-12 col-md-4">
         <input type="text" id="phoneFilter" class="form-control" placeholder="Filter by Phone Number..." />
     </div>
     <div class="col-12 col-md-4">
@@ -22,29 +23,31 @@
 
 <!-- Filter and Reset Buttons -->
 <div class="row mb-4">
-    <div class="col-12 col-md-12 d-flex justify-content-start justify-content-md-end gap-2">
+    <div class="col-12 d-flex justify-content-center justify-content-md-end gap-2">
         <button id="filterButton" class="btn btn-primary btn-sm">Filter</button>
         <button id="resetButton" class="btn btn-secondary btn-sm">Reset Filter</button>
     </div>
 </div>
 
 <!-- Bookings Table -->
-<table class="table">
-    <thead>
-        <tr>
-            <th>Booking Number</th>
-            <th>CheckIn Date</th>
-            <th>CheckOut Date</th>
-            <th>Email</th>
-            <th>Phone Number</th>
-            <th>Booking Status</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody id="bookingsTableBody">
-    @await Component.InvokeAsync("TodaysBookingsList")
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Booking Number</th>
+                <th>CheckIn Date</th>
+                <th>CheckOut Date</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Booking Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="bookingsTableBody">
+            @await Component.InvokeAsync("ReceptionBookingsList",new BookingFilterViewModel{AllBookings=false})
+        </tbody>
+    </table>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="~/js/filterTodaysBookings.js" asp-append-version="true"></script>
+<script src="~/js/filterBookingsList.js" asp-append-version="true"></script>

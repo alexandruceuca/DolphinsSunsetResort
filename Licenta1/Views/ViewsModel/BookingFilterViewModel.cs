@@ -14,6 +14,8 @@ namespace DolphinsSunsetResort.Views.ViewsModel
 
 		public int? BookingIdFilter { get; set; }
 
+		public bool? AllBookings { get; set; }
+
 		public BookingStatus? Status { get; set; }
 	}
 }
