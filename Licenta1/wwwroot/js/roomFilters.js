@@ -37,7 +37,7 @@
 
             // Send an AJAX request to filter rooms
             $.ajax({
-                url: filterUrl, // Replace with your filtering endpoint
+                url: filterUrl,
                 type: 'GET',
                 data: {
                     startDate: startDate,
@@ -93,7 +93,7 @@
 
             var startDate = $("#startDate").val();
             var endDate = $("#endDate").val();
-
+           
            
             if (!checkInDate || !checkOutDate) {
                 showPopup(false, "Please select both check-in and check-out dates.");
@@ -113,7 +113,7 @@
             }
 
             $.ajax({
-                url: actionUrl,  // Use the URL for the action method
+                url: actionUrl,  
                 type: 'POST',
                 data: {
                     roomId: roomId,

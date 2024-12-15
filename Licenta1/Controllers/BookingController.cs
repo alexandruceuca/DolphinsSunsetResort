@@ -1,6 +1,8 @@
 ﻿using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Dictionaries;
+using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -17,16 +19,43 @@ namespace DolphinsSunsetResort.Controllers
             _context = context;
         }
 
-		public IActionResult Index()
+        public async Task<IActionResult> Index(string checkInDate, string checkOutDate, BookingStatus bookingStatus)
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            // Check if the bookingStatus is not set 
+            if (string.IsNullOrEmpty(Request.Query["bookingStatus"]))
+            {
+                bookingStatus = BookingStatus.None;
+            }
+            // Parse the dates
+            DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
+            DateTime parsedEndDate = string.IsNullOrEmpty(checkOutDate) ? DateTime.MaxValue : DateTime.Parse(checkOutDate);
 
-            var bookings = _context.Bookings.Include(b => b.BookingRooms)
-                .ThenInclude(r => r.Room)
-                .Where(b => b.UserId == userId)
+            //Set time
+            parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
+            parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
+
+
+            var bookingFilters = new BookingFilterViewModel
+            {
+                CheckInDate = parsedStartDate,
+                CheckOutDate = parsedEndDate,
+                Status = bookingStatus
+            };
+            // Get all enum values except "None"
+            var bookingStatusList = Enum.GetValues(typeof(BookingStatus))
+                .Cast<BookingStatus>()
+                .Where(status => status != BookingStatus.None)
                 .ToList();
 
-            return View(bookings);
+            // Pass the filtered enum values to the view
+            ViewBag.bookingStatus = bookingStatusList;
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+                return ViewComponent("BookingFilter", new { filterBookings = bookingFilters });
+            }
+
+
+            return View("/Views/Booking/Index.cshtml");
         }
 
         [HttpPost]
@@ -42,6 +71,36 @@ namespace DolphinsSunsetResort.Controllers
             }
             return Json(new { success = false, message = "Booking not found or already cancelled." });
         }
+
+        [HttpPost]
+        public IActionResult CheckInBooking(int bookingId)
+        {
+            var booking = _context.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+
+            if (booking != null && booking.Status == BookingStatus.Confirmed)
+            {
+                booking.Status = BookingStatus.CheckIn;  
+                _context.SaveChanges();
+                return Json(new { success = true });
+            }
+
+            return Json(new { success = false, message = "Booking not found or already checked in." });
+        }
+
+
+        public IActionResult DetailBooking(int bookingId)
+        {
+            var bookingDetail = _context.Bookings.Include(a => a.AplicationUser)
+                                                .Include(r => r.BookingRooms)
+                                                    .ThenInclude(rm => rm.Room)
+                                                .FirstOrDefault(b => b.BookingId == bookingId);
+
+
+            return View(bookingDetail);
+        }
+
+
+
 
     }
 }

@@ -1,0 +1,87 @@
+﻿@using DolphinsSunsetResort.Models
+@using DolphinsSunsetResort.Views.ViewsModel
+@model PaginatedBookingListViewModel
+
+@{
+    Layout = "/Views/Shared/_ReceptionMenuLayout.cshtml";
+}
+
+<h3 class="text-center mb-4">All Bookings</h3>
+
+<!-- Filters Section -->
+<div class="row g-3 mb-4">
+    <!-- Start Date -->
+    <div class="col-12 col-md-4">
+        <label for="startDate" class="form-label">Start Date</label>
+        <div class="input-group" id="startDatePicker">
+            <input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" />
+            <span class="input-group-text">
+                <i class="fa-regular fa-calendar"></i>
+            </span>
+        </div>
+    </div>
+
+    <!-- End Date -->
+    <div class="col-12 col-md-4">
+        <label for="endDate" class="form-label">End Date</label>
+        <div class="input-group" id="endDatePicker">
+            <input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate">
+            <span class="input-group-text">
+                <i class="fa-regular fa-calendar"></i>
+            </span>
+        </div>
+    </div>
+
+    <!-- Booking ID Filter -->
+    <div class="col-12 col-md-4">
+        <label for="bookingIdFilter" class="form-label">Booking ID</label>
+        <input type="text" id="bookingIdFilter" class="form-control" data-url="@Url.Action("GetAllBookings", "Roles")" placeholder="Filter by Booking ID..." />
+    </div>
+
+    <!-- Phone Number Filter -->
+    <div class="col-12 col-md-4">
+        <label for="phoneFilter" class="form-label">Phone Number</label>
+        <input type="text" id="phoneFilter" class="form-control" placeholder="Filter by Phone Number..." />
+    </div>
+
+    <!-- Email Filter -->
+    <div class="col-12 col-md-4">
+        <label for="emailFilter" class="form-label">Email</label>
+        <input type="text" id="emailFilter" class="form-control" placeholder="Filter by Email..." />
+    </div>
+</div>
+
+<!-- Filter and Reset Buttons -->
+<div class="row mb-4">
+    <div class="col-12 d-flex justify-content-center justify-content-md-end gap-2">
+        <button id="filterButton" class="btn btn-primary btn-sm">Filter</button>
+        <button id="resetButton" class="btn btn-secondary btn-sm">Reset Filter</button>
+    </div>
+</div>
+
+<!-- Bookings Table -->
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Booking Number</th>
+                <th>CheckIn Date</th>
+                <th>CheckOut Date</th>
+                <th>Email</th>
+                <th>Phone Number</th>
+                <th>Booking Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="bookingsTableBody">
+            @await Component.InvokeAsync("ReceptionBookingsList", new {  page = 1 })
+        </tbody>
+    </table>
+</div>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/datePicker.js" asp-append-version="true"></script>
+<script src="~/js/removeRestrictionsDatePicker.js" asp-append-version="true"></script>
+<script src="~/js/filterBookingsList.js" asp-append-version="true"></script>

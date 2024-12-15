@@ -9,8 +9,8 @@
         });
     }
 
-    // Handle the cancel booking button click
-    $('.cancel-booking').click(function () {
+    // Use event delegation to handle the cancel booking button click
+    $(document).on('click', '.cancel-booking', function () {
         var bookingId = $(this).data('booking-id');
         var actionUrl = $(this).data("url");
 
@@ -39,8 +39,7 @@
                             // Update the status text directly
                             bookingRow.find('.status-text').text('Status: Cancelled');
                             // Disable the cancel button
-                            $('[data-booking-id="' + bookingId + '"]').prop('disabled', true);
-                            $('[data-booking-id="' + bookingId + '"]').hide();
+                            $('[data-booking-id="' + bookingId + '"]').prop('disabled', true).hide();
                         } else {
                             // Show error message if cancellation fails
                             showPopup(false, response.message);
