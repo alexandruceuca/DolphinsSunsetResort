@@ -35,9 +35,12 @@
 
 	<!-- Discounts -->
 	<li class="nav-item mb-2">
-		<a class="nav-link text-decoration-none d-flex align-items-center" href="/Reception/AllBookings">
-			<i class="bi bi-percent me-2"></i>
-			Discounts
-		</a>
+		@if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Reception"))
+		{
+			<a class="nav-link text-decoration-none d-flex align-items-center" asp-controller="Roles" asp-action="GetRoomsWithPrice">
+				<i class="bi bi-list-ul me-2"></i>
+				Discounts
+			</a>
+		}
 	</li>
 </ul>

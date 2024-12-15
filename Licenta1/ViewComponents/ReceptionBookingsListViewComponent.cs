@@ -11,6 +11,7 @@ using System.Data;
 
 namespace DolphinsSunsetResort.ViewComponents
 {
+    [Authorize(Roles = "Admin,Manager,Reception")]
     public class ReceptionBookingsListViewComponent : ViewComponent
     {
         private readonly AuthDbContext _context;
