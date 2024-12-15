@@ -68,10 +68,11 @@
     });
 
     // Pagination click event
-    $('#pagination').on('click', '.page-link', function (e) {
-        e.preventDefault();
+    // Use event delegation on a static parent
+    $(document).on('click', '#pagination .page-link', function (e) {
+        e.preventDefault(); // Prevent default page navigation
 
-        const page = $(this).attr('href').split('=')[1];
+        const page = $(this).attr('href').split('=')[1]; // Extract the page number
         const bookingIdFilter = $('#bookingIdFilter').val();
         const phoneFilter = $('#phoneFilter').val();
         const emailFilter = $('#emailFilter').val();
@@ -91,11 +92,12 @@
                 page: page
             },
             success: function (response) {
-                updateUI(response);
+                updateUI(response); // Update the table and pagination dynamically
             },
             error: function () {
                 Swal.fire('Error', 'Unable to fetch bookings. Please try again.', 'error');
             }
         });
     });
+
 });
