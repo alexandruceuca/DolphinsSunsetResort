@@ -1,11 +1,28 @@
 ﻿$(document).ready(function () {
-    // Click event for the filter button
+    function updateUI(response) {
+        // Parse the response as an HTML document
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(response, 'text/html');
+
+        $('#bookingsTableBody').html(response);
+
+        // Extract pagination controls
+        const pagination = doc.querySelector('#pagination').parentNode.innerHTML;
+        if (pagination) {
+            $('#pagination').parent().html(pagination);
+        } else {
+            console.error("No pagination controls found in the response.");
+            $('#pagination').parent().html('');
+        }
+    }
+
+    // Filter button click event
     $('#filterButton').on('click', function () {
         const bookingIdFilter = $('#bookingIdFilter').val();
         const phoneFilter = $('#phoneFilter').val();
         const emailFilter = $('#emailFilter').val();
-        var startDate = $('#startDate').val();
-        var endDate = $('#endDate').val();
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
         const url = $('#bookingIdFilter').data('url');
 
         $.ajax({
@@ -17,10 +34,10 @@
                 emailFilter: emailFilter,
                 checkInDate: startDate,
                 checkOutDate: endDate,
-                page: 1  // Reset to the first page when applying filters
+                page: 1 // Reset to the first page when applying filters
             },
-            success: function (result) {
-                $('#bookingsTableBody').html(result);
+            success: function (response) {
+                updateUI(response);
             },
             error: function () {
                 Swal.fire('Error', 'Unable to fetch bookings. Please try again.', 'error');
@@ -28,30 +45,21 @@
         });
     });
 
-    // Click event for the reset button
+    // Reset button click event
     $('#resetButton').on('click', function () {
-        // Clear filter inputs
         $('#bookingIdFilter').val('');
         $('#phoneFilter').val('');
         $('#emailFilter').val('');
         $('#startDate').val('');
         $('#endDate').val('');
-
         const url = $('#bookingIdFilter').data('url');
 
         $.ajax({
             url: url,
             type: 'GET',
-            data: {
-                bookingIdFilter: '',
-                phoneFilter: '',
-                emailFilter: '',
-                checkInDate: '',
-                checkOutDate: '',
-                page: 1  // Reset to the first page when clearing filters
-            },
-            success: function (result) {
-                $('#bookingsTableBody').html(result);  // Reset the table
+            data: { page: 1 },
+            success: function (response) {
+                updateUI(response);
             },
             error: function () {
                 Swal.fire('Error', 'Unable to reset bookings. Please try again.', 'error');
@@ -59,16 +67,16 @@
         });
     });
 
-    // Pagination - Handling page clicks
-    $('.pagination').on('click', '.page-link', function (e) {
+    // Pagination click event
+    $('#pagination').on('click', '.page-link', function (e) {
         e.preventDefault();
 
-        var page = $(this).attr('href').split('=')[1];  // Extract the page number from the href attribute
+        const page = $(this).attr('href').split('=')[1];
         const bookingIdFilter = $('#bookingIdFilter').val();
         const phoneFilter = $('#phoneFilter').val();
         const emailFilter = $('#emailFilter').val();
-        var startDate = $('#startDate').val();
-        var endDate = $('#endDate').val();
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
         const url = $('#bookingIdFilter').data('url');
 
         $.ajax({
@@ -80,10 +88,10 @@
                 emailFilter: emailFilter,
                 checkInDate: startDate,
                 checkOutDate: endDate,
-                page: page  
+                page: page
             },
-            success: function (result) {
-                $('#bookingsTableBody').html(result);  // Update the bookings table
+            success: function (response) {
+                updateUI(response);
             },
             error: function () {
                 Swal.fire('Error', 'Unable to fetch bookings. Please try again.', 'error');
