@@ -1,8 +1,6 @@
 ﻿$(document).ready(function () {
     const now = new Date();
 
-
-
         // Function to fetch and update the room list
         function fetchFilteredRooms() {
             // Get the selected dates

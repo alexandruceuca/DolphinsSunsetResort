@@ -1,14 +1,5 @@
 ﻿$(document).ready(function () {
 
-    function showPopup(success, message) {
-        Swal.fire({
-            title: success ? 'Success' : 'Error',
-            text: message,
-            icon: success ? 'success' : 'error',
-            confirmButtonText: 'OK'
-        });
-    }
-
     // Function to mark room as ready for check-in
     function markAsReadyForCheckIn(button) {
         var roomId = $(button).data('room-id');

@@ -1,10 +1,4 @@
 ﻿$(document).ready(function () {
-    $('#resetFilters').click(function () {
-        $('#startDate').val('');
-        $('#endDate').val('');
-        $('#statusFilter').val('');
-        applyFilters(); // Apply filters after reset
-    });
 
 
     $('#filterForm').submit(function (e) {

@@ -1,14 +1,4 @@
 ﻿$(document).ready(function () {
-    // Function to show popup with success or error messages
-    function showPopup(success, message) {
-        Swal.fire({
-            title: success ? 'Success' : 'Error',
-            text: message,
-            icon: success ? 'success' : 'error',
-            confirmButtonText: 'OK'
-        });
-    }
-
     // Use event delegation to handle the cancel booking button click
     $(document).on('click', '.cancel-booking', function () {
         var bookingId = $(this).data('booking-id');
