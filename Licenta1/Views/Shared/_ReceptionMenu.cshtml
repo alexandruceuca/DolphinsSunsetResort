@@ -1,40 +1,43 @@
 ﻿@* Views/Shared/_Menu.cshtml *@
 <ul class="nav flex-column">
-    <!-- Today's Bookings -->
-    <li class="nav-item mb-2">
-        @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Reception"))
-        {
-            <a class="nav-link text-decoration-none d-flex align-items-center" asp-controller="Roles" asp-action="GetBookingsToday">
-                <i class="bi bi-calendar-check me-2"></i>
-                Today's Bookings
-            </a>
-        }
-    </li>
+	<!-- Today's Bookings -->
+	<li class="nav-item mb-2">
+		@if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Reception"))
+		{
+			<a class="nav-link text-decoration-none d-flex align-items-center" asp-controller="Roles" asp-action="GetBookingsToday">
+				<i class="bi bi-calendar-check me-2"></i>
+				Today's Bookings
+			</a>
+		}
+	</li>
 
-    <!-- All Bookings -->
-    <li class="nav-item mb-2">
-        @if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Reception"))
-        {
-            <a class="nav-link text-decoration-none d-flex align-items-center" asp-controller="Roles" asp-action="GetAllBookings">
-                <i class="bi bi-list-ul me-2"></i>
-                All Bookings
-            </a>
-        }
-    </li>
+	<!-- All Bookings -->
+	<li class="nav-item mb-2">
+		@if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Reception"))
+		{
+			<a class="nav-link text-decoration-none d-flex align-items-center" asp-controller="Roles" asp-action="GetAllBookings">
+				<i class="bi bi-list-ul me-2"></i>
+				All Bookings
+			</a>
+		}
+	</li>
 
-    <!-- Rooms Status -->
-    <li class="nav-item mb-2">
-        <a class="nav-link text-decoration-none d-flex align-items-center" href="/Reception/AllBookings">
-            <i class="bi bi-house-door me-2"></i>
-            Rooms Status
-        </a>
-    </li>
+	<!-- Rooms Status -->
+	<li class="nav-item mb-2">
+		@if (User.IsInRole("Admin") || User.IsInRole("Manager") || User.IsInRole("Reception"))
+		{
+			<a class="nav-link text-decoration-none d-flex align-items-center" asp-controller="Roles" asp-action="GetRoomsStatus">
+				<i class="bi bi-list-ul me-2"></i>
+				Rooms Status
+			</a>
+		}
+	</li>
 
-    <!-- Discounts -->
-    <li class="nav-item mb-2">
-        <a class="nav-link text-decoration-none d-flex align-items-center" href="/Reception/AllBookings">
-            <i class="bi bi-percent me-2"></i>
-            Discounts
-        </a>
-    </li>
+	<!-- Discounts -->
+	<li class="nav-item mb-2">
+		<a class="nav-link text-decoration-none d-flex align-items-center" href="/Reception/AllBookings">
+			<i class="bi bi-percent me-2"></i>
+			Discounts
+		</a>
+	</li>
 </ul>

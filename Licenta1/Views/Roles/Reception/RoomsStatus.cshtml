@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Room>
+
+@{
+    ViewData["Title"] = "Rooms Status";
+}
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Rooms Needing Cleaning</h2>
+
+        <div id="roomsList" class="list-group">
+            @await Component.InvokeAsync("ReceptionRoomsStatusList") 
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/showPopup.js" asp-append-version="true"></script>
+<script src="~/js/roomStatus.js" asp-append-version="true"></script>
