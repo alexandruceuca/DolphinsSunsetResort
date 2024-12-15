@@ -1,6 +1,6 @@
 ﻿@using DolphinsSunsetResort.Models
 @using DolphinsSunsetResort.Views.ViewsModel
-@model IEnumerable<DolphinsSunsetResort.Models.Booking>
+@model PaginatedBookingListViewModel
 
 @{
     Layout = "/Views/Shared/_ReceptionMenuLayout.cshtml";
@@ -74,12 +74,13 @@
             </tr>
         </thead>
         <tbody id="bookingsTableBody">
-            @await Component.InvokeAsync("ReceptionBookingsList")
+            @await Component.InvokeAsync("ReceptionBookingsList", new {  page = 1 })
         </tbody>
     </table>
 </div>
 
-<!-- Scripts -->
+
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="~/js/datePicker.js" asp-append-version="true"></script>
 <script src="~/js/removeRestrictionsDatePicker.js" asp-append-version="true"></script>

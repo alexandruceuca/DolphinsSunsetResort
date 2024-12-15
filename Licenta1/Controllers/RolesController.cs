@@ -158,7 +158,7 @@ namespace DolphinsSunsetResort.Controllers
         #region Reception
 
         [Authorize(Roles = "Admin,Manager,Reception")]
-        public async Task<IActionResult> GetBookingsToday(int bookingIdFilter, string phoneFilter, string emailFilter)
+        public async Task<IActionResult> GetBookingsToday(int bookingIdFilter, string phoneFilter, string emailFilter,int page)
         {
 
 			var bookingFilters = new BookingFilterViewModel
@@ -173,9 +173,9 @@ namespace DolphinsSunsetResort.Controllers
 
 			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
-               
-                return ViewComponent("ReceptionBookingsList", bookingFilters);
-            }
+
+				return  ViewComponent("ReceptionBookingsList", new { filters = bookingFilters, page = page });
+			}
 
             
             return View("/Views/Roles/Reception/TodaysBookings.cshtml");
@@ -183,7 +183,7 @@ namespace DolphinsSunsetResort.Controllers
 
 
 		[Authorize(Roles = "Admin,Manager,Reception")]
-		public async Task<IActionResult> GetAllBookings(int bookingIdFilter, string phoneFilter, string emailFilter,string checkInDate,string checkOutDate)
+		public async Task<IActionResult> GetAllBookings(int bookingIdFilter, string phoneFilter, string emailFilter,string checkInDate,string checkOutDate,int page)
 		{
             // Parse the dates
             DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
@@ -208,7 +208,7 @@ namespace DolphinsSunsetResort.Controllers
 			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
 			{
 
-				return ViewComponent("ReceptionBookingsList", bookingFilters);
+				return  ViewComponent("ReceptionBookingsList", new { filters = bookingFilters, page = page });
 			}
 
 

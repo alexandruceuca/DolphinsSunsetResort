@@ -1,6 +1,6 @@
 ﻿@using DolphinsSunsetResort.Models
 @using DolphinsSunsetResort.Views.ViewsModel
-@model IEnumerable<DolphinsSunsetResort.Models.Booking>
+@model PaginatedBookingListViewModel
 
 @{
     Layout = "/Views/Shared/_ReceptionMenuLayout.cshtml";
@@ -44,7 +44,7 @@
             </tr>
         </thead>
         <tbody id="bookingsTableBody">
-            @await Component.InvokeAsync("ReceptionBookingsList",new BookingFilterViewModel{AllBookings=false})
+            @await Component.InvokeAsync("ReceptionBookingsList", new { filters = new BookingFilterViewModel { AllBookings = false }, page = 1 })
         </tbody>
     </table>
 </div>

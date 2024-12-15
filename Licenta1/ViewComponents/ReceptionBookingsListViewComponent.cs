@@ -23,8 +23,10 @@ namespace DolphinsSunsetResort.ViewComponents
         }
 
         [Authorize(Roles = "Admin,Manager,Reception")]
-        public async Task<IViewComponentResult> InvokeAsync(BookingFilterViewModel filters)
+        public async Task<IViewComponentResult> InvokeAsync(BookingFilterViewModel filters,int page)
         {
+           
+            int pageSize = 10;
             var bookings = _context.Bookings.Include(b => b.AplicationUser)
                                             .AsQueryable();
 
@@ -51,12 +53,25 @@ namespace DolphinsSunsetResort.ViewComponents
                 else
                 {
                     bookings = bookings.Where(b => b.CheckInDate >= filters.CheckInDate);
-
                     bookings = bookings.Where(b => b.CheckOutDate <= filters.CheckOutDate);
-
                 }
             }
-            return View("/Views/Shared/Components/Roles/Reception/ReceptionBookingsList.cshtml", bookings.ToList());
+
+            // Pagination
+            var totalBookings = await bookings.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalBookings / (double)pageSize);
+            var paginatedBookings = await bookings.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            var model = new PaginatedBookingListViewModel
+            {
+                Bookings = paginatedBookings,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                PageSize = pageSize
+            };
+
+            return View("/Views/Shared/Components/Roles/Reception/ReceptionBookingsList.cshtml", model);
         }
+
     }
 }
