@@ -10,7 +10,7 @@
 <!-- Filter Inputs for Booking ID, Email, and Phone Number -->
 <div class="row mb-4">
     <div class="col-12 col-md-4 mb-3 mb-md-0">
-        <input type="text" id="bookingIdFilter" class="form-control" placeholder="Filter by Booking ID..." />
+        <input type="text" id="bookingIdFilter" class="form-control" data-url="@Url.Action("GetBookingsToday", "Roles")" placeholder="Filter by Booking ID..." />
     </div>
     <div class="col-12 col-md-4 mb-3 mb-md-0">
         <input type="text" id="phoneFilter" class="form-control" placeholder="Filter by Phone Number..." />
@@ -41,7 +41,9 @@
             <th></th>
         </tr>
     </thead>
+    <tbody id="bookingsTableBody">
     @await Component.InvokeAsync("TodaysBookingsList")
+    </tbody>
 </table>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

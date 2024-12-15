@@ -31,7 +31,7 @@ namespace DolphinsSunsetResort.ViewComponents
 			// Apply filters if values are provided
 			if (filters != null)
 			{
-				if (filters.BookingIdFilter != null)
+				if (filters.BookingIdFilter != null && filters.BookingIdFilter!=0)
 				{
 					bookings = bookings.Where(b => b.BookingId == filters.BookingIdFilter);
 				}

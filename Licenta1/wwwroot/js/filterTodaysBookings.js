@@ -4,9 +4,9 @@
         const bookingIdFilter = $('#bookingIdFilter').val();
         const phoneFilter = $('#phoneFilter').val();
         const emailFilter = $('#emailFilter').val();
-        const url = '@Url.Action("GetBookings", "Booking")'; // Get the URL for the GetBookings action
+        const url = $('#bookingIdFilter').data('url');  
 
-        // Send AJAX request with the filter parameters
+   
         $.ajax({
             url: url,
             type: 'GET',
@@ -16,7 +16,7 @@
                 emailFilter: emailFilter
             },
             success: function (result) {
-                $('#bookingsTableBody').html($(result).find('#bookingsTableBody').html()); // Update the table body
+                $('#bookingsTableBody').html(result); 
             },
             error: function () {
                 Swal.fire('Error', 'Unable to fetch bookings. Please try again.', 'error');
@@ -31,8 +31,7 @@
         $('#phoneFilter').val('');
         $('#emailFilter').val('');
 
-        // Send AJAX request to reset filters
-        const url = '@Url.Action("GetBookings", "Booking")'; // Get the URL for the GetBookings action
+        const url = $('#bookingIdFilter').data('url');
 
         $.ajax({
             url: url,
@@ -43,7 +42,7 @@
                 emailFilter: ''
             },
             success: function (result) {
-                $('#bookingsTableBody').html($(result).find('#bookingsTableBody').html()); // Reset the table
+                $('#bookingsTableBody').html(result);  // Reset the table
             },
             error: function () {
                 Swal.fire('Error', 'Unable to reset bookings. Please try again.', 'error');
