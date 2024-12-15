@@ -1,7 +1,9 @@
-﻿using DolphinsSunsetResort.Data;
+﻿using DolphinsSunsetResort.Areas.Identity.Data;
+using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Models;
 using DolphinsSunsetResort.Service;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,12 +13,13 @@ namespace DolphinsSunsetResort.Controllers
 	public class CheckoutController : Controller
 	{
 		private readonly AuthDbContext _context;
-
-		public CheckoutController(AuthDbContext context)
+        private readonly UserManager<AplicationUser> _userManager;
+        public CheckoutController(AuthDbContext context, UserManager<AplicationUser> userManager)
 		{
 			_context = context;
+			_userManager = userManager;
 		}
-		public ActionResult Payment()
+		public async Task<ActionResult> Payment()
 		{
 			var booking = new Booking();
 
@@ -41,7 +44,14 @@ namespace DolphinsSunsetResort.Controllers
 				var cart = CartService.GetCart(_context, this.HttpContext);
 				cart.CreateBooking(booking);
 
-				return RedirectToAction("Complete",
+				var user = await  _userManager.GetUserAsync(User);
+
+				var notification = new EmailNotification(user, "Booking", "", booking.BookingId, booking.TotalPrice, booking.CheckInDate, booking.CheckOutDate);
+
+				var manager = new NotificationManager();
+				manager.SendNotification(notification);
+
+                return RedirectToAction("Complete",
 					new { id = booking.BookingId });
 
 			}

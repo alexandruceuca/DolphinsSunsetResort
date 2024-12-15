@@ -11,6 +11,10 @@ var cultureInfo = new CultureInfo("en-US");
 cultureInfo.NumberFormat.CurrencySymbol = "€";
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+// Set the DateTime format to match the database format
+cultureInfo.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+cultureInfo.DateTimeFormat.LongTimePattern = "HH:mm:ss.fffffff";
+cultureInfo.DateTimeFormat.FullDateTimePattern = "dd-MM-yyyy HH:mm:ss.fffffff";
 
 var connectionString = builder.Configuration.GetConnectionString("AuthDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AuthDbContextConnection' not found.");
 
