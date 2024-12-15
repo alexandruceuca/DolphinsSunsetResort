@@ -73,21 +73,72 @@ namespace DolphinsSunsetResort.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin,Manager,Reception")]
         public IActionResult CheckInBooking(int bookingId)
         {
-            var booking = _context.Bookings.FirstOrDefault(b => b.BookingId == bookingId);
+            // Retrieve the booking from the database
+            var booking = _context.Bookings
+                .Include(b => b.BookingRooms) 
+                .ThenInclude(br => br.Room)  
+                .FirstOrDefault(b => b.BookingId == bookingId);
 
             if (booking != null && booking.Status == BookingStatus.Confirmed)
             {
-                booking.Status = BookingStatus.CheckIn;  
+                // Update the booking status
+                booking.Status = BookingStatus.CheckIn;
+
+                // Update the status of all rooms associated with this booking
+                foreach (var bookingRoom in booking.BookingRooms)
+                {
+                    if (bookingRoom.Room != null)
+                    {
+                        bookingRoom.Room.RoomStatus = RoomStatus.Occupied; 
+                    }
+                }
+
+                // Save changes to the database
                 _context.SaveChanges();
+
                 return Json(new { success = true });
             }
 
             return Json(new { success = false, message = "Booking not found or already checked in." });
         }
 
+		[HttpPost]
+		[Authorize(Roles = "Admin,Manager,Reception")]
+		public IActionResult CheckOutBooking(int bookingId)
+		{
+			// Retrieve the booking from the database
+			var booking = _context.Bookings
+				.Include(b => b.BookingRooms)
+				.ThenInclude(br => br.Room)
+				.FirstOrDefault(b => b.BookingId == bookingId);
 
+			if (booking != null && booking.Status == BookingStatus.CheckIn)
+			{
+				// Update the booking status
+				booking.Status = BookingStatus.CheckOut;
+
+				// Update the status of all rooms associated with this booking
+				foreach (var bookingRoom in booking.BookingRooms)
+				{
+					if (bookingRoom.Room != null)
+					{
+						bookingRoom.Room.RoomStatus = RoomStatus.NeedsCleaning;
+					}
+				}
+
+				// Save changes to the database
+				_context.SaveChanges();
+
+				return Json(new { success = true });
+			}
+
+			return Json(new { success = false, message = "Booking not found or already checked in." });
+		}
+
+		[Authorize(Roles = "Admin,Manager,Reception")]
         public IActionResult DetailBooking(int bookingId)
         {
             var bookingDetail = _context.Bookings.Include(a => a.AplicationUser)
