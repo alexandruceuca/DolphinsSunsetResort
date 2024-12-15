@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<Room>
-
 @{
-    ViewData["Title"] = "Rooms Status";
+    Layout = "/Views/Shared/_ReceptionMenuLayout.cshtml";
 }
+
 <body>
     <div class="container mt-5">
-        <h2 class="mb-4">Rooms Needing Cleaning</h2>
+        <h3 class="text-center mb-4">Rooms Status"</h3>
 
         <div id="roomsList" class="list-group">
             @await Component.InvokeAsync("ReceptionRoomsStatusList") 

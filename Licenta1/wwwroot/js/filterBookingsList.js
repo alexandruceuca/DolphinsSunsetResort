@@ -24,14 +24,11 @@
         const emailFilter = $('#emailFilter').val();
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
-        const url = $('#bookingIdFilter').data('url');
+        const url = $('#bookingIdFilter').data("url");
+        console.log(bookingIdFilter);
 
-        // Validate that both dates are selected
-        if (!startDate || !endDate) {
-            return; // Do nothing if dates are incomplete
-        }
         // Validate that startDate and endDate are different
-        if (startDate === endDate) {
+        if (startDate && endDate && startDate === endDate) {
             showPopup(false, "Start Date and End Date must be different.");
             return; // Stop execution if validation fails
         }

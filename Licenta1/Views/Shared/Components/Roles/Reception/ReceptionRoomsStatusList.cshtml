@@ -6,9 +6,9 @@
     {
         @foreach (var room in Model)
         {
-            <div class="list-group-item d-flex justify-content-between align-items-center mb-3 shadow-sm bg-white rounded" data-room-id="@room.RoomId">
+            <div class="list-group-item d-flex flex-column flex-sm-row justify-content-between align-items-start mb-3 shadow-sm bg-white rounded" data-room-id="@room.RoomId">
                 <!-- Room name and details -->
-                <div class="col-md-8">
+                <div class="col-12 col-md-8 mb-2 mb-sm-0">
                     <strong>@room.Name</strong>
                     <div class="text-muted">Room Number: @room.Number</div>
 
@@ -24,22 +24,22 @@
                 </div>
 
                 <!-- Buttons grouped to the right -->
-                <div class="col-md-4 d-flex justify-content-end">
+                <div class="col-12 col-md-4 d-flex justify-content-start justify-content-sm-end gap-2">
                     @if (room.RoomStatus == RoomStatus.NeedsCleaning)
                     {
-                        <button class="btn btn-success btn-sm btn-mark-ready" id="btn-ready-@room.RoomId" data-room-id="@room.RoomId" data-status="ReadyForCheckIn" data-url="@Url.Action("MarkAsReadyForCheckIn", "Roles")">
+                        <button class="btn btn-success btn-sm btn-mark-ready w-100 w-sm-auto" id="btn-ready-@room.RoomId" data-room-id="@room.RoomId" data-status="ReadyForCheckIn" data-url="@Url.Action("MarkAsReadyForCheckIn", "Roles")">
                             Mark as Ready for Check-In
                         </button>
                     }
                     @if (room.RoomStatus == RoomStatus.Occupied || room.RoomStatus == RoomStatus.ReadyForCheckIn)
                     {
-                        <button class="btn btn-warning btn-sm btn-mark-ready" id="btn-clean-@room.RoomId" data-room-id="@room.RoomId" data-status="NeedsCleaning" data-url="@Url.Action("MarkForCleaning", "Roles")">
+                        <button class="btn btn-warning btn-sm btn-mark-ready w-100 w-sm-auto" id="btn-clean-@room.RoomId" data-room-id="@room.RoomId" data-status="NeedsCleaning" data-url="@Url.Action("MarkForCleaning", "Roles")">
                             Mark for Cleaning
                         </button>
                     }
                     @if (room.RoomStatus == RoomStatus.ReadyForCheckIn)
                     {
-                        <button class="btn btn-info btn-sm btn-mark-ready" id="btn-occupied-@room.RoomId" data-room-id="@room.RoomId" data-status="Occupied" data-url="@Url.Action("MarkAsOccupied", "Roles")">
+                        <button class="btn btn-info btn-sm btn-mark-ready w-100 w-sm-auto" id="btn-occupied-@room.RoomId" data-room-id="@room.RoomId" data-status="Occupied" data-url="@Url.Action("MarkAsOccupied", "Roles")">
                             Mark as Occupied
                         </button>
                     }
