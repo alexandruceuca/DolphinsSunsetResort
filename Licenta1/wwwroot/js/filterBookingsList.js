@@ -1,4 +1,5 @@
 ﻿$(document).ready(function () {
+
     function updateUI(response) {
         // Parse the response as an HTML document
         const parser = new DOMParser();
@@ -24,7 +25,17 @@
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
         const url = $('#bookingIdFilter').data('url');
+        // Validate that startDate and endDate are different
+        if (startDate === endDate) {
+            showPopup(false, "Start Date and End Date must be different.");
+            return; // Stop execution if validation fails
+        }
 
+        // Validate that startDate and endDate cant be after endDate
+        if (startDate > endDate) {
+            showPopup(false, "Start Date can't be after End Date .");
+            return; // Stop execution if validation fails
+        }
         $.ajax({
             url: url,
             type: 'GET',
@@ -67,10 +78,9 @@
         });
     });
 
-    // Pagination click event
-    // Use event delegation on a static parent
+
     $(document).on('click', '#pagination .page-link', function (e) {
-        e.preventDefault(); // Prevent default page navigation
+        e.preventDefault();
 
         const page = $(this).attr('href').split('=')[1]; // Extract the page number
         const bookingIdFilter = $('#bookingIdFilter').val();
@@ -92,7 +102,7 @@
                 page: page
             },
             success: function (response) {
-                updateUI(response); // Update the table and pagination dynamically
+                updateUI(response);
             },
             error: function () {
                 Swal.fire('Error', 'Unable to fetch bookings. Please try again.', 'error');

@@ -1,5 +1,4 @@
 ﻿$(document).ready(function () {
-
     $('#resetFilters').click(function () {
         $('#startDate').val('');
         $('#endDate').val('');
@@ -18,6 +17,18 @@
         var startDate = $('#startDate').val();
         var endDate = $('#endDate').val();
         var status = $('#statusFilter').val();
+
+        // Validate that startDate and endDate are different
+        if (startDate === endDate) {
+            showPopup(false, "Start Date and End Date must be different.");
+            return; // Stop execution if validation fails
+        }
+
+        // Validate that startDate and endDate cant be after endDate
+        if (startDate > endDate) {
+            showPopup(false, "Start Date can't be after End Date .");
+            return; // Stop execution if validation fails
+        }
 
         console.log(status);
 

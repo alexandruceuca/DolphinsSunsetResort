@@ -1,13 +1,5 @@
 ﻿$(document).ready(function () {
     const now = new Date();
-    function showPopup(success, message) {
-        Swal.fire({
-            title: success ? 'Success' : 'Error',
-            text: message,
-            icon: success ? 'success' : 'error',
-            confirmButtonText: 'OK'
-        });
-    }
 
     $(".add-to-cart-button-info").click(function (e) {
         e.preventDefault();  // Prevent the form from submitting the traditional way
@@ -22,15 +14,15 @@
             showPopup(false, "Please select both check-in and check-out dates.");
             return;
         }
-
+  
         // Validate that startDate cant be after endDate 
-        if (startDate === endDate) {
+        if (checkInDate === checkOutDate) {
             showPopup(false, "Start Date and End Date must be different.");
             return; // Stop execution if validation fails
         }
 
         // Validate that startDate and endDate are different
-        if (startDate > endDate && endDate != now) {
+        if (checkInDate > checkOutDate && checkOutDate != now) {
             showPopup(false, "Start Date can't be after End Date .");
             return; // Stop execution if validation fails
         }
