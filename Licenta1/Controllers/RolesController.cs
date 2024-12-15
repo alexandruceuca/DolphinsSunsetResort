@@ -158,13 +158,14 @@ namespace DolphinsSunsetResort.Controllers
         #region Reception
 
         [Authorize(Roles = "Admin,Manager,Reception")]
-        public async Task<IActionResult> GetBookingsToday(string bookingIdFilter, string phoneFilter, string emailFilter)
+        public async Task<IActionResult> GetBookingsToday(int bookingIdFilter, string phoneFilter, string emailFilter)
         {
 
 			var bookingFilters = new BookingFilterViewModel
 			{
 				EmailFilter = emailFilter,
 				PhoneNumberFilter = phoneFilter,
+                BookingIdFilter=bookingIdFilter,
 
 			};
 
@@ -172,7 +173,7 @@ namespace DolphinsSunsetResort.Controllers
 			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
                
-                return ViewComponent("TodaysBookingsList");
+                return ViewComponent("TodaysBookingsList",bookingFilters);
             }
 
             

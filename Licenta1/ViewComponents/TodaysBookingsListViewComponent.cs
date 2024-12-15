@@ -22,26 +22,29 @@ namespace DolphinsSunsetResort.ViewComponents
             _context = context;
         }
         [Authorize(Roles = "Admin,Manager,Reception")]
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(BookingFilterViewModel filters)
 		{
-			var bookings = _context.Bookings
-								   .Include(b => b.AplicationUser)
-								   .Where(b => b.CheckInDate.Date <= DateTime.Now.Date && b.CheckOutDate.Date>=DateTime.Now.Date).ToList();
-			// Apply filters if values are provided
-			//	if (!string.IsNullOrEmpty(bookingIdFilter))
-			//	{
-			//		bookings = bookings.Where(b => b.BookingId.ToString().Contains(bookingIdFilter));
-			//	}
-			//	if (!string.IsNullOrEmpty(phoneFilter))
-			//	{
-			//		bookings = bookings.Where(b => b.AplicationUser.PhoneNumber.Contains(phoneFilter));
-			//	}
-			//	if (!string.IsNullOrEmpty(emailFilter))
-			//	{
-			//		bookings = bookings.Where(b => b.AplicationUser.Email.Contains(emailFilter));
-			//	}
+			var bookings = _context.Bookings.Include(b => b.AplicationUser)
+											.Where(b => b.CheckInDate.Date <= DateTime.Now.Date && b.CheckOutDate.Date >= DateTime.Now.Date)
+											.AsQueryable();
 
-			return View("/Views/Shared/Components/Roles/Reception/TodaysBookingsList.cshtml", bookings);
+			// Apply filters if values are provided
+			if (filters != null)
+			{
+				if (filters.BookingIdFilter != null)
+				{
+					bookings = bookings.Where(b => b.BookingId == filters.BookingIdFilter);
+				}
+				if (!string.IsNullOrEmpty(filters.PhoneNumberFilter))
+				{
+					bookings = bookings.Where(b => b.AplicationUser.PhoneNumber.Contains(filters.PhoneNumberFilter));
+				}
+				if (!string.IsNullOrEmpty(filters.EmailFilter))
+				{
+					bookings = bookings.Where(b => b.AplicationUser.Email.Contains(filters.EmailFilter));
+				}
+			}
+			return View("/Views/Shared/Components/Roles/Reception/TodaysBookingsList.cshtml", bookings.ToList());
         }
     }
 }
