@@ -18,8 +18,9 @@
         var endDate = $('#endDate').val();
         var status = $('#statusFilter').val();
 
+ 
         // Validate that startDate and endDate are different
-        if (startDate === endDate) {
+        if (startDate && endDate && startDate === endDate) {
             showPopup(false, "Start Date and End Date must be different.");
             return; // Stop execution if validation fails
         }

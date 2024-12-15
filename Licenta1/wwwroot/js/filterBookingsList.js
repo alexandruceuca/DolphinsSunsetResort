@@ -25,6 +25,11 @@
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
         const url = $('#bookingIdFilter').data('url');
+
+        // Validate that both dates are selected
+        if (!startDate || !endDate) {
+            return; // Do nothing if dates are incomplete
+        }
         // Validate that startDate and endDate are different
         if (startDate === endDate) {
             showPopup(false, "Start Date and End Date must be different.");
