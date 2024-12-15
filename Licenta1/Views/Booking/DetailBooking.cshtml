@@ -75,6 +75,7 @@
 				<table class="table table-bordered table-striped">
 					<thead>
 						<tr>
+							<th>Room Number </th>
 							<th>Room Type</th>
 							<th>Room Status </th>
 							<th>Price Per Night</th>
@@ -94,6 +95,7 @@
 						var totalPrice = bookingRoom.Price * nights;
 
 						<tr data-room-id="@bookingRoom.Room.RoomId">
+							<td>@bookingRoom.Room.Number</td>
 							<td>@bookingRoom.Room.Name</td>
 							<td class="room-status">@bookingRoom.Room.RoomStatus.ToString()</td>
 							<td>@bookingRoom.Price.ToString("C")</td>

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<DolphinsSunsetResort.Models.Room>
+@{
+    ViewData["Title"] = "Rooms List";
+}
+
+<div class="container mt-5">
+    <h2>@ViewData["Title"]</h2>
+
+    <!-- Table to display rooms -->
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Room Number</th>
+                <th scope="col">Room Name</th>
+               @* <th scope="col">Description</th>*@
+                <th scope="col">Room Type</th>
+                <th scope="col">Capacity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var room in Model)
+            {
+                <tr>
+                    <td>@room.Number</td>
+                    <td>@room.Name</td>
+                   @* <td>@room.Description</td>*@
+                    <td>@room.RoomType</td>
+                    <td>@room.Capacity</td>
+                    <td>@room.Price.BasePrice.ToString("C")</td>
+                    <td>
+                        <a href="@Url.Action("EditRoom", "Roles", new { id = room.RoomId })" class="btn btn-warning btn-sm">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

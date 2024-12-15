@@ -1,6 +1,7 @@
 ﻿using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Dictionaries;
+using DolphinsSunsetResort.Models;
 using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -267,6 +268,50 @@ namespace DolphinsSunsetResort.Controllers
 
 		#region Manager
 
-		#endregion
-	}
+		[Authorize(Roles = "Admin,Manager")]
+		public IActionResult GetRooms()
+		{
+			var rooms = _context.Rooms.Include(p => p.Price).ToList();
+			return View("/Views/Roles/Manager/RoomsList.cshtml", rooms);
+		}
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
+        public IActionResult EditRoom(int id)
+        {
+            var room = _context.Rooms.Include(r => r.Price).FirstOrDefault(r => r.RoomId == id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+            return View("/Views/Roles/Manager/EditRoom.cshtml",room);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
+        public IActionResult EditRoom(Room room)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingRoom = _context.Rooms.Include(r => r.Price).FirstOrDefault(r => r.RoomId == room.RoomId);
+
+                if (existingRoom != null)
+                {
+                    existingRoom.Number = room.Number;
+                    existingRoom.Name = room.Name;
+                    existingRoom.Description = room.Description;
+                    existingRoom.Price.BasePrice = room.Price.BasePrice;
+                    existingRoom.Price.Discount = room.Price.Discount;
+                    existingRoom.Price.StartDate = room.Price.StartDate;
+                    existingRoom.Price.EndDate = room.Price.EndDate;
+                    existingRoom.Price.DiscountIsActive = room.Price.DiscountIsActive;
+
+                    _context.SaveChanges();
+                   
+                }
+            }
+            return View("/Views/Roles/Manager/EditRoom.cshtml",room);
+        }
+        #endregion
+    }
 }

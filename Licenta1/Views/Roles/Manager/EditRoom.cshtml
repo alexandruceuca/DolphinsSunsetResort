@@ -1,0 +1,114 @@
+﻿@using System.Globalization;
+@model DolphinsSunsetResort.Models.Room
+@{
+	ViewData["Title"] = "Edit Room Details";
+}
+
+<div class="container mt-5">
+	<h2>@ViewData["Title"]</h2>
+	<form asp-action="EditRoom" method="post">
+		<div class="row">
+			<input type="hidden" name="RoomId" value="@Model.RoomId" />
+			<!-- Room Number -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="Number">Room Number</label>
+					<input type="number" class="form-control" id="Number" name="Number" value="@Model.Number" required>
+				</div>
+			</div>
+
+			<!-- Room Name -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="Name">Room Name</label>
+					<input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<!-- Room Description -->
+			<div class="col-md-12">
+				<div class="form-group">
+					<label for="Description">Room Description</label>
+					<textarea class="form-control" id="Description" name="Description" rows="3" required>@Model.Description</textarea>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<!-- Room Type -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="RoomType">Room Type</label>
+					<input type="text" class="form-control" id="RoomType" name="RoomType" value="@Model.RoomType" readonly>
+				</div>
+			</div>
+
+			<!-- Room Capacity -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="Capacity">Capacity</label>
+					<input type="number" class="form-control" id="Capacity" name="Capacity" value="@Model.Capacity" readonly>
+				</div>
+			</div>
+		</div>
+
+		<h4>Price Information</h4>
+		<div class="row">
+			<!-- Base Price -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="BasePrice">Base Price</label>
+					<input type="number" class="form-control" id="BasePrice" name="Price.BasePrice"
+						   value="@Model.Price.BasePrice.ToString("F2", System.Globalization.CultureInfo.InvariantCulture)" step="0.01" min="0" required />
+				</div>
+			</div>
+			<!-- Discount (Percentage) -->
+			<div class="col-md-6">
+				<div class="form-group">
+					<label for="Discount">Discount (%)</label>
+					<input type="number" step="any" class="form-control" id="Discount" name="Price.Discount"
+						   value="@Model.Price.Discount"
+						  min="0" max="100" required>
+
+				</div>
+			</div>
+
+			<div class="row">
+				<!-- Start Date -->
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="StartDate">Start Date</label>
+						<input type="date" class="form-control" id="StartDate" name="Price.StartDate" value="@Model.Price.StartDate.ToString("yyyy-MM-dd")" required>
+					</div>
+				</div>
+
+				<!-- End Date -->
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="EndDate">End Date</label>
+						<input type="date" class="form-control" id="EndDate" name="Price.EndDate" value="@Model.Price.EndDate.ToString("yyyy-MM-dd")" required>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<!-- Discount Active -->
+				<div class="col-md-6">
+					<div class="form-group">
+						<label for="DiscountIsActive">Discount Active</label>
+						<input type="checkbox" id="DiscountIsActive" name="Price.DiscountIsActive" @(Model.Price.DiscountIsActive ? "checked" : "")>
+					</div>
+				</div>
+			</div>
+
+			<div class="row mt-4">
+				<div class="col-md-12">
+					<button type="submit" class="btn btn-success">Save Changes</button>
+				</div>
+			</div>
+	</form>
+</div>
+
+
