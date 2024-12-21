@@ -23,6 +23,14 @@
 					}
 				</li>
 				<li>
+					@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+					{
+						<a class="dropdown-item" asp-controller="Roles" asp-action="GetRooms">
+							Rooms
+						</a>
+					}
+				</li>
+				<li>
 					@if (User.IsInRole("Admin") || User.IsInRole("Manager")  || User.IsInRole("Reception"))
 					{
 						<a class="dropdown-item" asp-controller="Roles" asp-action="GetBookingsToday">

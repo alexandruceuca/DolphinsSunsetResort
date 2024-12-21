@@ -1,6 +1,8 @@
 ﻿using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Dictionaries;
+using DolphinsSunsetResort.Models;
+using DolphinsSunsetResort.Service;
 using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -29,19 +31,19 @@ namespace DolphinsSunsetResort.Controllers
 
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> GetAllAccounts(string emailFilter,string phoneFilter,string roleFilter)
+        public async Task<IActionResult> GetAllAccounts(string emailFilter, string phoneFilter, string roleFilter)
         {
-			ViewBag.roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
+            ViewBag.roles = await _roleManager.Roles.Select(r => r.Name).ToListAsync();
 
             var userFilters = new UserFilterViewModel
             {
-                EmailFilter= emailFilter,
-                PhoneNumberFilter= phoneFilter,
-                RoleFilter= roleFilter
+                EmailFilter = emailFilter,
+                PhoneNumberFilter = phoneFilter,
+                RoleFilter = roleFilter
 
             };
 
-			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
 
                 return ViewComponent("UserList", new { methodName = "InvokeAsync", userFilters = userFilters });
@@ -148,43 +150,57 @@ namespace DolphinsSunsetResort.Controllers
             room.RoomStatus = RoomStatus.ReadyForCheckIn;
             await _context.SaveChangesAsync();
 
-            // Return success response
-            return Json(new { success = true });
+			
+			// Get users in the role
+			var cleaningRole = _roleManager.FindByNameAsync("Reception");
+			if (cleaningRole == null)
+			{
+				return NotFound("The 'Reception' role does not exist.");
+			}
+			var userReception = await _userManager.GetUsersInRoleAsync("Reception");
+
+
+			//send notification for cleaning
+			var notification = new EmailNotification(userReception, "New Room", room.Number);
+			var manager = new NotificationManager();
+			manager.SendNotification(notification);
+
+			// Return success response
+			return Json(new { success = true });
         }
 
         #endregion
 
-
         #region Reception
 
         [Authorize(Roles = "Admin,Manager,Reception")]
-        public async Task<IActionResult> GetBookingsToday(int bookingIdFilter, string phoneFilter, string emailFilter,int page)
+        public async Task<IActionResult> GetBookingsToday(int bookingIdFilter, string phoneFilter, string emailFilter, int page)
         {
 
-			var bookingFilters = new BookingFilterViewModel
-			{
-				EmailFilter = emailFilter,
-				PhoneNumberFilter = phoneFilter,
-                BookingIdFilter=bookingIdFilter,
+            var bookingFilters = new BookingFilterViewModel
+            {
+                EmailFilter = emailFilter,
+                PhoneNumberFilter = phoneFilter,
+                BookingIdFilter = bookingIdFilter,
                 AllBookings = false,
 
-			};
+            };
 
 
-			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
 
-				return  ViewComponent("ReceptionBookingsList", new { filters = bookingFilters, page = page });
-			}
+                return ViewComponent("ReceptionBookingsList", new { filters = bookingFilters, page = page });
+            }
 
-            
+
             return View("/Views/Roles/Reception/TodaysBookings.cshtml");
         }
 
 
-		[Authorize(Roles = "Admin,Manager,Reception")]
-		public async Task<IActionResult> GetAllBookings(int bookingIdFilter, string phoneFilter, string emailFilter,string checkInDate,string checkOutDate,int page)
-		{
+        [Authorize(Roles = "Admin,Manager,Reception")]
+        public async Task<IActionResult> GetAllBookings(int bookingIdFilter, string phoneFilter, string emailFilter, string checkInDate, string checkOutDate, int page)
+        {
             // Parse the dates
             DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
             DateTime parsedEndDate = string.IsNullOrEmpty(checkOutDate) ? DateTime.MaxValue : DateTime.Parse(checkOutDate);
@@ -202,18 +218,127 @@ namespace DolphinsSunsetResort.Controllers
                 CheckOutDate = parsedEndDate,
                 AllBookings = true,
 
-			};
+            };
 
 
-			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+            {
+
+                return ViewComponent("ReceptionBookingsList", new { filters = bookingFilters, page = page });
+            }
+
+
+            return View("/Views/Roles/Reception/AllBookings.cshtml");
+        }
+
+        [Authorize(Roles = "Admin,Manager,Reception")]
+        public IActionResult GetRoomsStatus()
+        {
+            return View("/Views/Roles/Reception/RoomsStatus.cshtml");
+        }
+
+
+        [Authorize(Roles = "Admin,Manager,Reception")]
+        [HttpPost]
+        public async Task<IActionResult> MarkForCleaning(int roomId)
+        {
+            var room = await _context.Rooms.FindAsync(roomId);
+            if (room == null)
+            {
+				return Json(new { success = false, message = "Room not found" });
+            }
+
+            room.RoomStatus = RoomStatus.NeedsCleaning;
+            await _context.SaveChangesAsync();
+			// Get users in the role
+			var cleaningRole = _roleManager.FindByNameAsync("RoomCleaner");
+			if (cleaningRole == null)
 			{
-
-				return  ViewComponent("ReceptionBookingsList", new { filters = bookingFilters, page = page });
+				return NotFound("The 'RoomCleaner' role does not exist.");
 			}
+			var usersCleaning = await _userManager.GetUsersInRoleAsync("RoomCleaner");
 
 
-			return View("/Views/Roles/Reception/AllBookings.cshtml");
-		}
+			//send notification for cleaning
+			var notification = new EmailNotification(usersCleaning, "New Rooms", room.Number.ToString());
+			var manager = new NotificationManager();
+			manager.SendNotification(notification);
+			// Return success response
+			return Json(new { success = true });
+        }
+
+        [Authorize(Roles = "Admin,Manager,Reception")]
+        [HttpPost]
+        public async Task<IActionResult> MarkAsOccupied(int roomId)
+        {
+            var room = await _context.Rooms.FindAsync(roomId);
+            if (room == null)
+            {
+                return Json(new { success = false, message = "Room not found" });
+            }
+
+            room.RoomStatus = RoomStatus.Occupied;
+            await _context.SaveChangesAsync();
+
+            // Return success response
+            return Json(new { success = true });
+        }
+
+        [Authorize(Roles = "Admin,Manager,Reception")]
+        public  IActionResult GetRoomsWithPrice()
+        {
+            var rooms=_context.Rooms.Include(p=>p.Price).ToList();
+            return View("/Views/Roles/Reception/Discounts.cshtml", rooms);
+        }
+
+
 		#endregion
-	}
+
+		#region Manager
+
+		[Authorize(Roles = "Admin,Manager")]
+		public IActionResult GetRooms()
+		{
+			var rooms = _context.Rooms.Include(p => p.Price).ToList();
+			return View("/Views/Roles/Manager/RoomsList.cshtml", rooms);
+		}
+
+        [HttpGet]
+        [Authorize(Roles = "Admin,Manager")]
+        public IActionResult EditRoom(int id)
+        {
+            var room = _context.Rooms.Include(r => r.Price).FirstOrDefault(r => r.RoomId == id);
+            if (room == null)
+            {
+                return NotFound();
+            }
+            return View("/Views/Roles/Manager/EditRoom.cshtml",room);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin,Manager")]
+        public IActionResult EditRoom(Room room)
+        {
+           
+                var existingRoom = _context.Rooms.Include(r => r.Price).FirstOrDefault(r => r.RoomId == room.RoomId);
+
+                if (existingRoom != null)
+                {
+                    existingRoom.Number = room.Number;
+                    existingRoom.Name = room.Name;
+                    existingRoom.Description = room.Description;
+                    existingRoom.Price.BasePrice = room.Price.BasePrice;
+                    existingRoom.Price.Discount = room.Price.Discount;
+                    existingRoom.Price.StartDate = room.Price.StartDate;
+                    existingRoom.Price.EndDate = room.Price.EndDate;
+                    existingRoom.Price.DiscountIsActive = room.Price.DiscountIsActive;
+
+                    _context.SaveChanges();
+                   
+                }
+            
+            return View("/Views/Roles/Manager/EditRoom.cshtml",room);
+        }
+        #endregion
+    }
 }

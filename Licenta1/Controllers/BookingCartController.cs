@@ -29,8 +29,19 @@ public class BookingCartController : Controller
             DateTime parsedStartDate = DateTime.Parse(checkInDate);
             DateTime parsedEndDate = DateTime.Parse(checkOutDate);
 
-            //Set time
-            parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
+            if(parsedStartDate== parsedEndDate)
+            {
+				return Json(new { success = false, message = "Start Date and End Date must be different." });
+			}
+
+		
+			if (parsedStartDate > parsedEndDate && parsedEndDate != DateTime.Today)
+			{
+				return Json(new { success = false, message = "Start Date can't be after End Date ." });
+			}
+
+			//Set time
+			parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
             parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
 
             var checkRoom = _context.BookingRooms.Include(b => b.Booking)

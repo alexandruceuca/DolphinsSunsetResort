@@ -23,20 +23,20 @@ namespace DolphinsSunsetResort.Service
 
 				var mailMessage = new MailMessage
 				{
-					From = new MailAddress("conferenceapi@test.com"),
+					From = new MailAddress("dolphinsSunsetResort@test.com"),
 					Subject = email_notification.Subject,
 					Body = email_notification.Message,
 					IsBodyHtml = false,
 				};
 				mailMessage.To.Add(email_notification.To.ToLower());
-				if (email_notification.Cc != null)
+				if (email_notification.Cc != null && email_notification.Cc!=string.Empty)
 				{
 					mailMessage.CC.Add(email_notification.Cc.ToLower());
 				}
 
 				smtpClient.Send(mailMessage);
 
-				Console.WriteLine("Email sent successfully!");
+				//Console.WriteLine("Email sent successfully!");
 				notification.SentDate = DateTime.Now;
 			}
 			catch (Exception ex)

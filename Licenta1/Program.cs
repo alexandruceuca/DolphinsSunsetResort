@@ -3,8 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Service;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
+// Set the culture info
+var cultureInfo = new CultureInfo("en-US");
+cultureInfo.NumberFormat.CurrencySymbol = "€";
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+// Set the DateTime format to match the database format
+cultureInfo.DateTimeFormat.ShortDatePattern = "dd-MM-yyyy";
+cultureInfo.DateTimeFormat.LongTimePattern = "HH:mm:ss.fffffff";
+cultureInfo.DateTimeFormat.FullDateTimePattern = "dd-MM-yyyy HH:mm:ss.fffffff";
+
 var connectionString = builder.Configuration.GetConnectionString("AuthDbContextConnection") ?? throw new InvalidOperationException("Connection string 'AuthDbContextConnection' not found.");
 
 builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(connectionString));

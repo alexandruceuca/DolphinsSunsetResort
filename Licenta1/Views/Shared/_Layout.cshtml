@@ -62,9 +62,6 @@
 								<a class="nav-link" asp-controller="About" asp-action="Index">About</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link" asp-controller="Home" asp-action="Facilities">Facilities</a>
-							</li>
-							<li class="nav-item">
 								<a class="nav-link" asp-controller="Contact" asp-action="Index">Contact</a>
 							</li>
 						</ul>
@@ -127,10 +124,6 @@
 							   class="nav-link p-0 text-body-secondary">About</a>
 						</li>
 						<li class="nav-item mb-2">
-							<a asp-controller="Home" asp-action="Facilities"
-							   class="nav-link p-0 text-body-secondary">Facilities</a>
-						</li>
-						<li class="nav-item mb-2">
 							<a asp-controller="Contact" asp-action="Index"
 							   class="nav-link p-0 text-body-secondary">Contact</a>
 						</li>
@@ -157,7 +150,6 @@
 	<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
-
 
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
