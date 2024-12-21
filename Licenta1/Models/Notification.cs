@@ -37,5 +37,16 @@
 		"Thank you for your attention.\n\n" +
 		"Best regards,\nYour Cleaning Management System";
 
+		public string ContactFormTemplate = "Hello,\n\n" +
+	    "You have received a new message via the Contact Form:\n\n" +
+	    "Name: {0}\n" +
+	    "Email: {1}\n" +
+	    "PhoneNumber: {2}\n\n" +
+	    "Message:\n" +
+	    "{3}\n\n" +
+	    "Please respond to this message at your earliest convenience.\n\n" +
+	    "Best regards,\nYour Website Team";
+
+
 	}
 }

@@ -69,6 +69,6 @@ namespace DolphinsSunsetResort.Models
 		}
 
 
-		//same as SmsNotification
+		
 	}
 }

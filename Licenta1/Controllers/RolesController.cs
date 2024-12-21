@@ -263,6 +263,14 @@ namespace DolphinsSunsetResort.Controllers
 			var notification = new EmailNotification(usersCleaning, "New Rooms", room.Number.ToString());
 			var manager = new NotificationManager();
 			manager.SendNotification(notification);
+
+
+			if (usersCleaning.FirstOrDefault().PhoneNumber != null)
+			{
+				var notificationSms = new SmsNotification(usersCleaning, room.Number.ToString());
+				manager.SendNotification(notificationSms);
+
+			}
 			// Return success response
 			return Json(new { success = true });
         }
