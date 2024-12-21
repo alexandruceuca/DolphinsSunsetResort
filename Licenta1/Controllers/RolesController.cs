@@ -2,6 +2,7 @@
 using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Dictionaries;
 using DolphinsSunsetResort.Models;
+using DolphinsSunsetResort.Service;
 using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -149,8 +150,23 @@ namespace DolphinsSunsetResort.Controllers
             room.RoomStatus = RoomStatus.ReadyForCheckIn;
             await _context.SaveChangesAsync();
 
-            // Return success response
-            return Json(new { success = true });
+			
+			// Get users in the role
+			var cleaningRole = _roleManager.FindByNameAsync("Reception");
+			if (cleaningRole == null)
+			{
+				return NotFound("The 'Reception' role does not exist.");
+			}
+			var userReception = await _userManager.GetUsersInRoleAsync("Reception");
+
+
+			//send notification for cleaning
+			var notification = new EmailNotification(userReception, "New Room", room.Number);
+			var manager = new NotificationManager();
+			manager.SendNotification(notification);
+
+			// Return success response
+			return Json(new { success = true });
         }
 
         #endregion
@@ -229,14 +245,26 @@ namespace DolphinsSunsetResort.Controllers
             var room = await _context.Rooms.FindAsync(roomId);
             if (room == null)
             {
-                return Json(new { success = false, message = "Room not found" });
+				return Json(new { success = false, message = "Room not found" });
             }
 
             room.RoomStatus = RoomStatus.NeedsCleaning;
             await _context.SaveChangesAsync();
+			// Get users in the role
+			var cleaningRole = _roleManager.FindByNameAsync("RoomCleaner");
+			if (cleaningRole == null)
+			{
+				return NotFound("The 'RoomCleaner' role does not exist.");
+			}
+			var usersCleaning = await _userManager.GetUsersInRoleAsync("RoomCleaner");
 
-            // Return success response
-            return Json(new { success = true });
+
+			//send notification for cleaning
+			var notification = new EmailNotification(usersCleaning, "New Rooms", room.Number.ToString());
+			var manager = new NotificationManager();
+			manager.SendNotification(notification);
+			// Return success response
+			return Json(new { success = true });
         }
 
         [Authorize(Roles = "Admin,Manager,Reception")]
@@ -291,8 +319,7 @@ namespace DolphinsSunsetResort.Controllers
         [Authorize(Roles = "Admin,Manager")]
         public IActionResult EditRoom(Room room)
         {
-            if (ModelState.IsValid)
-            {
+           
                 var existingRoom = _context.Rooms.Include(r => r.Price).FirstOrDefault(r => r.RoomId == room.RoomId);
 
                 if (existingRoom != null)
@@ -309,7 +336,7 @@ namespace DolphinsSunsetResort.Controllers
                     _context.SaveChanges();
                    
                 }
-            }
+            
             return View("/Views/Roles/Manager/EditRoom.cshtml",room);
         }
         #endregion

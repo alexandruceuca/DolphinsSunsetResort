@@ -14,10 +14,12 @@ namespace DolphinsSunsetResort.Controllers
 	{
 		private readonly AuthDbContext _context;
         private readonly UserManager<AplicationUser> _userManager;
-        public CheckoutController(AuthDbContext context, UserManager<AplicationUser> userManager)
+        private readonly RoleManager<IdentityRole> _roleManager;
+        public CheckoutController(AuthDbContext context, UserManager<AplicationUser> userManager, RoleManager<IdentityRole> roleManager)
 		{
 			_context = context;
 			_userManager = userManager;
+			_roleManager = roleManager;
 		}
 		public async Task<ActionResult> Payment()
 		{
@@ -43,13 +45,25 @@ namespace DolphinsSunsetResort.Controllers
 				//Process the booking
 				var cart = CartService.GetCart(_context, this.HttpContext);
 				cart.CreateBooking(booking);
-
+				
+				//Send notification
 				var user = await  _userManager.GetUserAsync(User);
 
-				var notification = new EmailNotification(user, "Booking", "", booking.BookingId, booking.TotalPrice, booking.CheckInDate, booking.CheckOutDate);
+				var managerRole = await _roleManager.FindByNameAsync("Manager");
+				if (managerRole == null)
+				{
+					return NotFound("The 'Manager' role does not exist.");
+				}
 
-				var manager = new NotificationManager();
-				manager.SendNotification(notification);
+				// Get users in the role
+				var usersInManagerRole = await _userManager.GetUsersInRoleAsync("Manager");
+
+
+                var notificationUser = new EmailNotification(user, "Booking", "", booking.BookingId, booking.TotalPrice, booking.CheckInDate, booking.CheckOutDate);
+                var notificationManager = new EmailNotification(usersInManagerRole, user, "Booking", booking.BookingId, booking.TotalPrice, booking.CheckInDate, booking.CheckOutDate);
+                var manager = new NotificationManager();
+				manager.SendNotification(notificationUser);
+				manager.SendNotification(notificationManager);
 
                 return RedirectToAction("Complete",
 					new { id = booking.BookingId });

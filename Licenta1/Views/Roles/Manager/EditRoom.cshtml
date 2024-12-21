@@ -111,11 +111,11 @@
 			<div class="col-12 col-md-6">
 				<div class="form-group">
 					<label for="DiscountIsActive">Discount Active</label>
-					<input type="checkbox" id="DiscountIsActive" name="Price.DiscountIsActive" @(Model.Price.DiscountIsActive ? "checked" : "")>
+					<input asp-for="@Model.Price.DiscountIsActive" type="checkbox" />
 				</div>
 			</div>
 		</div>
-
+		<input type="hidden" id="PriceId" name="Price.PriceId" value="@Model.Price.PriceId"/>
 		<div class="row mt-4">
 			<div class="col-12">
 				<button type="submit" class="btn btn-success w-100">Save Changes</button>
