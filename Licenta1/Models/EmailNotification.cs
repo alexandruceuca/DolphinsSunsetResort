@@ -41,7 +41,7 @@ namespace DolphinsSunsetResort.Models
         {
             this.To = managers.FirstOrDefault().Email;
             this.Subject = subject;
-            this.Message = string.Format(BookingManagerTemplate, user.FirstName + " " + user.LastName, bookingNumber, startdate.ToString("dd-MM-yyyy"), startdate.ToString("HH:mm:ss"), endDate.ToString("HH:mm:ss"), price);
+            this.Message = string.Format(BookingManagerTemplate, user.FirstName + " " + user.LastName, bookingNumber, startdate.ToString("dd-MM-yyyy"), endDate.ToString("HH:mm:ss"), price);
             foreach (AplicationUser manager in managers)
             {
                 this.Cc = this.Cc + manager.Email+", ";
