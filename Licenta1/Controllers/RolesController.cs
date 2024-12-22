@@ -165,6 +165,10 @@ namespace DolphinsSunsetResort.Controllers
 			var manager = new NotificationManager();
 			manager.SendNotification(notification);
 
+			_context.EmailNotification.Add(notification);
+			await _context.SaveChangesAsync();
+
+
 			// Return success response
 			return Json(new { success = true });
         }
@@ -263,6 +267,18 @@ namespace DolphinsSunsetResort.Controllers
 			var notification = new EmailNotification(usersCleaning, "New Rooms", room.Number.ToString());
 			var manager = new NotificationManager();
 			manager.SendNotification(notification);
+			_context.EmailNotification.Add(notification);
+
+			if (usersCleaning.FirstOrDefault().PhoneNumber != null)
+			{
+				var notificationSms = new SmsNotification(usersCleaning, room.Number.ToString());
+				manager.SendNotification(notificationSms);
+				_context.SmsNotification.Add(notificationSms);
+
+			}
+
+			
+			await _context.SaveChangesAsync();
 			// Return success response
 			return Json(new { success = true });
         }

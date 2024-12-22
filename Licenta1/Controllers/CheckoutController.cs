@@ -64,8 +64,19 @@ namespace DolphinsSunsetResort.Controllers
                 var manager = new NotificationManager();
 				manager.SendNotification(notificationUser);
 				manager.SendNotification(notificationManager);
+				_context.EmailNotification.Add(notificationUser);
+				_context.EmailNotification.Add(notificationManager);
 
-                return RedirectToAction("Complete",
+
+
+				if (user.PhoneNumber != null)
+				{
+					var notificationSms = new SmsNotification(user, booking.BookingId, booking.TotalPrice, booking.CheckInDate, booking.CheckOutDate);
+					manager.SendNotification(notificationSms);
+					_context.SmsNotification.Add(notificationSms);
+				}
+				await _context.SaveChangesAsync();
+				return RedirectToAction("Complete",
 					new { id = booking.BookingId });
 
 			}

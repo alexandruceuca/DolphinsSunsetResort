@@ -11,7 +11,8 @@ namespace DolphinsSunsetResort.Service
 			_services = new Dictionary<Type, INotificationService>
 			{
 		{ typeof(EmailNotification), new EmailService() },
-		{ typeof(SmsNotification), new SmsService() }
+		{ typeof(SmsNotification), new SmsService() },
+		{ typeof(EmailContact), new EmailContactService() }
 			 };
 		}
 

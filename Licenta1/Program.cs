@@ -4,11 +4,14 @@ using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Service;
 using System.Globalization;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using DolphinsSunsetResort.Models;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 // Set the culture info
 var cultureInfo = new CultureInfo("en-US");
-cultureInfo.NumberFormat.CurrencySymbol = "€";
+cultureInfo.NumberFormat.CurrencySymbol = "â‚¬";
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 // Set the DateTime format to match the database format
@@ -21,6 +24,11 @@ var connectionString = builder.Configuration.GetConnectionString("AuthDbContextC
 builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(connectionString));
 
 builder.Services.AddDefaultIdentity<AplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddSingleton(resolver =>
+	resolver.GetRequiredService<IOptions<EmailSettings>>().Value);
+builder.Services.AddTransient<IEmailSender,EmailSender>();
 
 
 // Add services to the container.

@@ -66,7 +66,7 @@ namespace DolphinsSunsetResort.Controllers
         }
 
         [HttpPost]
-        public IActionResult CancelBooking(int bookingId)
+        public async Task<IActionResult> CancelBooking(int bookingId)
         {
             var booking = _context.Bookings.Include(b => b.AplicationUser)
                                             .FirstOrDefault(b => b.BookingId == bookingId);
@@ -76,11 +76,25 @@ namespace DolphinsSunsetResort.Controllers
                 booking.Status = BookingStatus.Cancelled;
                 _context.SaveChanges();
                 //send confirmation email
-                var notification = new EmailNotification(booking.AplicationUser,"Cancel Booking","",booking.BookingId,booking.CheckInDate,booking.CheckOutDate);
+                var notificationEmail = new EmailNotification(booking.AplicationUser,"Cancel Booking","",booking.BookingId,booking.CheckInDate,booking.CheckOutDate);
+               
                 var manager = new NotificationManager();
-                manager.SendNotification(notification);
+                manager.SendNotification(notificationEmail);
 
-                return Json(new { success = true });
+				_context.EmailNotification.Add(notificationEmail);				
+
+				if (booking.AplicationUser.PhoneNumber!= null)
+				{
+					var notificationSms = new SmsNotification(booking.AplicationUser, booking.BookingId, booking.CheckInDate, booking.CheckOutDate);
+					manager.SendNotification(notificationSms);
+
+					_context.SmsNotification.Add(notificationSms);
+					
+
+				}
+
+				await _context.SaveChangesAsync();
+				return Json(new { success = true });
             }
             return Json(new { success = false, message = "Booking not found or already cancelled." });
         }
@@ -143,6 +157,7 @@ namespace DolphinsSunsetResort.Controllers
                         roomsNumber = roomsNumber + bookingRoom.Room.Number + " ,";
 					}
 				}
+				roomsNumber = roomsNumber.TrimEnd(',', ' ');
 				// Save changes to the database
 				_context.SaveChanges();
 
@@ -160,7 +175,10 @@ namespace DolphinsSunsetResort.Controllers
                 var manager = new NotificationManager();
                 manager.SendNotification(notification);
 
-                return Json(new { success = true });
+
+				_context.EmailNotification.Add(notification);
+				await _context.SaveChangesAsync();
+				return Json(new { success = true });
 			}
 
 			return Json(new { success = false, message = "Booking not found or already checked in." });
