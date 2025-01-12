@@ -52,7 +52,7 @@
 							"We have a new message for you via our Newsletter:\n\n" +
 							"{1}\n\n" +
 							"Thank you for being a part of our community.\n\n" +
-							"Best regards,\nYour Website Team\n\n" +
+							"Best regards,\nDolphinsSunsetResort Team\n\n" +
 							"For inquiries, feel free to contact us at dolphinsSunsetResort@test.com";
 
 
