@@ -76,34 +76,59 @@ namespace DolphinsSunsetResort.Controllers
 		[HttpPost]
 		public async Task<IActionResult> EditSave(News model, IFormFile FileUpload)
 		{
-			var news = await _context.News.FindAsync(model.Id);
-			bool removeImage = Request.Form["RemoveImage"] == "on";
-			if (news != null)
-			{
-				// Update the title and content
-				news.Title = model.Title;
-				news.Content = model.Content;
+			News news;
 
+			if (model.Id == 0)
+			{
+				// Create new news item if no ID is provided
+				news = new News();
+				news.PublishedDate = DateTime.Now;
+				_context.News.Add(news);
+			}
+			else
+			{
+				// Edit existing news item
+				news = await _context.News.FindAsync(model.Id);
+				if (news == null)
+				{
+					return NotFound();
+				}
+
+			}
+			// Update the title and content
+			news.Title = model.Title;
+			news.Content = model.Content;
+			bool removeImage = Request.Form["RemoveImage"] == "on";
+			try
+			{
 				// Handle the file upload
 				if (FileUpload != null)
 				{
 					using (var memoryStream = new MemoryStream())
 					{
 						await FileUpload.CopyToAsync(memoryStream);
-						// Generate a random file name for security
-						string randomFileName = $"{Guid.NewGuid().ToString()}.jpg";
-						var file = new AppFile
+						// Upload the file if less than 2 MB
+						if (memoryStream.Length < 2097152)
 						{
-							FileName = randomFileName,
-							Content = memoryStream.ToArray(),
-							ContentType = FileUpload.ContentType
-						};
+							// Generate a random file name for security
+							string randomFileName = $"{Guid.NewGuid().ToString()}.jpg";
+							var file = new AppFile
+							{
+								FileName = randomFileName,
+								Content = memoryStream.ToArray(),
+								ContentType = FileUpload.ContentType
+							};
 
-						_context.AppFiles.Add(file);
-						await _context.SaveChangesAsync();
+							_context.AppFiles.Add(file);
+							await _context.SaveChangesAsync();
 
-						// Link the uploaded file to the news item
-						news.ImageId = file.Id;
+							// Link the uploaded file to the news item
+							news.ImageId = file.Id;
+						}
+						else
+						{
+							ModelState.AddModelError("File", "The file is too large.");
+						}
 					}
 				}
 				else if (removeImage)
@@ -115,8 +140,10 @@ namespace DolphinsSunsetResort.Controllers
 				await _context.SaveChangesAsync();
 				return RedirectToAction("Index", "News");
 			}
-
-			return View(model);
+			catch (Exception ex)
+			{
+				return View(model);
+			}
 		}
 
 
@@ -148,15 +175,20 @@ namespace DolphinsSunsetResort.Controllers
 		}
 
 
+		[Authorize(Roles = "Admin,Manager")]
+		public IActionResult Add()
+		{
 
+			return View("/Views/News/Edit.cshtml");
+		}
 
 
 		[HttpPost]
 		[Authorize(Roles = "Admin,Manager")]
-		public async Task<IActionResult> Create(News news, IFormFile imageFile)
+		public IActionResult AddSave()
 		{
 
-			return View(news);
+			return View("/Views/News/Edit.cshtml");
 		}
 
 	}
