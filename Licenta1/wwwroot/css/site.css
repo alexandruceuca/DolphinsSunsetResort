@@ -284,3 +284,17 @@ footer {
     overflow: hidden;
     z-index: 10;
 }
+
+/*---------News page start---------------*/
+
+pre {
+    white-space: pre-wrap; 
+    word-wrap: break-word; 
+    line-height: 1.4; 
+    margin: 0; 
+    padding: 0; 
+}
+
+
+
+/*---------News page end---------------*/
