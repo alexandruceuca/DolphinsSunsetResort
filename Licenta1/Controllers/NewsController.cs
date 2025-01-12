@@ -74,59 +74,51 @@ namespace DolphinsSunsetResort.Controllers
 
 
 		[HttpPost]
-		public async Task<IActionResult> EditSave(int id, News model, IFormFile FileUpload)
+		public async Task<IActionResult> EditSave(News model, IFormFile FileUpload)
 		{
-			var news = await _context.News.Include(n => n.Image).FirstOrDefaultAsync(n => n.Id == id);
-
-			if (news == null)
+			var news = await _context.News.FindAsync(model.Id);
+			bool removeImage = Request.Form["RemoveImage"] == "on"; 
+			if (news != null)
 			{
-				return NotFound();
-			}
+				// Update the title and content
+				news.Title = model.Title;
+				news.Content = model.Content;
 
-			// Update news properties
-			news.Title = model.Title;
-			news.Content = model.Content;
-			news.PublishedDate = DateTime.Now;
-
-
-
-
-			// Handle file upload
-			if (FileUpload != null && FileUpload.Length > 0)
-			{
-				using (var memoryStream = new MemoryStream())
+				// Handle the file upload
+				if (FileUpload != null)
 				{
-					await FileUpload.CopyToAsync(memoryStream);
-
-					if (memoryStream.Length < 2097152) // 2 MB limit
+					using (var memoryStream = new MemoryStream())
 					{
+						await FileUpload.CopyToAsync(memoryStream);
 						// Generate a random file name for security
 						string randomFileName = $"{Guid.NewGuid().ToString()}.jpg";
-
 						var file = new AppFile
 						{
 							FileName = randomFileName,
-							ContentType = FileUpload.ContentType,
-							Content = memoryStream.ToArray()
+							Content = memoryStream.ToArray(),
+							ContentType = FileUpload.ContentType
 						};
 
-						// Save file to database
 						_context.AppFiles.Add(file);
 						await _context.SaveChangesAsync();
 
 						// Link the uploaded file to the news item
 						news.ImageId = file.Id;
 					}
-					else
-					{
-						ModelState.AddModelError("FileUpload", "The file is too large.");
-					}
 				}
+				else if (removeImage)
+				{
+					// If the user has selected to remove the image, set the ImageId to null
+					news.ImageId = null;
+				}
+
+				await _context.SaveChangesAsync();
+				return RedirectToAction("Index", "News");
 			}
 
-			await _context.SaveChangesAsync();
-			return RedirectToAction("Index");
+			return View(model);
 		}
+
 
 
 		[Authorize(Roles = "Admin,Manager")]
