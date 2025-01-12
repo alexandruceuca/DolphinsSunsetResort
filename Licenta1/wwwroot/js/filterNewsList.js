@@ -25,8 +25,6 @@
         const url = $('#titleFilter').data("url");
 
 
-
-
         // Validate that startDate and endDate are different
         if (startDate && endDate && startDate === endDate) {
             showPopup(false, "Start Date and End Date must be different.");

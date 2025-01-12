@@ -18,37 +18,44 @@ namespace DolphinsSunsetResort.ViewComponents
             _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(BookingFilterViewModel filterBookings)
+        public async Task<IViewComponentResult> InvokeAsync(BookingFilterViewModel filterBookings, int page)
         {
+            int pageSize = 5;
             var userId = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
 
             var bookings = _context.Bookings.Include(b => b.BookingRooms)
                 .ThenInclude(r => r.Room)
                 .Where(b => b.UserId == userId)
+                .OrderByDescending(b => b.BookingDate)
                 .AsQueryable();
 
-            if (filterBookings == null)
+
+            if(filterBookings!=null)
             {
-                filterBookings = new BookingFilterViewModel()
+                bookings = bookings.Where(b => b.CheckInDate >= filterBookings.CheckInDate);
+
+                bookings = bookings.Where(b => b.CheckOutDate <= filterBookings.CheckOutDate);
+                // Apply Status filter
+                if (filterBookings.Status != BookingStatus.None)
                 {
-                    Bookings = await bookings.ToListAsync()
-                };
-                return View("/Views/Shared/Components/Booking/BookingFilterList.cshtml", filterBookings);
+                    bookings = bookings.Where(b => b.Status == filterBookings.Status);
+                }
             }
-            bookings = bookings.Where(b => b.CheckInDate >= filterBookings.CheckInDate);
 
-            bookings = bookings.Where(b => b.CheckOutDate <= filterBookings.CheckOutDate);
+            // Pagination
+            var totalBookings = await bookings.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalBookings / (double)pageSize);
+            var paginatedNews = await bookings.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-            // Apply Status filter
-            if (filterBookings.Status != BookingStatus.None)
+            var model = new PaginatedBookingListViewModel
             {
-                bookings = bookings.Where(b => b.Status == filterBookings.Status);
-            }
+                Bookings = paginatedNews,
+                CurrentPage = page,
+                TotalPages = totalPages,
+                PageSize = pageSize
+            };
 
-            filterBookings.Bookings = await bookings.ToListAsync();
-
-
-            return View("/Views/Shared/Components/Booking/BookingFilterList.cshtml", filterBookings);
+            return View("/Views/Shared/Components/Booking/BookingFilterList.cshtml", model);
         }
 
     }
