@@ -81,8 +81,6 @@ namespace DolphinsSunsetResort.Service
 
 			if (cartItem != null)
 			{
-
-
 				_context.Carts.Remove(cartItem);
 
 				// Save changes

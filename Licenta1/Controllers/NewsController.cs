@@ -52,32 +52,32 @@ namespace DolphinsSunsetResort.Controllers
 		{
 			var news = await _context.News.Include(n => n.Image).FirstOrDefaultAsync(n => n.Id == id);
 			if (news == null)
-            {
-                return NotFound();
-            }
+			{
+				return NotFound();
+			}
 
-            return View("/Views/News/Details.cshtml",news);
+			return View("/Views/News/Details.cshtml", news);
 		}
 
-    
-        [Authorize(Roles = "Admin,Manager")]
-        public IActionResult Edit(int id)
-        {
-            var news = _context.News.Include(n=>n.Image).FirstOrDefault(n => n.Id == id);
-            if (news == null)
-            {
-                return NotFound();
-            }
 
-            return View("/Views/News/Edit.cshtml", news);
-        }
+		[Authorize(Roles = "Admin,Manager")]
+		public IActionResult Edit(int id)
+		{
+			var news = _context.News.Include(n => n.Image).FirstOrDefault(n => n.Id == id);
+			if (news == null)
+			{
+				return NotFound();
+			}
 
+			return View("/Views/News/Edit.cshtml", news);
+		}
 
+		[Authorize(Roles = "Admin,Manager")]
 		[HttpPost]
 		public async Task<IActionResult> EditSave(News model, IFormFile FileUpload)
 		{
 			var news = await _context.News.FindAsync(model.Id);
-			bool removeImage = Request.Form["RemoveImage"] == "on"; 
+			bool removeImage = Request.Form["RemoveImage"] == "on";
 			if (news != null)
 			{
 				// Update the title and content
@@ -122,25 +122,40 @@ namespace DolphinsSunsetResort.Controllers
 
 
 		[Authorize(Roles = "Admin,Manager")]
-        public IActionResult Delete(int id)
-        {
-            var news = _context.News.FirstOrDefault(n => n.Id == id);
-            if (news == null)
-            {
-                return NotFound();
-            }
+		[HttpPost]
+		public async Task<IActionResult> DeleteConfirmed(int id)
+		{
 
-            return View("/Views/News/Details.cshtml", news);
-        }
+			var news = await _context.News.FindAsync(id);
 
 
+			if (news == null)
+			{
+				return NotFound();
+			}
+
+			try
+			{
+				_context.News.Remove(news);
+				await _context.SaveChangesAsync();
+				return Json(new { success = true });
+			}
+			catch (Exception ex)
+			{
+				return Json(new { success = false });
+			}
+
+		}
 
 
-        [HttpPost]
+
+
+
+		[HttpPost]
 		[Authorize(Roles = "Admin,Manager")]
 		public async Task<IActionResult> Create(News news, IFormFile imageFile)
 		{
-			
+
 			return View(news);
 		}
 
