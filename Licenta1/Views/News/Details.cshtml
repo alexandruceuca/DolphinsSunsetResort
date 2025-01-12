@@ -1,0 +1,26 @@
+﻿@model DolphinsSunsetResort.Models.News
+
+
+<boidy>
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-10 col-lg-8">
+				<div class="card shadow-sm">
+					@if (!string.IsNullOrEmpty(Model.ImageUrl))
+					{
+						<img src="@Model.ImageUrl" alt="@Model.Title" class="card-img-top news-image" />
+					}
+					<div class="card-body">
+						<h1 class="card-title text-center mb-4">@Model.Title</h1>
+						<p class="card-text">
+							@Model.Content
+						</p>
+					</div>
+					<div class="card-footer text-muted text-end">
+						Published on: @Model.PublishedDate.ToString("MMMM dd, yyyy")
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</boidy>

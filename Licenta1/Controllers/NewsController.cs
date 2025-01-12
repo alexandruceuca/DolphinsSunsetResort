@@ -48,6 +48,15 @@ namespace DolphinsSunsetResort.Controllers
 			return View("/Views/News/Index.cshtml");
 		}
 
+		public  IActionResult Details(News news)
+		{
+
+			return View("/Views/News/Details.cshtml",news);
+		}
+
+
+
+
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[Authorize(Roles = "Admin,Manager")]
