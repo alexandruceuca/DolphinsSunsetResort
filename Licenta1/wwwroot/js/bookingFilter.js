@@ -4,6 +4,7 @@
     $('#filterForm').submit(function (e) {
         e.preventDefault(); // Prevent form submission and page refresh
         applyFilters();
+
     });
 
     function applyFilters() {
@@ -20,12 +21,11 @@
         }
 
         // Validate that startDate and endDate cant be after endDate
-        if (startDate > endDate) {
+        if (endDate != null && endDate != '' && startDate > endDate) {
             showPopup(false, "Start Date can't be after End Date .");
             return; // Stop execution if validation fails
         }
 
-        console.log(status);
 
         $.ajax({
             url: filterUrl,
@@ -44,4 +44,29 @@
             }
         });
     }
+
+    // Click event for the reset button
+    $('#resetFilters').on('click', function () {
+        // Clear filter inputs
+        $('#startDate').val('');
+        $('#endDate').val('');
+        $('#statusFilter').val('');
+
+        $.ajax({
+            url: filterUrl,
+            type: 'GET',
+            data: {
+                startDate: '',
+                endDate: '',
+                statusFilter: ''
+            },
+            success: function (response) {
+                $('#bookingList').html(response); 
+            },
+            error: function () {
+                Swal.fire('Error', 'Unable to reset accounts. Please try again.', 'error');
+            }
+        });
+    });
+
 });
