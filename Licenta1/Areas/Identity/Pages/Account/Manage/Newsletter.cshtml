@@ -1,0 +1,24 @@
+﻿@page
+@model NewsletterModel
+@{
+}
+<h3>@ViewData["Title"]</h3>
+<div class="row">
+	<div class="col-md-6">
+		<p>Stay updated with the latest news by subscribing to our email notifications. You can easily subscribe or unsubscribe at any time.</p>
+
+		@if ( ViewData["EmailNewsYN"].ToString().ToLower() == "false")
+		{
+			<form id="subscribe-form"  asp-page-handler="Subscribe" method="post">
+					<button class="btn btn-primary" type="submit">Subscribe</button>
+				</form>
+		}
+		else
+		{
+			<form id="unsubscribe-form"  asp-page-handler="Unsubscribe" method="post">
+					<button class="btn btn-danger" type="submit">Unsubscribe</button>
+				</form>
+		}
+		<p>If you unsubscribe, you will no longer receive email updates from us.</p>
+	</div>
+</div>

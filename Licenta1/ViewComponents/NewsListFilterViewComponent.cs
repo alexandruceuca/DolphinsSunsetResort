@@ -24,7 +24,7 @@ namespace DolphinsSunsetResort.ViewComponents
 		{
 
 			int pageSize = 10;
-			var news = _context.News.Include(n => n.Image).AsQueryable();
+			var news = _context.News.Include(n => n.Image).OrderByDescending(n => n.PublishedDate).AsQueryable();
 
 			// Apply filters if values are provided
 			if (filters != null)

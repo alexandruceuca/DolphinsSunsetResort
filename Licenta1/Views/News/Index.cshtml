@@ -11,7 +11,7 @@
 			<h1 class="display-4">Hotel News</h1>
 			@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
 			{
-				<a href="@Url.Action("Create", "News")" class="btn btn-primary btn-lg">
+				<a href="@Url.Action("Add", "News")" class="btn btn-primary btn-lg">
 					<i class="bi bi-plus-circle"></i> Add News
 				</a>
 			}

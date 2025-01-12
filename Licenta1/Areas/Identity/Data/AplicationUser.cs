@@ -19,6 +19,8 @@ public class AplicationUser : IdentityUser
 	[Column(TypeName = "nvarchar(100)")]
 	public string LastName { get; set; }
 
+	public bool EmailNewsYN { get; set; }
+
 	public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
 }
