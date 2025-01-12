@@ -8,41 +8,43 @@ namespace DolphinsSunsetResort.Data;
 
 public class AuthDbContext : IdentityDbContext<AplicationUser>
 {
-    public AuthDbContext(DbContextOptions<AuthDbContext> options)
-        : base(options)
-    {
-    }
+	public AuthDbContext(DbContextOptions<AuthDbContext> options)
+		: base(options)
+	{
+	}
 
 	public DbSet<Room> Rooms { get; set; }
-    public DbSet<Price> Prices { get; set; }
+	public DbSet<Price> Prices { get; set; }
 
 	public DbSet<Booking> Bookings { get; set; }
 
 	public DbSet<BookingRoom> BookingRooms { get; set; }
 
-    public DbSet<Cart> Carts { get; set; }
-	public  DbSet<SmsNotification> SmsNotification { get; set; }
-	public  DbSet<EmailContact> EmailContact { get; set; }
-	public  DbSet<EmailNotification> EmailNotification { get; set; }
-    public DbSet<News> News { get; set; }
+	public DbSet<Cart> Carts { get; set; }
+	public DbSet<SmsNotification> SmsNotification { get; set; }
+	public DbSet<EmailContact> EmailContact { get; set; }
+	public DbSet<EmailNotification> EmailNotification { get; set; }
+
+	public DbSet<EmailNews> EmailNews { get; set; }
+	public DbSet<News> News { get; set; }
 
 	public DbSet<AppFile> AppFiles { get; set; }
 
 
 	protected override void OnModelCreating(ModelBuilder builder)
-    {
-        base.OnModelCreating(builder);
+	{
+		base.OnModelCreating(builder);
 		// Customize the ASP.NET Identity model and override the defaults if needed.
 		// For example, you can rename the ASP.NET Identity table names and more.
 		// Add your customizations after calling base.OnModelCreating(builder);
 		builder.Entity<Price>(entity =>
 		{
-			 entity.HasKey(p => p.PriceId);
+			entity.HasKey(p => p.PriceId);
 
 			entity.Property(e => e.BasePrice);
 			entity.Property(e => e.Discount);
-			entity.Property(e=>e.DiscountIsActive).HasColumnType("bit");
-			entity.Property(e=>e.StartDate).HasColumnType("datetime");
+			entity.Property(e => e.DiscountIsActive).HasColumnType("bit");
+			entity.Property(e => e.StartDate).HasColumnType("datetime");
 			entity.Property(e => e.EndDate).HasColumnType("datetime");
 
 		});
@@ -52,10 +54,10 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 			entity.HasKey(p => p.RoomId);
 
 
-			entity.Property(e=>e.Name).HasMaxLength(50);
-			entity.Property(e=>e.RoomType).HasMaxLength(50);
-			entity.Property(e=>e.Description).HasMaxLength(255);
-			entity.Property(e=>e.RoomStatus).HasMaxLength(50);
+			entity.Property(e => e.Name).HasMaxLength(50);
+			entity.Property(e => e.RoomType).HasMaxLength(50);
+			entity.Property(e => e.Description).HasMaxLength(255);
+			entity.Property(e => e.RoomStatus).HasMaxLength(50);
 
 			entity.HasOne(p => p.Price)
 				.WithMany(r => r.Rooms)
@@ -92,14 +94,14 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 		});
 
-        builder.Entity<Cart>(entity =>
-        {
-            entity.ToTable("Cart");
+		builder.Entity<Cart>(entity =>
+		{
+			entity.ToTable("Cart");
 			entity.HasKey(p => p.RecordId);
 
 
 		});
 
 
-    }
+	}
 }

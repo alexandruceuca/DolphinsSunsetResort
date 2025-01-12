@@ -12,7 +12,8 @@ namespace DolphinsSunsetResort.Service
 			{
 		{ typeof(EmailNotification), new EmailService() },
 		{ typeof(SmsNotification), new SmsService() },
-		{ typeof(EmailContact), new EmailContactService() }
+		{ typeof(EmailContact), new EmailContactService() },
+		{ typeof(EmailNews), new EmailNewsService() }
 			 };
 		}
 

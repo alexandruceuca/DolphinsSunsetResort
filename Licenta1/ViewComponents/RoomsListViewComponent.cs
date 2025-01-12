@@ -1,5 +1,6 @@
 ﻿using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Data;
+using DolphinsSunsetResort.Utils;
 using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -61,14 +62,14 @@ namespace DolphinsSunsetResort.ViewComponents
             {
                 return View("/Views/Shared/Components/Rooms/RoomsFiltered.cshtml", roomFilter);
             }
+			var (parsedStartDate, parsedEndDate) = UtilsDate.ParseAndSetBookingDates(startDate, endDate);
+			//// Parse the dates
+			//DateTime parsedStartDate = string.IsNullOrEmpty(startDate) ? DateTime.MinValue : DateTime.Parse(startDate);
+   //         DateTime parsedEndDate = string.IsNullOrEmpty(endDate) ? DateTime.MaxValue : DateTime.Parse(endDate);
 
-            // Parse the dates
-            DateTime parsedStartDate = string.IsNullOrEmpty(startDate) ? DateTime.MinValue : DateTime.Parse(startDate);
-            DateTime parsedEndDate = string.IsNullOrEmpty(endDate) ? DateTime.MaxValue : DateTime.Parse(endDate);
-
-            //Set time
-            parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
-            parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
+   //         //Set time
+   //         parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
+   //         parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
 
 			// Filter rooms based on booking availability
 			rooms = rooms.Where(r => !r.BookingRooms
