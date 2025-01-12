@@ -48,37 +48,104 @@ namespace DolphinsSunsetResort.Controllers
 			return View("/Views/News/Index.cshtml");
 		}
 
-		public  IActionResult Details(News news)
+		public async Task<IActionResult> Details(int id)
 		{
+			var news = await _context.News.Include(n => n.Image).FirstOrDefaultAsync(n => n.Id == id);
+			if (news == null)
+            {
+                return NotFound();
+            }
 
-			return View("/Views/News/Details.cshtml",news);
+            return View("/Views/News/Details.cshtml",news);
 		}
 
+    
+        [Authorize(Roles = "Admin,Manager")]
+        public IActionResult Edit(int id)
+        {
+            var news = _context.News.Include(n=>n.Image).FirstOrDefault(n => n.Id == id);
+            if (news == null)
+            {
+                return NotFound();
+            }
 
+            return View("/Views/News/Edit.cshtml", news);
+        }
 
 
 		[HttpPost]
-		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> EditSave(int id, News model, IFormFile FileUpload)
+		{
+			var news = await _context.News.Include(n => n.Image).FirstOrDefaultAsync(n => n.Id == id);
+
+			if (news == null)
+			{
+				return NotFound();
+			}
+
+			// Update news properties
+			news.Title = model.Title;
+			news.Content = model.Content;
+			news.PublishedDate = DateTime.Now;
+
+			// Handle file upload
+			if (FileUpload != null && FileUpload.Length > 0)
+			{
+				using (var memoryStream = new MemoryStream())
+				{
+					await FileUpload.CopyToAsync(memoryStream);
+
+					if (memoryStream.Length < 2097152) // 2 MB limit
+					{
+						// Generate a random file name for security
+						string randomFileName = $"{Guid.NewGuid().ToString()}.jpg";
+
+						var file = new AppFile
+						{
+							FileName = randomFileName,
+							ContentType = FileUpload.ContentType,
+							Content = memoryStream.ToArray()
+						};
+
+						// Save file to database
+						_context.AppFiles.Add(file);
+						await _context.SaveChangesAsync();
+
+						// Link the uploaded file to the news item
+						news.ImageId = file.Id;
+					}
+					else
+					{
+						ModelState.AddModelError("FileUpload", "The file is too large.");
+					}
+				}
+			}
+
+			await _context.SaveChangesAsync();
+			return RedirectToAction("Index");
+		}
+
+
+		[Authorize(Roles = "Admin,Manager")]
+        public IActionResult Delete(int id)
+        {
+            var news = _context.News.FirstOrDefault(n => n.Id == id);
+            if (news == null)
+            {
+                return NotFound();
+            }
+
+            return View("/Views/News/Details.cshtml", news);
+        }
+
+
+
+
+        [HttpPost]
 		[Authorize(Roles = "Admin,Manager")]
 		public async Task<IActionResult> Create(News news, IFormFile imageFile)
 		{
-			if (ModelState.IsValid)
-			{
-				if (imageFile != null)
-				{
-					var filePath = Path.Combine("wwwroot/images", imageFile.FileName);
-					using (var stream = new FileStream(filePath, FileMode.Create))
-					{
-						await imageFile.CopyToAsync(stream);
-					}
-					news.ImageUrl = $"/images/{imageFile.FileName}";
-				}
-
-				news.PublishedDate = DateTime.Now;
-				_context.Add(news);
-				await _context.SaveChangesAsync();
-				return RedirectToAction(nameof(Index));
-			}
+			
 			return View(news);
 		}
 

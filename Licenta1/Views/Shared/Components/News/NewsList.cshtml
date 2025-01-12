@@ -1,38 +1,53 @@
 ﻿@using DolphinsSunsetResort.Views.ViewsModel
 @model PaginatedNewsListViewModel
 
-
-@foreach (var news in Model.News)
-{
-	<div class="col-md-12 col-lg-12 mb-4">
-		<div class="card shadow-sm h-100">
-			@if (!string.IsNullOrEmpty(news.ImageUrl))
-			{
-				<img src="@news.ImageUrl"
-			 class="card-img-top news-image"
-			 alt="@news.Title">
-			}
-			<div class="card-body">
-				<h5 class="card-title">@news.Title</h5>
-				<p class="card-text">
-					@{
-						string preview = news.Content.Length > 100
-						? news.Content.Substring(0, 100) + "..."
-						: news.Content;
+<div class="container mt-5">
+	<div class="row">
+		@foreach (var news in Model.News)
+		{
+			<div class="col-12  mb-4">
+				<div class="card shadow-sm h-100">
+					<div class="card-header d-flex justify-content-between align-items-center">
+						<h5 class="card-title mb-0">@news.Title</h5>
+						@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+						{
+							<div>
+								<a href="@Url.Action("Edit", "News", new { id = news.Id })" class="btn btn-sm btn-outline-primary me-2">
+									Edit
+								</a>
+								<a href="@Url.Action("Delete", "News", new { id = news.Id })" class="btn btn-sm btn-outline-danger">
+									Delete
+								</a>
+							</div>
+						}
+					</div>
+					@if (news.Image != null)
+					{
+						<img src="data:@news.Image.ContentType;base64,@Convert.ToBase64String(news.Image.Content)"
+					 alt="@news.Title"
+					 class="card-img-top news-image img-fluid" />
 					}
-					@preview
-				</p>
-				<a href="@Url.Action("Details", "News", news)"
-			   class="btn btn-outline-primary">
-					Read More
-				</a>
+					<div class="card-body">
+						<p class="card-text">
+							@{
+								string preview = news.Content.Length > 100
+								? news.Content.Substring(0, 100) + "..."
+								: news.Content;
+							}
+							@preview
+						</p>
+						<a href="@Url.Action("Details", "News", new { id = news.Id })" class="btn btn-outline-primary">
+							Read More
+						</a>
+					</div>
+					<div class="card-footer text-muted">
+						Published on: @news.PublishedDate.ToString("MMMM dd, yyyy")
+					</div>
+				</div>
 			</div>
-			<div class="card-footer text-muted">
-				Published on: @news.PublishedDate.ToString("MMMM dd, yyyy")
-			</div>
-		</div>
+		}
 	</div>
-}
+</div>
 
 
 <!-- Pagination Controls -->
