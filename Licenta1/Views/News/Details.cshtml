@@ -14,12 +14,14 @@
 					}
 					<div class="card-body">
 						<h1 class="card-title text-center mb-4">@Model.Title</h1>
-						<p class="card-text">
-							@Model.Content
-						</p>
+						<pre class="card-text">@Html.Raw(Model.Content)</pre>
 					</div>
 					<div class="card-footer text-muted text-end">
 						Published on: @Model.PublishedDate.ToString("MMMM dd, yyyy")
+					</div>
+
+					<div class="card-footer d-flex justify-content-between">
+						<a href="@Url.Action("Index", "News")" class="btn btn-secondary">Back</a>
 					</div>
 				</div>
 			</div>

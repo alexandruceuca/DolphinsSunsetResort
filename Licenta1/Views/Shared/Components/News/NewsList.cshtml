@@ -28,14 +28,14 @@
 					 class="card-img-top news-image img-fluid" />
 					}
 					<div class="card-body">
-						<p class="card-text">
-							@{
-								string preview = news.Content.Length > 100
-								? news.Content.Substring(0, 100) + "..."
-								: news.Content;
-							}
-							@preview
-						</p>
+
+						@{
+							string preview = news.Content.Length > 100
+							? news.Content.Substring(0, 100) + "..."
+							: news.Content;
+						}
+						<pre>@Html.Raw(preview)</pre>
+
 						<a href="@Url.Action("Details", "News", new { id = news.Id })" class="btn btn-outline-primary">
 							Read More
 						</a>

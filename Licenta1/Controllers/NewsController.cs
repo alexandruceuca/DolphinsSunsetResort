@@ -88,6 +88,9 @@ namespace DolphinsSunsetResort.Controllers
 			news.Content = model.Content;
 			news.PublishedDate = DateTime.Now;
 
+
+
+
 			// Handle file upload
 			if (FileUpload != null && FileUpload.Length > 0)
 			{
