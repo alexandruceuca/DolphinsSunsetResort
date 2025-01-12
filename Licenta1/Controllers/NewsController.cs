@@ -1,6 +1,7 @@
 ﻿using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Models;
+using DolphinsSunsetResort.Service;
 using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,12 +16,14 @@ namespace DolphinsSunsetResort.Controllers
 		private readonly AuthDbContext _context;
 		private readonly UserManager<AplicationUser> _userManager;
 		private readonly RoleManager<IdentityRole> _roleManager;
+		private readonly ILogger<NewsController> _logger;
 
-		public NewsController(AuthDbContext context, UserManager<AplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+		public NewsController(AuthDbContext context, UserManager<AplicationUser> userManager, RoleManager<IdentityRole> roleManager, ILogger<NewsController> logger)
 		{
 			_context = context;
 			_userManager = userManager;
 			_roleManager = roleManager;
+			_logger = logger;
 		}
 		public async Task<IActionResult> Index(string titleFilter, string startDate, string endDate, int page)
 		{
@@ -137,12 +140,27 @@ namespace DolphinsSunsetResort.Controllers
 					news.ImageId = null;
 				}
 
+				//Send Newsletter to the users that subscribed
+				var manager = new NotificationManager();
+				if (model.Id == 0)
+				{
+					var users = _userManager.Users.Where(u=>u.EmailNewsYN==true).ToList();
+
+					foreach (var user in users)
+					{
+						EmailNews email = new EmailNews(user, news.Title, null, news.Content);
+						manager.SendNotification(email);
+						_context.EmailNews.Add(email);
+					}
+				}
 				await _context.SaveChangesAsync();
 				return RedirectToAction("Index", "News");
 			}
 			catch (Exception ex)
 			{
-				return View(model);
+				_logger.LogError(ex, "An error occurred while processing the request.");
+				ViewData["ErrorMessage"] = "An unexpected error occurred. Please try again later.";
+				return View("Error"); 
 			}
 		}
 
