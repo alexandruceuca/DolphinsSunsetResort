@@ -27,7 +27,7 @@ namespace DolphinsSunsetResort.Controllers
             _roleManager = roleManager;
         }
 
-        public async Task<IActionResult> Index(string checkInDate, string checkOutDate, BookingStatus bookingStatus)
+        public async Task<IActionResult> Index(string checkInDate, string checkOutDate, BookingStatus bookingStatus, int page)
         {
             // Check if the bookingStatus is not set 
             if (string.IsNullOrEmpty(Request.Query["bookingStatus"]))
@@ -62,7 +62,7 @@ namespace DolphinsSunsetResort.Controllers
             ViewBag.bookingStatus = bookingStatusList;
             if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
-                return ViewComponent("BookingFilter", new { filterBookings = bookingFilters });
+                return ViewComponent("BookingFilter", new { filterBookings = bookingFilters ,page=page});
             }
 
 

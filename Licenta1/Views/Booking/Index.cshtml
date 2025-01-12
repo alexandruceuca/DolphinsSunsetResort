@@ -55,7 +55,7 @@
     </form>
 
     <div id="bookingList">
-        @await Component.InvokeAsync("BookingFilter")
+        @await Component.InvokeAsync("BookingFilter", new {  page = 1 })
     </div>
 </div>
 

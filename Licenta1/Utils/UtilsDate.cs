@@ -12,11 +12,11 @@
 		/// <exception cref="FormatException">Thrown if the provided date strings are not in a valid format.</exception>
 		public static (DateTime StartDate, DateTime EndDate) ParseAndSetBookingDates(string checkInDate, string checkOutDate)
 		{
-			// Parse the dates
-			DateTime parsedStartDate = DateTime.Parse(checkInDate);
-			DateTime parsedEndDate = DateTime.Parse(checkOutDate);
+			//// Parse the dates
+			DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
+			DateTime parsedEndDate = string.IsNullOrEmpty(checkOutDate) ? DateTime.MaxValue : DateTime.Parse(checkOutDate);
 
-			// Set the times
+			////Set time
 			parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
 			parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
 
