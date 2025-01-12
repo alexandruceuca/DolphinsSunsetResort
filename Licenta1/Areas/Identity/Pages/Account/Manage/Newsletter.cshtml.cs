@@ -39,7 +39,7 @@ namespace DolphinsSunsetResort.Areas.Identity.Pages.Account.Manage
 			}
 
 			user.EmailNewsYN = true;
-			//ViewData["EmailNewsYN"] = user.EmailNewsYN;
+			
 			await _userManager.UpdateAsync(user);
 			return RedirectToPage("./Newsletter");
 
@@ -54,7 +54,7 @@ namespace DolphinsSunsetResort.Areas.Identity.Pages.Account.Manage
 			}
 
 			user.EmailNewsYN = false;
-			//ViewData["EmailNewsYN"] = user.EmailNewsYN;
+		
 			await _userManager.UpdateAsync(user);
 			return RedirectToPage("./Newsletter");
 
