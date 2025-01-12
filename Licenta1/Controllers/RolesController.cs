@@ -3,6 +3,7 @@ using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Dictionaries;
 using DolphinsSunsetResort.Models;
 using DolphinsSunsetResort.Service;
+using DolphinsSunsetResort.Utils;
 using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -205,13 +206,14 @@ namespace DolphinsSunsetResort.Controllers
         [Authorize(Roles = "Admin,Manager,Reception")]
         public async Task<IActionResult> GetAllBookings(int bookingIdFilter, string phoneFilter, string emailFilter, string checkInDate, string checkOutDate, int page)
         {
-            // Parse the dates
-            DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
-            DateTime parsedEndDate = string.IsNullOrEmpty(checkOutDate) ? DateTime.MaxValue : DateTime.Parse(checkOutDate);
+			var (parsedStartDate, parsedEndDate) = UtilsDate.ParseAndSetBookingDates(checkInDate, checkOutDate);
+			//// Parse the dates
+			//DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
+   //         DateTime parsedEndDate = string.IsNullOrEmpty(checkOutDate) ? DateTime.MaxValue : DateTime.Parse(checkOutDate);
 
-            //Set time
-            parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
-            parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
+   //         //Set time
+   //         parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
+   //         parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
 
             var bookingFilters = new BookingFilterViewModel
             {
