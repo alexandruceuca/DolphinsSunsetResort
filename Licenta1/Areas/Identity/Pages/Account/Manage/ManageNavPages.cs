@@ -55,6 +55,10 @@ namespace  DolphinsSunsetResort.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public static string PersonalData => "PersonalData";
 
+
+        public static string Newsletter => "Newsletter";
+
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -103,6 +107,7 @@ namespace  DolphinsSunsetResort.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public static string PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
 
+        public static string NewsletterClass(ViewContext viewContext) => PageNavClass(viewContext, Newsletter);
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
