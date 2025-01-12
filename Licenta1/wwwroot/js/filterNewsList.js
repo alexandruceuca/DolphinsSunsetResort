@@ -5,7 +5,7 @@
         const parser = new DOMParser();
         const doc = parser.parseFromString(response, 'text/html');
 
-        $('#bookingsTableBody').html(response);
+        $('#newsTableBody').html(response);
 
         // Extract pagination controls
         const pagination = doc.querySelector('#pagination').parentNode.innerHTML;
@@ -19,12 +19,12 @@
 
     // Filter button click event
     $('#filterButton').on('click', function () {
-        const bookingIdFilter = $('#bookingIdFilter').val();
-        const phoneFilter = $('#phoneFilter').val();
-        const emailFilter = $('#emailFilter').val();
+        const titleFilter = $('#titleFilter').val();
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
-        const url = $('#bookingIdFilter').data("url");
+        const url = $('#titleFilter').data("url");
+
+
 
 
         // Validate that startDate and endDate are different
@@ -42,30 +42,26 @@
             url: url,
             type: 'GET',
             data: {
-                bookingIdFilter: bookingIdFilter,
-                phoneFilter: phoneFilter,
-                emailFilter: emailFilter,
-                checkInDate: startDate,
-                checkOutDate: endDate,
+                titleFilter: titleFilter,
+                startDate: startDate,
+                endDate: endDate,
                 page: 1 // Reset to the first page when applying filters
             },
             success: function (response) {
                 updateUI(response);
             },
             error: function () {
-                Swal.fire('Error', 'Unable to fetch bookings. Please try again.', 'error');
+                Swal.fire('Error', 'Unable to fetch news. Please try again.', 'error');
             }
         });
     });
 
     // Reset button click event
     $('#resetButton').on('click', function () {
-        $('#bookingIdFilter').val('');
-        $('#phoneFilter').val('');
-        $('#emailFilter').val('');
+        $('#titleFilter').val('');
         $('#startDate').val('');
         $('#endDate').val('');
-        const url = $('#bookingIdFilter').data('url');
+        const url = $('#titleFilter').data('url');
 
         $.ajax({
             url: url,
@@ -75,7 +71,7 @@
                 updateUI(response);
             },
             error: function () {
-                Swal.fire('Error', 'Unable to reset bookings. Please try again.', 'error');
+                Swal.fire('Error', 'Unable to reset news. Please try again.', 'error');
             }
         });
     });
@@ -85,29 +81,25 @@
         e.preventDefault();
 
         const page = $(this).attr('href').split('=')[1]; // Extract the page number
-        const bookingIdFilter = $('#bookingIdFilter').val();
-        const phoneFilter = $('#phoneFilter').val();
-        const emailFilter = $('#emailFilter').val();
+        const titleFilter = $('#titleFilter').val();
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
-        const url = $('#bookingIdFilter').data('url');
+        const url = $('#titleFilter').data('url');
 
         $.ajax({
             url: url,
             type: 'GET',
             data: {
-                bookingIdFilter: bookingIdFilter,
-                phoneFilter: phoneFilter,
-                emailFilter: emailFilter,
-                checkInDate: startDate,
-                checkOutDate: endDate,
+                titleFilter: titleFilter,
+                startDate: startDate,
+                endDate: endDate,
                 page: page
             },
             success: function (response) {
                 updateUI(response);
             },
             error: function () {
-                Swal.fire('Error', 'Unable to fetch bookings. Please try again.', 'error');
+                Swal.fire('Error', 'Unable to fetch news. Please try again.', 'error');
             }
         });
     });

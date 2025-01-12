@@ -1,0 +1,61 @@
+﻿@using DolphinsSunsetResort.Views.ViewsModel
+@model PaginatedNewsListViewModel
+
+
+@foreach (var news in Model.News)
+{
+	<div class="col-md-12 col-lg-12 mb-4">
+		<div class="card shadow-sm h-100">
+			@if (!string.IsNullOrEmpty(news.ImageUrl))
+			{
+				<img src="@news.ImageUrl"
+			 class="card-img-top news-image"
+			 alt="@news.Title">
+			}
+			<div class="card-body">
+				<h5 class="card-title">@news.Title</h5>
+				<p class="card-text">
+					@{
+						string preview = news.Content.Length > 100
+						? news.Content.Substring(0, 100) + "..."
+						: news.Content;
+					}
+					@preview
+				</p>
+				<a href="@Url.Action("Details", "News", new { id = news.Id })"
+			   class="btn btn-outline-primary">
+					Read More
+				</a>
+			</div>
+			<div class="card-footer text-muted">
+				Published on: @news.PublishedDate.ToString("MMMM dd, yyyy")
+			</div>
+		</div>
+	</div>
+}
+
+
+<!-- Pagination Controls -->
+<div class="d-flex justify-content-center mt-4">
+	<nav aria-label="Page navigation">
+		<ul class="pagination" id="pagination">
+			<!-- Previous Button -->
+			<li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+				<a class="page-link" href="?page=@(Model.CurrentPage - 1)">Previous</a>
+			</li>
+
+			<!-- Page Number Links -->
+			@for (var i = 1; i <= Model.TotalPages; i++)
+			{
+				<li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+					<a class="page-link" href="?page=@i">@i</a>
+				</li>
+			}
+
+			<!-- Next Button -->
+			<li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+				<a class="page-link" href="?page=@(Model.CurrentPage + 1)">Next</a>
+			</li>
+		</ul>
+	</nav>
+</div>
