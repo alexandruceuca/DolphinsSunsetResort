@@ -15,7 +15,13 @@ namespace DolphinsSunsetResort.Models
 		public decimal TotalPrice { get; set; }
         public BookingStatus Status { get; set; }
 
+		public int Rating { get; set; }
+
+		public int RecommendationId { get; set; }
+
         public virtual AplicationUser AplicationUser { get; set; } = null;
 		public virtual ICollection<BookingRoom> BookingRooms { get; set; } = new List<BookingRoom>();
+
+		public virtual DictionaryRecommendation DictionaryRecommendation { get; set; }
 	}
 }

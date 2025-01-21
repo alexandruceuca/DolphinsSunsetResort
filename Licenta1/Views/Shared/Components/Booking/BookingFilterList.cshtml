@@ -53,9 +53,67 @@
 								Cancel Booking
 							</button>
 						}
+						@if (booking.Status == BookingStatus.CheckOut)
+						{
+							<button class="btn btn-warning w-100"
+						data-booking-id="@booking.BookingId"
+						data-bs-toggle="modal"
+						data-bs-target="#ratingModal">
+								Rate your experience
+							</button>
+						}
+
 					</div>
 				</div>
 			</div>
+
+			<!-- Modal for Rating -->
+			<div class="modal fade" id="ratingModal" tabindex="-1" aria-labelledby="ratingModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="ratingModalLabel">Rate Your Experience</h5>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<form id="ratingForm"  data-url="@Url.Action("RateBooking", "Booking")">
+
+								<!-- Star Rating -->
+								<div class="mb-3">
+									<label for="rating" class="form-label">Rate your experience (1-5 stars):</label>
+									<div id="star-rating" class="d-flex justify-content-center">
+										<!-- Star icons, 5 stars to click on -->
+										<i class="bi bi-star star" data-value="1"></i>
+										<i class="bi bi-star star" data-value="2"></i>
+										<i class="bi bi-star star" data-value="3"></i>
+										<i class="bi bi-star star" data-value="4"></i>
+										<i class="bi bi-star star" data-value="5"></i>
+									</div>
+									<input type="hidden" name="rating" id="rating" /> <!-- Hidden input for rating value -->
+								</div>
+
+								<!-- Recommendation Question -->
+								<div class="mb-3">
+									<label for="recommendation" class="form-label">Would you recommend us?</label><br>
+									<input type="radio" name="recommendation" value="1" id="recommendYes">
+									<label for="recommendYes">Yes</label>
+									<input type="radio" name="recommendation" value="2" id="recommendNo">
+									<label for="recommendNo">No</label>
+									<input type="radio" name="recommendation" value="3" id="recommendNoComment">
+									<label for="recommendNoComment">No Comment</label>
+								</div>
+
+								<!-- Hidden Booking ID -->
+								<input type="hidden" name="bookingId" value="@booking.BookingId" />
+
+								<!-- Submit Button -->
+								<button type="submit" class="btn btn-primary">Submit Rating</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
 		}
 	</div>
 }
@@ -90,3 +148,7 @@ else
 		</ul>
 	</nav>
 </div>
+
+
+<script src="~/js/rating.js" asp-append-version="true"></script>
+<script src="~/js/submitRateBookingForm.js" asp-append-version="true"></script>

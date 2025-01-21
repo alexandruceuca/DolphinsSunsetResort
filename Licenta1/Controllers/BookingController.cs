@@ -202,6 +202,30 @@ namespace DolphinsSunsetResort.Controllers
 
 
 
+		[HttpPost]
+		public async Task<IActionResult> RateBooking(int bookingId, int rating, Recommendation recommendation)
+		{
+			var booking = await _context.Bookings.FindAsync(bookingId);
+			if (booking != null)
+			{
+				// Set the rating
+				booking.Rating = rating;
 
-    }
+				// Map the enum to its database ID
+				var recommendationEntity = await _context.DictionaryRecommendations
+					.FirstOrDefaultAsync(r => r.RecommendationName == recommendation.ToString());
+
+				if (recommendationEntity != null)
+				{
+					booking.RecommendationId = recommendationEntity.RecommendationId;
+				}
+
+				await _context.SaveChangesAsync();
+				return Json(new { success = true });
+			}
+
+			return Json(new { success = false });
+		}
+
+	}
 }
