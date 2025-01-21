@@ -298,3 +298,6 @@ pre {
 
 
 /*---------News page end---------------*/
+.text-justify {
+    text-align: justify;
+}

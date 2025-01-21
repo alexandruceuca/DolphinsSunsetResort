@@ -41,16 +41,25 @@
 		<span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
 	</div>
 	<div class="form-floating mb-3">
-		<input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+		<input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" id="passwordField" />
 		<label asp-for="Input.Password">Password</label>
 		<span asp-validation-for="Input.Password" class="text-danger"></span>
+		<button type="button" class="toggle-password" data-target="passwordField"
+				style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none;">
+			👁️
+		</button>
 	</div>
 	<div class="form-floating mb-3">
-		<input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
+		<input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" id="confirmPasswordField" />
 		<label asp-for="Input.ConfirmPassword">Confirm Password</label>
 		<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+		<button type="button" class="toggle-password" data-target="confirmPasswordField"
+				style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none;">
+			👁️
+		</button>
+
 	</div>
 	<button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
 </form>
 
-
+<script src="~/js/togglePassword.js" asp-append-version="true"></script>
