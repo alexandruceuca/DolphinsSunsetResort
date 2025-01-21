@@ -9,7 +9,7 @@
 			</div>
 			<div class="card-body">
 				<h3 class="card-title">@room.Name</h3>
-				<p class="card-text">@room.Description</p>
+				<p class="card-text text-justify">@room.Description</p>
 				@if (room.Price.DiscountIsActive && room.Price.StartDate <= DateTime.Today && room.Price.EndDate >= DateTime.Today)
 				{
 					<!-- Code for showing the discounted price -->

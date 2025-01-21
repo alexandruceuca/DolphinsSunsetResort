@@ -30,6 +30,8 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 	public DbSet<AppFile> AppFiles { get; set; }
 
+	public DbSet<DictionaryRecommendation> DictionaryRecommendations { get; set; }
+
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
@@ -67,6 +69,14 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 		});
 
+		builder.Entity<DictionaryRecommendation>(entity =>
+		{
+			entity.ToTable("DictionaryRecommendation");
+			entity.HasKey(p => p.RecommendationId);
+
+
+		});
+
 		builder.Entity<Booking>(entity =>
 		{
 			entity.ToTable("Booking");
@@ -75,6 +85,11 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 			.WithMany(r => r.Bookings)
 			.HasForeignKey(p => p.UserId)
 			.HasConstraintName("FK_Booking_AplicationUser");
+
+			entity.HasOne(p => p.DictionaryRecommendation)
+			.WithMany(r => r.Bookings)
+			.HasForeignKey(p => p.RecommendationId)
+			.HasConstraintName("FK_Booking_DictionaryRecommandation");
 
 		});
 
@@ -101,6 +116,17 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 
 		});
+
+
+		builder.Entity<News>(entity =>
+		{
+			entity.HasOne(p => p.Image)
+			.WithOne(r => r.News)
+			.HasForeignKey<AppFile>(p => p.NewsId)
+			.HasConstraintName("FK_News_AppFiles");
+		});
+
+
 
 
 	}

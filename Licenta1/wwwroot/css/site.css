@@ -6,22 +6,24 @@
     scroll-behavior: smooth;
     font-family: 'Tilt Neon', sans-serif;
 }
-.dropdown-toggle::after{
+
+.dropdown-toggle::after {
     margin-bottom: 1rem;
 }
+
 main {
     padding-top: 150px;
 }
 
 /*-------------Navbar start----------------*/
-.nav-container{
-    max-height:100px;
+.nav-container {
+    max-height: 100px;
 }
 
 .layout-login {
-
-    justify-content:center;
+    justify-content: center;
 }
+
 .navbar {
     background-color: #e3f2fd;
     transition: all .50s ease;
@@ -33,7 +35,6 @@ main {
 
 .nav-item .nav-link {
     font-size: 25px;
-   
     color: black;
 }
 
@@ -185,7 +186,6 @@ main {
 }
 
 .Home {
- 
     padding-bottom: 10px;
 }
 /*---------Home end---------------*/
@@ -237,7 +237,6 @@ footer {
 }
 /*---------Contact page start---------------*/
 .Contact {
- 
     padding-bottom: 10px;
 }
 
@@ -250,7 +249,6 @@ footer {
 
 /*---------About us-page start---------------*/
 .About {
-
     padding-bottom: 10px;
 }
 
@@ -264,7 +262,6 @@ footer {
 
 /*---------Facilities us-page start---------------*/
 .Facilities {
-
     padding-bottom: 10px;
 }
 
@@ -288,13 +285,36 @@ footer {
 /*---------News page start---------------*/
 
 pre {
-    white-space: pre-wrap; 
-    word-wrap: break-word; 
-    line-height: 1.4; 
-    margin: 0; 
-    padding: 0; 
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.4;
+    margin: 0;
+    padding: 0;
 }
 
 
 
 /*---------News page end---------------*/
+.text-justify {
+    text-align: justify;
+}
+
+
+.btn-custom-yellow {
+    background-color: #ffcc00; /* Custom yellow color */
+    border-color: #ffcc00; /* Matching border color */
+    color: white; /* White text */
+}
+
+    .btn-custom-yellow:hover {
+        background-color: #e6b800; /* Darker yellow on hover */
+        border-color: #e6b800;
+    }
+
+
+/* Make stars larger */
+#star-rating .star {
+    font-size: 2.5rem; /* Adjust size as needed */
+    color: gray; 
+    transition: color 0.2s ease; /* Smooth color transition */
+}

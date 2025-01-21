@@ -30,7 +30,7 @@
         var endDate = $('#endDate').val();
         var status = $('#statusFilter').val();
 
- 
+
         // Validate that startDate and endDate are different
         if (startDate && endDate && startDate === endDate) {
             showPopup(false, "Start Date and End Date must be different.");
@@ -76,10 +76,11 @@
             data: {
                 startDate: '',
                 endDate: '',
-                statusFilter: ''
+                statusFilter: '',
+                 page: 1
             },
             success: function (response) {
-                $('#bookingList').html(response); 
+                $('#bookingList').html(response);
             },
             error: function () {
                 Swal.fire('Error', 'Unable to reset filters. Please try again.', 'error');
