@@ -8,7 +8,7 @@
         public DateTime PublishedDate { get; set; }
 
         public int? ImageId { get; set; }
-        public AppFile Image { get; set; }
+        public AppFile? Image { get; set; }
 
     }
 }

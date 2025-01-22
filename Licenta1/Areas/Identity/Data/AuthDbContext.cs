@@ -32,6 +32,10 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 	public DbSet<DictionaryRecommendation> DictionaryRecommendations { get; set; }
 
+	public DbSet<MenuItem> MenuItems { get; set; }
+
+	public DbSet<MenuItemCategory> MenuItemCategorys { get; set; }
+
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
@@ -48,6 +52,11 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 			entity.Property(e => e.DiscountIsActive).HasColumnType("bit");
 			entity.Property(e => e.StartDate).HasColumnType("datetime");
 			entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+			entity.HasOne(e => e.MenuItem)
+			.WithOne(e => e.Price)
+			.HasForeignKey<MenuItem>(e => e.PrinceId)
+			.HasConstraintName("FK_MenuItem_Price");
 
 		});
 		builder.Entity<Room>(entity =>
@@ -117,16 +126,26 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 		});
 
-
-		builder.Entity<News>(entity =>
+		builder.Entity<AppFile>(entity =>
 		{
-			entity.HasOne(p => p.Image)
-			.WithOne(r => r.News)
-			.HasForeignKey<AppFile>(p => p.NewsId)
+			entity.HasOne(p => p.News)
+			.WithOne(r => r.Image)
+			.HasForeignKey<News>(p => p.ImageId)
 			.HasConstraintName("FK_News_AppFiles");
+
+			entity.HasOne(p => p.MenuItem)
+			.WithOne(r => r.Image)
+			.HasForeignKey<MenuItem>(p => p.ImageId)
+			.HasConstraintName("FK_MenuItem_AppFiles");
 		});
 
-
+		builder.Entity<MenuItemCategory>(entity =>
+		{
+			entity.HasOne(p => p.MenuItem)
+			.WithOne(r => r.MenuItemCategory)
+			.HasForeignKey<MenuItem>(p => p.CategoryId)
+			.HasConstraintName("FK_MenuItemCategory_MenuItem");
+		});
 
 
 	}

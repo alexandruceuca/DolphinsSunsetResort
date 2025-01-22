@@ -16,5 +16,7 @@ namespace DolphinsSunsetResort.Models
 		public bool DiscountIsActive { get; set; }
 
 		public virtual ICollection<Room> Rooms { get; set;}=new List<Room>();
+
+		public virtual MenuItem MenuItem { get; set; }
 	}
 }
