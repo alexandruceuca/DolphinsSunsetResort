@@ -7,8 +7,9 @@
         public string ContentType { get; set; }
         public byte[] Content { get; set; }
 
-		public int? NewsId { get; set; }
 
-		public News News { get; set; } 
+		public News News { get; set; }
+
+		public MenuItem MenuItem { get; set; }
 	}
 }

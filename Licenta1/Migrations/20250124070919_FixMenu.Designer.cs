@@ -4,6 +4,7 @@ using DolphinsSunsetResort.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DolphinsSunsetResort.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250124070919_FixMenu")]
+    partial class FixMenu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -364,9 +367,6 @@ namespace DolphinsSunsetResort.Migrations
 
                     b.Property<int>("PriceId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Quantity")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("MenuItemId");
 

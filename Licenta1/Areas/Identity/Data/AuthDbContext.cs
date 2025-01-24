@@ -32,6 +32,10 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 	public DbSet<DictionaryRecommendation> DictionaryRecommendations { get; set; }
 
+	public DbSet<MenuItem> MenuItems { get; set; }
+
+	public DbSet<MenuItemCategory> MenuItemCategories { get; set; }
+
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
@@ -48,6 +52,11 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 			entity.Property(e => e.DiscountIsActive).HasColumnType("bit");
 			entity.Property(e => e.StartDate).HasColumnType("datetime");
 			entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+			entity.HasOne(e => e.MenuItem)
+			.WithOne(e => e.Price)
+			.HasForeignKey<MenuItem>(e => e.PriceId)
+			.HasConstraintName("FK_MenuItem_Price");
 
 		});
 		builder.Entity<Room>(entity =>
@@ -117,16 +126,32 @@ public class AuthDbContext : IdentityDbContext<AplicationUser>
 
 		});
 
-
 		builder.Entity<News>(entity =>
 		{
 			entity.HasOne(p => p.Image)
-			.WithOne(r => r.News)
-			.HasForeignKey<AppFile>(p => p.NewsId)
-			.HasConstraintName("FK_News_AppFiles");
+				.WithOne(r => r.News)
+				.HasForeignKey<News>(p => p.ImageId)  
+				.OnDelete(DeleteBehavior.Cascade)    
+				.HasConstraintName("FK_News_AppFiles");
+		});
+
+		builder.Entity<MenuItem>(entity =>
+		{
+			entity.HasOne(p => p.Image)
+				.WithOne(r => r.MenuItem)
+				.HasForeignKey<MenuItem>(p => p.ImageId) 
+				.OnDelete(DeleteBehavior.Cascade)       
+				.HasConstraintName("FK_MenuItem_AppFiles");
 		});
 
 
+		builder.Entity<MenuItemCategory>(entity =>
+		{
+			entity.HasMany<MenuItem>(p => p.MenuItems)
+			.WithOne(r => r.MenuItemCategory)
+			.HasForeignKey(p => p.CategoryId)
+			.HasConstraintName("FK_MenuItemCategory_MenuItem");
+		});
 
 
 	}

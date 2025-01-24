@@ -136,7 +136,8 @@ namespace DolphinsSunsetResort.Controllers
 				}
 				else if (removeImage)
 				{
-					// If the user has selected to remove the image, set the ImageId to null
+					var appFile = _context.AppFiles.FirstOrDefault(f => f.Id == news.ImageId);
+					_context.AppFiles.Remove(appFile);
 					news.ImageId = null;
 				}
 
@@ -171,7 +172,7 @@ namespace DolphinsSunsetResort.Controllers
 		public async Task<IActionResult> DeleteConfirmed(int id)
 		{
 
-			var news = await _context.News.FindAsync(id);
+			var news = _context.News.Include(n => n.Image).FirstOrDefault(n => n.Id == id);
 
 
 			if (news == null)
@@ -181,6 +182,9 @@ namespace DolphinsSunsetResort.Controllers
 
 			try
 			{
+				if(news.Image!=null)
+					_context.AppFiles.Remove(news.Image);
+
 				_context.News.Remove(news);
 				await _context.SaveChangesAsync();
 				return Json(new { success = true });

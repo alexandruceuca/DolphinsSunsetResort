@@ -4,6 +4,7 @@ using DolphinsSunsetResort.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DolphinsSunsetResort.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250124063628_MenuItemFix")]
+    partial class MenuItemFix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -356,6 +359,7 @@ namespace DolphinsSunsetResort.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ImageId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -365,16 +369,12 @@ namespace DolphinsSunsetResort.Migrations
                     b.Property<int>("PriceId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Quantity")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("MenuItemId");
 
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ImageId")
-                        .IsUnique()
-                        .HasFilter("[ImageId] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("PriceId")
                         .IsUnique();
@@ -725,6 +725,7 @@ namespace DolphinsSunsetResort.Migrations
                         .WithOne("MenuItem")
                         .HasForeignKey("DolphinsSunsetResort.Models.MenuItem", "ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_MenuItem_AppFiles");
 
                     b.HasOne("DolphinsSunsetResort.Models.Price", "Price")
