@@ -133,7 +133,7 @@ namespace DolphinsSunsetResort.Controllers
 
 
         [Authorize(Roles = "Admin,Manager,Reception,RoomCleaner")]
-        public async Task<IActionResult> GetRoomsToClean()
+        public  IActionResult GetRoomsToClean()
         {
             return View("/Views/Roles/RoomCleaner/Index.cshtml");
         }
@@ -142,18 +142,18 @@ namespace DolphinsSunsetResort.Controllers
         [HttpPost]
         public async Task<IActionResult> MarkAsReadyForCheckIn(int roomId)
         {
-            var room = await _context.Rooms.FindAsync(roomId);
-            if (room == null)
+			var room = await _context.Rooms.FirstOrDefaultAsync(r => r.RoomId == roomId);
+			if (room == null)
             {
                 return Json(new { success = false, message = "Room not found" });
             }
 
             room.RoomStatus = RoomStatus.ReadyForCheckIn;
-            await _context.SaveChangesAsync();
+           
 
 			
 			// Get users in the role
-			var cleaningRole = _roleManager.FindByNameAsync("Reception");
+			var cleaningRole = await _roleManager.FindByNameAsync("Reception");
 			if (cleaningRole == null)
 			{
 				return NotFound("The 'Reception' role does not exist.");
@@ -164,9 +164,9 @@ namespace DolphinsSunsetResort.Controllers
 			//send notification for cleaning
 			var notification = new EmailNotification(userReception, "New Room", room.Number);
 			var manager = new NotificationManager();
-			manager.SendNotification(notification);
+			 manager.SendNotification(notification);
 
-			_context.EmailNotification.Add(notification);
+			 _context.EmailNotification.Add(notification);
 			await _context.SaveChangesAsync();
 
 
@@ -248,22 +248,23 @@ namespace DolphinsSunsetResort.Controllers
         [HttpPost]
         public async Task<IActionResult> MarkForCleaning(int roomId)
         {
-            var room = await _context.Rooms.FindAsync(roomId);
-            if (room == null)
+			var room = await _context.Rooms.FirstOrDefaultAsync(r => r.RoomId == roomId);
+			if (room == null)
             {
 				return Json(new { success = false, message = "Room not found" });
             }
 
             room.RoomStatus = RoomStatus.NeedsCleaning;
-            await _context.SaveChangesAsync();
+          
 			// Get users in the role
-			var cleaningRole = _roleManager.FindByNameAsync("RoomCleaner");
+			var cleaningRole = await _roleManager.FindByNameAsync("RoomCleaner");
 			if (cleaningRole == null)
 			{
 				return NotFound("The 'RoomCleaner' role does not exist.");
 			}
 			var usersCleaning = await _userManager.GetUsersInRoleAsync("RoomCleaner");
 
+			 await _context.SaveChangesAsync();
 
 			//send notification for cleaning
 			var notification = new EmailNotification(usersCleaning, "New Rooms", room.Number.ToString());

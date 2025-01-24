@@ -23,6 +23,7 @@ var connectionString = builder.Configuration.GetConnectionString("AuthDbContextC
 
 builder.Services.AddDbContext<AuthDbContext>(options => options.UseSqlServer(connectionString));
 
+
 builder.Services.AddDefaultIdentity<AplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>().AddEntityFrameworkStores<AuthDbContext>();
 
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
