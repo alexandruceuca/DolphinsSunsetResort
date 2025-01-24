@@ -69,6 +69,14 @@
 						<span asp-validation-for="Quantity " class="text-danger"></span>
 					</div>
 
+					<!-- ActiveYN Field -->
+					<div class="mb-3 form-check">
+						<input asp-for="ActiveYN" type="checkbox" class="form-check-input" id="ActiveYN" />
+						<label asp-for="ActiveYN" class="form-check-label">Is Active?</label>
+						<span asp-validation-for="ActiveYN" class="text-danger"></span>
+					</div>
+
+
 					<!-- Price Fields -->
 					<fieldset>
 						<legend class="text-primary fs-5">Pricing Details</legend>

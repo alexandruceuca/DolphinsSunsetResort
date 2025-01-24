@@ -27,11 +27,16 @@
 									<h5 class="card-title">@item.Name</h5>
 									<p class="card-text">@item.Description</p>
 									<p class="card-text">
-										<strong>Price:</strong>
-										@item.Price.BasePrice.ToString("C")
-										@if (item.Price.DiscountIsActive)
+										@if (item.Price.DiscountIsActive && item.Price.StartDate <= DateTime.Today && item.Price.EndDate >= DateTime.Today)
 										{
-											<span class="text-danger">- @item.Price.Discount.ToString("C")</span>
+										<p class="card-text">
+											<span class="text-decoration-line-through"><strong>Price: @item.Price.BasePrice.ToString("C")</strong></span>
+											<span class="ms-2 text-success"><strong>@((item.Price.BasePrice - (item.Price.Discount / 100 * item.Price.BasePrice)).ToString("C"))</strong></span>
+										</p>
+										}
+										else
+										{
+										<p class="card-text"><strong>Price: @item.Price.BasePrice.ToString("C")</strong></p>
 										}
 									</p>
 								</div>

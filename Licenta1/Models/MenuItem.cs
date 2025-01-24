@@ -13,6 +13,8 @@
 		public int CategoryId { get; set; }
         public string? Quantity { get; set; }
         public int PriceId { get; set; }
+
+		public bool ActiveYN { get; set; }
 		public AppFile? Image { get; set; }
 
 		public MenuItemCategory MenuItemCategory { get; set; }

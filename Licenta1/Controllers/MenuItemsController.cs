@@ -207,6 +207,8 @@ namespace DolphinsSunsetResort.Controllers
                 update.ImageId = menuItem.ImageId;
                 if (menuItem.ImageId != null)
                     update.Image = menuItem.Image;
+                update.ActiveYN= menuItem.ActiveYN;
+                update.CategoryId= menuItem.CategoryId;
                 update.Price.BasePrice = menuItem.Price.BasePrice;
                 update.Price.Discount = menuItem.Price.Discount;
                 update.Price.DiscountIsActive = menuItem.Price.DiscountIsActive;

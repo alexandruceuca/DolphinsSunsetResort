@@ -14,10 +14,11 @@ namespace DolphinsSunsetResort.Controllers
         public async Task<IActionResult> Index()
         {
             var categories = _context.MenuItemCategories
-       .Include(c => c.MenuItems)
+       .Include(c => c.MenuItems.Where(m=>m.ActiveYN==true))
            .ThenInclude(i => i.Price)
        .Include(c => c.MenuItems)
            .ThenInclude(i => i.Image);
+
 
             return View(await categories.ToListAsync());
         }
