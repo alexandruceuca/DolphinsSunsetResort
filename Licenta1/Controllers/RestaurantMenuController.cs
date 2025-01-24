@@ -22,5 +22,27 @@ namespace DolphinsSunsetResort.Controllers
 
             return View(await categories.ToListAsync());
         }
-    }
+
+
+		// GET: MenuItems/Details/5
+		public async Task<IActionResult> Details(int? id)
+		{
+			if (id == null || _context.MenuItems == null)
+			{
+				return NotFound();
+			}
+
+			var menuItem = await _context.MenuItems
+				.Include(m => m.Image)
+				.Include(m => m.MenuItemCategory)
+				.Include(m => m.Price)
+				.FirstOrDefaultAsync(m => m.MenuItemId == id);
+			if (menuItem == null)
+			{
+				return NotFound();
+			}
+
+			return View(menuItem);
+		}
+	}
 }
