@@ -21,7 +21,7 @@ namespace DolphinsSunsetResort.Models
         {
             this.To = user.Email;
             this.Subject = subject;
-            this.Message = string.Format(BookingUserTemplate, user.FirstName + " " + user.LastName, bookingNumber, price, startdate.ToString("dd-MM-yyyy"), startdate.ToString("HH:mm:ss"), endDate.ToString("HH:mm:ss"));
+            this.Message = string.Format(BookingUserTemplate, user.FirstName + " " + user.LastName, bookingNumber, price, startdate.ToString("dd-MM-yyyy"), startdate.ToString("HH:mm:ss"), endDate.ToString("dd-MM-yyyy"),endDate.ToString("HH:mm:ss"));
             this.Cc = cc;
 
         }
@@ -31,7 +31,7 @@ namespace DolphinsSunsetResort.Models
         {
             this.To = user.Email;
             this.Subject = subject;
-            this.Message = string.Format(CancelBookingUserTemplate, user.FirstName + " " + user.LastName, bookingNumber, startdate.ToString("dd-MM-yyyy"), startdate.ToString("HH:mm:ss"), endDate.ToString("HH:mm:ss"));
+            this.Message = string.Format(CancelBookingUserTemplate, user.FirstName + " " + user.LastName, bookingNumber, startdate.ToString("dd-MM-yyyy"), startdate.ToString("HH:mm:ss"), endDate.ToString("dd-MM-yyyy"),endDate.ToString("HH:mm:ss"));
             this.Cc = cc;
 
         }
@@ -41,7 +41,7 @@ namespace DolphinsSunsetResort.Models
         {
             this.To = managers.FirstOrDefault().Email;
             this.Subject = subject;
-            this.Message = string.Format(BookingManagerTemplate, user.FirstName + " " + user.LastName, bookingNumber, startdate.ToString("dd-MM-yyyy"), endDate.ToString("HH:mm:ss"), price);
+            this.Message = string.Format(BookingManagerTemplate, user.FirstName + " " + user.LastName, bookingNumber, startdate.ToString("dd-MM-yyyy"), endDate.ToString("dd-MM-yyyy"), price);
             foreach (AplicationUser manager in managers)
             {
                 this.Cc = this.Cc + manager.Email+", ";
