@@ -22,6 +22,7 @@
 				<form asp-action="Edit" enctype="multipart/form-data">
 					<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 					<input type="hidden" asp-for="MenuItemId" />
+
 					<!-- Name Field -->
 					<div class="mb-3">
 						<label asp-for="Name" class="form-label"></label>
@@ -41,7 +42,7 @@
 						<label for="FileUpload" class="form-label">Upload Image</label>
 						<input type="file" class="form-control" id="FileUpload" name="FileUpload" accept="image/*" />
 					</div>
-
+					 <span asp-validation-for="ImageId" class="text-danger"></span>
 					@if (Model?.Image != null)
 					{
 						<input type="hidden" asp-for="ImageId" />
