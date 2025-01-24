@@ -11,8 +11,8 @@
 		public int? ImageId { get; set; }
 
 		public int CategoryId { get; set; }
-
-		public int PriceId { get; set; }
+        public string? Quantity { get; set; }
+        public int PriceId { get; set; }
 		public AppFile? Image { get; set; }
 
 		public MenuItemCategory MenuItemCategory { get; set; }

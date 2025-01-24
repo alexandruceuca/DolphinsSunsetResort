@@ -44,6 +44,13 @@
                         </select>
                     </div>
 
+                    <!-- Quantity Field -->
+                    <div class="mb-3">
+                        <label asp-for="Quantity " class="form-label">Quantity (e.g., 100g, 200ml)</label>
+                        <textarea asp-for="Quantity " class="form-control" rows="3" placeholder="Enter a brief Quantity "></textarea>
+                        <span asp-validation-for="Quantity " class="text-danger"></span>
+                    </div>
+
                     <!-- Price Fields -->
                     <fieldset>
                         <legend class="text-primary fs-5">Pricing Details</legend>
