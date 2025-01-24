@@ -15,13 +15,13 @@
 				<div class="row g-4">
 					@foreach (var item in category.MenuItems)
 					{
-						<div class="col-6">
+						<div class="col-md-6 col-sm-12">
 							<div class="card shadow-sm p-3">
 								<div class="row g-0 align-items-center">
 									<!-- Image Section -->
 									@if (item.Image != null)
 									{
-										<div class="col-md-4 text-center">
+										<div class="col-md-4 text-center col-sm-12">
 											<img src="data:@item.Image.ContentType;base64,@Convert.ToBase64String(item.Image.Content)"
 									 alt="@item.Name"
 									 class="img-fluid rounded-circle"
@@ -29,10 +29,17 @@
 										</div>
 									}
 									<!-- Info Section -->
-									<div class="col-md-8">
+									<div class="col-md-8 col-sm-12">
 										<div class="card-body">
 											<h5 class="card-title">@item.Name</h5>
-											<p class="card-text text-muted">@item.Description</p>
+											<p class="card-text text-muted">
+												@{
+													string preview = item.Description.Length > 70
+													? item.Description.Substring(0, 70) + "..."
+													: item.Description;
+												}
+												<pre>@Html.Raw(preview)</pre>
+											</p>
 
 											@if (item.Price.DiscountIsActive && item.Price.StartDate <= DateTime.Today && item.Price.EndDate >= DateTime.Today)
 											{
