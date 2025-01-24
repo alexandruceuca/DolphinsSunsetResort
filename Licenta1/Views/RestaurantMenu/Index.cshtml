@@ -1,39 +1,65 @@
 ﻿@model IEnumerable<MenuItemCategory>
+
 @{
 }
-
 
 <body>
 	<div class="container my-5">
 		<h1 class="text-center">Menu</h1>
-		<hr>
+		<hr />
 
 		@foreach (var category in Model)
 		{
 			<div class="mt-5">
-				<h2 class="mb-3">@category.MenuItemCategoryName</h2>
-				<div class="row">
+				<h2 class="mb-4 text-primary">@category.MenuItemCategoryName</h2>
+				<div class="row g-4">
 					@foreach (var item in category.MenuItems)
 					{
-						<div class="col-md-4">
-							<div class="card mb-4">
-								@if (item.Image != null)
-								{
-									<img src="data:@item.Image.ContentType;base64,@Convert.ToBase64String(item.Image.Content)"
-							 alt=""
-							 class="card-img-top news-image img-fluid object-fit-scale border rounded" style="max-height: 100px;" />
-								}
-								<div class="card-body">
-									<h5 class="card-title">@item.Name</h5>
-									<p class="card-text">@item.Description</p>
-									<p class="card-text">
-										<strong>Price:</strong>
-										@item.Price.BasePrice.ToString("C")
-										@if (item.Price.DiscountIsActive)
-										{
-											<span class="text-danger">- @item.Price.Discount.ToString("C")</span>
-										}
-									</p>
+						<div class="col-md-6 col-sm-12">
+							<div class="card shadow-sm p-3">
+								<div class="row g-0 align-items-center">
+									<!-- Image Section -->
+									@if (item.Image != null)
+									{
+										<div class="col-md-4 text-center col-sm-12">
+											<img src="data:@item.Image.ContentType;base64,@Convert.ToBase64String(item.Image.Content)"
+									 alt="@item.Name"
+									 class="img-fluid rounded-circle"
+									 style="max-height: 200px; width: 200px; object-fit: cover;" />
+										</div>
+									}
+									<!-- Info Section -->
+									<div class="col-md-8 col-sm-12">
+										<div class="card-body">
+											<h5 class="card-title">@item.Name</h5>
+											<p class="card-text text-muted">
+												@{
+													string preview = item.Description.Length > 70
+													? item.Description.Substring(0, 70) + "..."
+													: item.Description;
+												}
+												<pre>@Html.Raw(preview)</pre>
+											</p>
+
+											@if (item.Price.DiscountIsActive && item.Price.StartDate <= DateTime.Today && item.Price.EndDate >= DateTime.Today)
+											{
+												<p class="card-text">
+													<span class="text-decoration-line-through text-danger"><strong>@item.Price.BasePrice.ToString("C")</strong></span>
+													<span class="ms-2 text-success"><strong>@((item.Price.BasePrice - (item.Price.Discount / 100 * item.Price.BasePrice)).ToString("C"))</strong></span>
+												</p>
+												<p class="card-text text-muted">
+													<strong>Available until:</strong> @item.Price.EndDate.ToString("MMMM dd, yyyy")
+												</p>
+											}
+											else
+											{
+												<p class="card-text"><strong>Price: @item.Price.BasePrice.ToString("C")</strong></p>
+											}
+
+											<!-- Details Button -->
+											<a asp-action="Details" asp-route-id="@item.MenuItemId" class="btn btn-primary mt-3">Details</a>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -41,6 +67,5 @@
 				</div>
 			</div>
 		}
-
 	</div>
 </body>

@@ -37,6 +37,7 @@ namespace DolphinsSunsetResort.Controllers
 
 				booking.UserId = userId;
 				booking.BookingDate = DateTime.Now;
+				booking.RecommendationId = (int)Dictionaries.Recommendation.NoComment;
 
 				//Save booking
 				_context.Bookings.Add(booking);

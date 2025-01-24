@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Models;
 using DolphinsSunsetResort.Migrations;
+using DolphinsSunsetResort.Views.ViewsModel;
 
 namespace DolphinsSunsetResort.Controllers
 {
@@ -21,10 +22,29 @@ namespace DolphinsSunsetResort.Controllers
         }
 
         // GET: MenuItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string titleFilter, bool? activeYN, int  categoryId, int page)
         {
-            var authDbContext = _context.MenuItems.Include(m => m.Image).Include(m => m.MenuItemCategory).Include(m => m.Price);
-            return View(await authDbContext.ToListAsync());
+          
+
+			ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName");
+
+			var menuItemsFilters = new MenuItemsListViewModel
+			{
+				Title = titleFilter,
+				ActiveYN = activeYN,
+				CategoryId = categoryId,
+			};
+
+
+			if (Request.Headers["X-Requested-With"] == "XMLHttpRequest")
+			{
+
+				return ViewComponent("MenuItemsListFilter", new { filters = menuItemsFilters, page = page });
+			}
+
+
+			return View();
+			
         }
 
         // GET: MenuItems/Details/5
@@ -90,15 +110,33 @@ namespace DolphinsSunsetResort.Controllers
                         }
                         else
                         {
-                            ModelState.AddModelError("File", "The file is too large.");
-                        }
+                            ModelState.AddModelError(string.Empty, "The file is too large.");
+							return View("Error");
+						}
                     }
                 }
                 if (menuItem.Price.Discount > 100)
                 {
-                    ModelState.AddModelError("Discount", "The Discount is too large.");
-                }
-            }
+                    ModelState.AddModelError(string.Empty, "The Discount is too large.");
+					ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+					return View(menuItem);
+				}
+
+				if (menuItem.Price.StartDate > menuItem.Price.EndDate)
+				{
+					ModelState.AddModelError(string.Empty, "Start Date cannot be after End Date. ");
+					ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+					return View(menuItem);
+				}
+
+				if (menuItem.Price.StartDate < DateTime.Today || menuItem.Price.StartDate < DateTime.Today)
+				{
+					ModelState.AddModelError(string.Empty, "Date cannot be before today.");
+					ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+					return View(menuItem);
+				}
+
+			}
             catch (Exception ex)
             {
 
@@ -106,7 +144,9 @@ namespace DolphinsSunsetResort.Controllers
                 return View("Error");
             }
 
-            _context.Add(menuItem);
+
+
+			_context.Add(menuItem);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
@@ -183,13 +223,36 @@ namespace DolphinsSunsetResort.Controllers
                                     menuItem.Image.Content = memoryStream.ToArray();
                                     menuItem.Image.ContentType = FileUpload.ContentType;
 
+
                                 }
                             }
                             else
                             {
-                                ModelState.AddModelError("File", "The file is too large.");
-                            }
-                        }
+                                ModelState.AddModelError(string.Empty, "The file is too large.");
+								ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+								return View(menuItem);
+							}
+							if (menuItem.Price.Discount > 100)
+							{
+								ModelState.AddModelError(string.Empty, "The Discount is too large.");
+								ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+								return View(menuItem);
+							}
+
+							if (menuItem.Price.StartDate > menuItem.Price.EndDate)
+							{
+								ModelState.AddModelError(string.Empty, "Start Date cannot be after End Date. ");
+								ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+								return View(menuItem);
+							}
+
+							if (menuItem.Price.StartDate < DateTime.Today || menuItem.Price.StartDate < DateTime.Today)
+							{
+								ModelState.AddModelError(string.Empty, "Date cannot be before today.");
+								ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+								return View(menuItem);
+							}
+						}
                     }
                 }
 
@@ -207,6 +270,8 @@ namespace DolphinsSunsetResort.Controllers
                 update.ImageId = menuItem.ImageId;
                 if (menuItem.ImageId != null)
                     update.Image = menuItem.Image;
+                update.ActiveYN= menuItem.ActiveYN;
+                update.CategoryId= menuItem.CategoryId;
                 update.Price.BasePrice = menuItem.Price.BasePrice;
                 update.Price.Discount = menuItem.Price.Discount;
                 update.Price.DiscountIsActive = menuItem.Price.DiscountIsActive;
@@ -226,7 +291,9 @@ namespace DolphinsSunsetResort.Controllers
                     throw;
                 }
             }
-            return RedirectToAction(nameof(Index));
+
+		
+			return RedirectToAction(nameof(Index));
 
 
         }
@@ -277,7 +344,7 @@ namespace DolphinsSunsetResort.Controllers
                 }
 
                 // Remove related Price if it exists
-                if (menuItem.PriceId != null)
+                if (menuItem.PriceId != 0)
                 {
                     var price = await _context.Prices.FindAsync(menuItem.PriceId);
                     if (price != null)

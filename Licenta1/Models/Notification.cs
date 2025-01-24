@@ -8,13 +8,13 @@
 
 		public DateTime? SentDate { get; set; }
 
-		public string BookingUserTemplate = "Hello {0},\n\nYour booking at the resort has been successfully confirmed!\n\nDetails:\nBooking Number: {1}\nPrice: {2}\nCheck-in Date: {3}\nCheck-out Date: {4}\n\nThank you for choosing us!";
+		public string BookingUserTemplate = "Hello {0},\n\nYour booking at the resort has been successfully confirmed!\n\nDetails:\nBooking Number: {1}\nPrice: {2}\nCheck-in Date: {3}:{4}\nCheck-out Date: {5}:{6}\n\nThank you for choosing us!";
 
 		public string CancelBookingUserTemplate =
 		"Hello {0},\n\nWe regret to inform you that your booking at the resort has been canceled.\n\nDetails:\n" +
 		"Booking Number: {1}\n" +
-		"Original Check-in Date: {2}\n" +
-		"Original Check-out Date: {3}\n\n" +
+		"Original Check-in Date: {2}:{3}\n" +
+		"Original Check-out Date: {4}:{5}\n\n" +
 		"If you have any questions or need assistance, please contact us.\n\n" +
 		"Thank you,\nYour Booking Team";
 

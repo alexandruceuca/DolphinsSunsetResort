@@ -18,7 +18,7 @@
 			<tbody id="userTableBody">
 				@foreach (var user in Model)
 				{
-					<tr>
+					<tr data-user-id="@user.Id">
 						<td>@user.FirstName @user.LastName</td>
 						<td>@user.Email</td>
 						<td>@user.PhoneNumber</td>
