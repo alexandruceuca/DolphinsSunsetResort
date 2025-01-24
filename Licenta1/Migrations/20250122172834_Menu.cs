@@ -23,7 +23,7 @@ namespace DolphinsSunsetResort.Migrations
                 table: "AppFiles");
 
             migrationBuilder.CreateTable(
-                name: "MenuItemCategorys",
+                name: "MenuItemCategories",
                 columns: table => new
                 {
                     MenuItemCategoryId = table.Column<int>(type: "int", nullable: false)
@@ -32,9 +32,20 @@ namespace DolphinsSunsetResort.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MenuItemCategorys", x => x.MenuItemCategoryId);
+                    table.PrimaryKey("PK_MenuItemCategories", x => x.MenuItemCategoryId);
                 });
+            migrationBuilder.InsertData(
+table: "MenuItemCategories",
+columns: new[] { "MenuItemCategoryId", "MenuItemCategoryName" },
+values: new object[,]
+{
+            { 1, "Breakfast" },
+             {2,"Offers" },
+            { 3, "Food" },
+            { 4, "Beverage" },
+            {5, "Dessert " },
 
+});
             migrationBuilder.CreateTable(
                 name: "MenuItems",
                 columns: table => new
@@ -53,7 +64,7 @@ namespace DolphinsSunsetResort.Migrations
                     table.ForeignKey(
                         name: "FK_MenuItemCategory_MenuItem",
                         column: x => x.CategoryId,
-                        principalTable: "MenuItemCategorys",
+                        principalTable: "MenuItemCategories",
                         principalColumn: "MenuItemCategoryId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -80,8 +91,7 @@ namespace DolphinsSunsetResort.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_MenuItems_CategoryId",
                 table: "MenuItems",
-                column: "CategoryId",
-                unique: true);
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuItems_ImageId",
@@ -114,7 +124,7 @@ namespace DolphinsSunsetResort.Migrations
                 name: "MenuItems");
 
             migrationBuilder.DropTable(
-                name: "MenuItemCategorys");
+                name: "MenuItemCategories");
 
             migrationBuilder.DropIndex(
                 name: "IX_News_ImageId",

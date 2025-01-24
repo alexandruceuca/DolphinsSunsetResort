@@ -6,7 +6,8 @@
 
 		public string MenuItemCategoryName { get;set; }
 
-		public MenuItem MenuItem { get; set; }
+
+		public virtual ICollection<MenuItem> MenuItems { get; set; } = new List<MenuItem>();
 
 	}
 }

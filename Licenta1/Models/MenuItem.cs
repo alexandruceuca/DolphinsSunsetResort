@@ -12,8 +12,8 @@
 
 		public int CategoryId { get; set; }
 
-		public int PrinceId { get; set; }
-		public AppFile Image { get; set; }
+		public int PriceId { get; set; }
+		public AppFile? Image { get; set; }
 
 		public MenuItemCategory MenuItemCategory { get; set; }
 

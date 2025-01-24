@@ -1,0 +1,119 @@
+﻿@model DolphinsSunsetResort.Models.MenuItem
+
+@{
+	ViewData["Title"] = "Edit";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body class="pt-5">
+	<div class="container">
+		<h1 class="text-center mb-4">Edit Menu Item</h1>
+
+		<div class="card shadow-sm">
+			<div class="card-body">
+				<h4 class="card-title text-primary">Menu Item Details</h4>
+				<hr />
+				@if (Model != null && Model.Image != null)
+				{
+					<img src="data:@Model.Image.ContentType;base64,@Convert.ToBase64String(Model.Image.Content)"
+					 alt="@Model.Name"
+					 class="card-img-top news-image object-fit-scale border rounded" style="max-height: 300px;" />
+				}
+				<form asp-action="Edit" enctype="multipart/form-data">
+					<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+					<input type="hidden" asp-for="MenuItemId" />
+					<!-- Name Field -->
+					<div class="mb-3">
+						<label asp-for="Name" class="form-label"></label>
+						<input asp-for="Name" class="form-control" placeholder="Enter menu item name" />
+						<span asp-validation-for="Name" class="text-danger"></span>
+					</div>
+
+					<!-- Description Field -->
+					<div class="mb-3">
+						<label asp-for="Description" class="form-label"></label>
+						<textarea asp-for="Description" class="form-control" rows="3" placeholder="Enter a brief description"></textarea>
+						<span asp-validation-for="Description" class="text-danger"></span>
+					</div>
+
+					<!-- Image Upload Field -->
+					<div class="mb-3">
+						<label for="FileUpload" class="form-label">Upload Image</label>
+						<input type="file" class="form-control" id="FileUpload" name="FileUpload" accept="image/*" />
+					</div>
+
+					@if (Model?.Image != null)
+					{
+						<input type="hidden" asp-for="ImageId" />
+						<div class="mb-3">
+							<div>
+								<label class="form-check-label">
+									<input type="checkbox" name="RemoveImage" /> Remove Image
+								</label>
+							</div>
+						</div>
+					}
+
+					<!-- Category Field -->
+					<div class="mb-3">
+						<label asp-for="CategoryId" class="form-label">Category</label>
+						<select asp-for="CategoryId" class="form-select" asp-items="ViewBag.CategoryId">
+							<option value="" selected disabled>Choose a category</option>
+						</select>
+					</div>
+
+					<!-- Price Fields -->
+					<fieldset>
+						<legend class="text-primary fs-5">Pricing Details</legend>
+						<div class="row">
+							<input type="hidden" asp-for="PriceId" />
+							<input type="hidden" asp-for="Price.PriceId" />
+							<div class="col-md-6 mb-3">
+								<label asp-for="Price.BasePrice" class="form-label"></label>
+								<input asp-for="Price.BasePrice" type="number" class="form-control" placeholder="Enter base price" />
+								<span asp-validation-for="Price.BasePrice" class="text-danger"></span>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label asp-for="Price.Discount" class="form-label"></label>
+								<input asp-for="Price.Discount" type="number" class="form-control" placeholder="Enter discount percentage" max="100" min="0" step="0.01" />
+								<span asp-validation-for="Price.Discount" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<label asp-for="Price.StartDate" class="form-label"></label>
+								<input asp-for="Price.StartDate" type="date" class="form-control" />
+								<span asp-validation-for="Price.StartDate" class="text-danger"></span>
+							</div>
+							<div class="col-md-6 mb-3">
+								<label asp-for="Price.EndDate" class="form-label"></label>
+								<input asp-for="Price.EndDate" type="date" class="form-control" />
+								<span asp-validation-for="Price.EndDate" class="text-danger"></span>
+							</div>
+						</div>
+						<div class="form-check">
+							<input asp-for="Price.DiscountIsActive" type="checkbox" class="form-check-input" />
+							<label asp-for="Price.DiscountIsActive" class="form-check-label"></label>
+						</div>
+					</fieldset>
+
+					<!-- Submit Button -->
+					<div class="d-grid mt-4">
+						<button type="submit" class="btn btn-primary btn-lg">Edit</button>
+					</div>
+				</form>
+			</div>
+		</div>
+
+		<!-- Back Link -->
+		<div class="text-center mt-4">
+			<a asp-action="Index" class="btn btn-secondary">Back to List</a>
+		</div>
+	</div>
+</body>
+
+@section Scripts {
+	@{
+		await Html.RenderPartialAsync("_ValidationScriptsPartial");
+	}
+}

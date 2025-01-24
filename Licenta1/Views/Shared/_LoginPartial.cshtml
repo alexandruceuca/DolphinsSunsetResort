@@ -31,6 +31,14 @@
 					}
 				</li>
 				<li>
+					@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+					{
+						<a class="dropdown-item" asp-controller="MenuItems" asp-action="Index">
+							Restaurant
+						</a>
+					}
+				</li>
+				<li>
 					@if (User.IsInRole("Admin") || User.IsInRole("Manager")  || User.IsInRole("Reception"))
 					{
 						<a class="dropdown-item" asp-controller="Roles" asp-action="GetBookingsToday">

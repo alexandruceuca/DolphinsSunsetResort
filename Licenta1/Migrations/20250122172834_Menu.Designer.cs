@@ -4,6 +4,7 @@ using DolphinsSunsetResort.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DolphinsSunsetResort.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    partial class AuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250122172834_Menu")]
+    partial class Menu
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -356,13 +359,14 @@ namespace DolphinsSunsetResort.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("ImageId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PriceId")
+                    b.Property<int>("PrinceId")
                         .HasColumnType("int");
 
                     b.HasKey("MenuItemId");
@@ -370,10 +374,9 @@ namespace DolphinsSunsetResort.Migrations
                     b.HasIndex("CategoryId");
 
                     b.HasIndex("ImageId")
-                        .IsUnique()
-                        .HasFilter("[ImageId] IS NOT NULL");
+                        .IsUnique();
 
-                    b.HasIndex("PriceId")
+                    b.HasIndex("PrinceId")
                         .IsUnique();
 
                     b.ToTable("MenuItems");
@@ -722,11 +725,12 @@ namespace DolphinsSunsetResort.Migrations
                         .WithOne("MenuItem")
                         .HasForeignKey("DolphinsSunsetResort.Models.MenuItem", "ImageId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FK_MenuItem_AppFiles");
 
                     b.HasOne("DolphinsSunsetResort.Models.Price", "Price")
                         .WithOne("MenuItem")
-                        .HasForeignKey("DolphinsSunsetResort.Models.MenuItem", "PriceId")
+                        .HasForeignKey("DolphinsSunsetResort.Models.MenuItem", "PrinceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_MenuItem_Price");
@@ -743,7 +747,6 @@ namespace DolphinsSunsetResort.Migrations
                     b.HasOne("DolphinsSunsetResort.Models.AppFile", "Image")
                         .WithOne("News")
                         .HasForeignKey("DolphinsSunsetResort.Models.News", "ImageId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_News_AppFiles");
 
                     b.Navigation("Image");

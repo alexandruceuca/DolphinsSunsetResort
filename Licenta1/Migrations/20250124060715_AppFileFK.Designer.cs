@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DolphinsSunsetResort.Migrations
 {
     [DbContext(typeof(AuthDbContext))]
-    [Migration("20250122163846_Menu")]
-    partial class Menu
+    [Migration("20250124060715_AppFileFK")]
+    partial class AppFileFK
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -371,8 +371,7 @@ namespace DolphinsSunsetResort.Migrations
 
                     b.HasKey("MenuItemId");
 
-                    b.HasIndex("CategoryId")
-                        .IsUnique();
+                    b.HasIndex("CategoryId");
 
                     b.HasIndex("ImageId")
                         .IsUnique();
@@ -397,7 +396,7 @@ namespace DolphinsSunsetResort.Migrations
 
                     b.HasKey("MenuItemCategoryId");
 
-                    b.ToTable("MenuItemCategorys");
+                    b.ToTable("MenuItemCategories");
                 });
 
             modelBuilder.Entity("DolphinsSunsetResort.Models.News", b =>
@@ -716,8 +715,8 @@ namespace DolphinsSunsetResort.Migrations
             modelBuilder.Entity("DolphinsSunsetResort.Models.MenuItem", b =>
                 {
                     b.HasOne("DolphinsSunsetResort.Models.MenuItemCategory", "MenuItemCategory")
-                        .WithOne("MenuItem")
-                        .HasForeignKey("DolphinsSunsetResort.Models.MenuItem", "CategoryId")
+                        .WithMany("MenuItems")
+                        .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("FK_MenuItemCategory_MenuItem");
@@ -748,6 +747,7 @@ namespace DolphinsSunsetResort.Migrations
                     b.HasOne("DolphinsSunsetResort.Models.AppFile", "Image")
                         .WithOne("News")
                         .HasForeignKey("DolphinsSunsetResort.Models.News", "ImageId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .HasConstraintName("FK_News_AppFiles");
 
                     b.Navigation("Image");
@@ -842,8 +842,7 @@ namespace DolphinsSunsetResort.Migrations
 
             modelBuilder.Entity("DolphinsSunsetResort.Models.MenuItemCategory", b =>
                 {
-                    b.Navigation("MenuItem")
-                        .IsRequired();
+                    b.Navigation("MenuItems");
                 });
 
             modelBuilder.Entity("DolphinsSunsetResort.Models.Price", b =>
