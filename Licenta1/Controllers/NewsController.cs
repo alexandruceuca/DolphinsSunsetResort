@@ -131,6 +131,7 @@ namespace DolphinsSunsetResort.Controllers
 						else
 						{
 							ModelState.AddModelError(string.Empty, "The file is too large.");
+							 return View("/Views/News/Edit.cshtml", news);
 						}
 					}
 				}

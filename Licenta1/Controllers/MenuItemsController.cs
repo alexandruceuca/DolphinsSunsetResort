@@ -118,9 +118,25 @@ namespace DolphinsSunsetResort.Controllers
                 if (menuItem.Price.Discount > 100)
                 {
                     ModelState.AddModelError(string.Empty, "The Discount is too large.");
-					return View("Error");
+					ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+					return View(menuItem);
 				}
-            }
+
+				if (menuItem.Price.StartDate > menuItem.Price.EndDate)
+				{
+					ModelState.AddModelError(string.Empty, "Start Date cannot be after End Date. ");
+					ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+					return View(menuItem);
+				}
+
+				if (menuItem.Price.StartDate < DateTime.Today || menuItem.Price.StartDate < DateTime.Today)
+				{
+					ModelState.AddModelError(string.Empty, "Date cannot be before today.");
+					ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+					return View(menuItem);
+				}
+
+			}
             catch (Exception ex)
             {
 
@@ -216,7 +232,27 @@ namespace DolphinsSunsetResort.Controllers
 								ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
 								return View(menuItem);
 							}
-                        }
+							if (menuItem.Price.Discount > 100)
+							{
+								ModelState.AddModelError(string.Empty, "The Discount is too large.");
+								ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+								return View(menuItem);
+							}
+
+							if (menuItem.Price.StartDate > menuItem.Price.EndDate)
+							{
+								ModelState.AddModelError(string.Empty, "Start Date cannot be after End Date. ");
+								ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+								return View(menuItem);
+							}
+
+							if (menuItem.Price.StartDate < DateTime.Today || menuItem.Price.StartDate < DateTime.Today)
+							{
+								ModelState.AddModelError(string.Empty, "Date cannot be before today.");
+								ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName", menuItem.CategoryId);
+								return View(menuItem);
+							}
+						}
                     }
                 }
 
@@ -308,7 +344,7 @@ namespace DolphinsSunsetResort.Controllers
                 }
 
                 // Remove related Price if it exists
-                if (menuItem.PriceId != null)
+                if (menuItem.PriceId != 0)
                 {
                     var price = await _context.Prices.FindAsync(menuItem.PriceId);
                     if (price != null)

@@ -15,7 +15,7 @@
 				<hr />
 				<form asp-action="Create" enctype="multipart/form-data">
 					<div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
-	
+
 					<!-- Name Field -->
 					<div class="mb-3">
 						<label asp-for="Name" class="form-label"></label>
@@ -70,22 +70,31 @@
 							</div>
 							<div class="col-md-6 mb-3">
 								<label asp-for="Price.Discount" class="form-label"></label>
-								<input asp-for="Price.Discount" type="number" class="form-control" placeholder="Enter discount percentage" max="100" min="0" step="0.01" />
+								<input asp-for="Price.Discount" type="number" class="form-control" placeholder="Enter discount percentage" max="100" min="0" step="0.01" value="0" />
 								<span asp-validation-for="Price.Discount" class="text-danger"></span>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-6 mb-3">
 								<label asp-for="Price.StartDate" class="form-label"></label>
-								<input asp-for="Price.StartDate" type="date" class="form-control" />
-								<span asp-validation-for="Price.StartDate" class="text-danger"></span>
+								<input asp-for="Price.StartDate"
+									   type="date"
+									   class="form-control"
+									   min="@DateTime.Now.ToString("yyyy-MM-dd")"
+									   value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+								@*<span asp-validation-for="Price.StartDate" class="text-danger"></span>*@
 							</div>
 							<div class="col-md-6 mb-3">
 								<label asp-for="Price.EndDate" class="form-label"></label>
-								<input asp-for="Price.EndDate" type="date" class="form-control" />
-								<span asp-validation-for="Price.EndDate" class="text-danger"></span>
+								<input asp-for="Price.EndDate"
+									   type="date"
+									   class="form-control"
+									   min="@DateTime.Now.ToString("yyyy-MM-dd")"
+									   value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+								@*<span asp-validation-for="Price.EndDate" class="text-danger"></span>*@
 							</div>
 						</div>
+
 						<div class="form-check">
 							<input asp-for="Price.DiscountIsActive" type="checkbox" class="form-check-input" />
 							<label asp-for="Price.DiscountIsActive" class="form-check-label"></label>
