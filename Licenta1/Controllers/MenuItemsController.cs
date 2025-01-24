@@ -9,6 +9,8 @@ using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Models;
 using DolphinsSunsetResort.Migrations;
 using DolphinsSunsetResort.Views.ViewsModel;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace DolphinsSunsetResort.Controllers
 {
@@ -20,9 +22,9 @@ namespace DolphinsSunsetResort.Controllers
         {
             _context = context;
         }
-
-        // GET: MenuItems
-        public async Task<IActionResult> Index(string titleFilter, bool? activeYN, int  categoryId, int page)
+		[Authorize(Roles = "Admin,Manager")]
+		// GET: MenuItems
+		public async Task<IActionResult> Index(string titleFilter, bool? activeYN, int  categoryId, int page)
         {
           
 
@@ -46,9 +48,9 @@ namespace DolphinsSunsetResort.Controllers
 			return View();
 			
         }
-
-        // GET: MenuItems/Details/5
-        public async Task<IActionResult> Details(int? id)
+		[Authorize(Roles = "Admin,Manager")]
+		// GET: MenuItems/Details/5
+		public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.MenuItems == null)
             {
@@ -68,8 +70,9 @@ namespace DolphinsSunsetResort.Controllers
             return View(menuItem);
         }
 
-        // GET: MenuItems/Create
-        public IActionResult Create()
+		// GET: MenuItems/Create
+		[Authorize(Roles = "Admin,Manager")]
+		public IActionResult Create()
         {
             ViewData["ImageId"] = new SelectList(_context.AppFiles, "Id", "Id");
             ViewData["CategoryId"] = new SelectList(_context.MenuItemCategories, "MenuItemCategoryId", "MenuItemCategoryName");
@@ -79,8 +82,8 @@ namespace DolphinsSunsetResort.Controllers
 
 
         [HttpPost]
-
-        public async Task<IActionResult> Create(MenuItem menuItem, IFormFile FileUpload)
+		[Authorize(Roles = "Admin,Manager")]
+		public async Task<IActionResult> Create(MenuItem menuItem, IFormFile FileUpload)
         {
             try
             {
@@ -151,8 +154,9 @@ namespace DolphinsSunsetResort.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // GET: MenuItems/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+		// GET: MenuItems/Edit/5
+		[Authorize(Roles = "Admin,Manager")]
+		public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.MenuItems == null)
             {
@@ -170,8 +174,8 @@ namespace DolphinsSunsetResort.Controllers
             return View(menuItem);
         }
 
-
-        [HttpPost]
+		[Authorize(Roles = "Admin,Manager")]
+		[HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, MenuItem menuItem, IFormFile FileUpload)
         {
@@ -297,9 +301,9 @@ namespace DolphinsSunsetResort.Controllers
 
 
         }
-
-        // GET: MenuItems/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+		[Authorize(Roles = "Admin,Manager")]
+		// GET: MenuItems/Delete/5
+		public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.MenuItems == null)
             {
@@ -319,8 +323,9 @@ namespace DolphinsSunsetResort.Controllers
             return View(menuItem);
         }
 
-        // POST: MenuItems/Delete/5
-        [HttpPost, ActionName("Delete")]
+		[Authorize(Roles = "Admin,Manager")]
+		// POST: MenuItems/Delete/5
+		[HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
