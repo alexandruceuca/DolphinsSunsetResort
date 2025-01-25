@@ -17,6 +17,7 @@
                                 <th>Room</th>
                                 <th>Check-In</th>
                                 <th>Check-Out</th>
+                                <th>Number of Breakfast</th>
                                 <th>Price</th>
                                 <th>Action</th>
                             </tr>
@@ -28,6 +29,7 @@
                                     <td>@item.Room.Name</td>
                                     <td>@item.CheckInDate.ToShortDateString()</td>
                                     <td>@item.CheckOutDate.ToShortDateString()</td>
+                                    <td>@item.BreakfastCount</td>
                                     <td>@item.Price.ToString("C")</td>
                                     <td>
                                         <a href="#" class="RemoveLink btn btn-danger btn-sm" data-id="@item.RecordId">

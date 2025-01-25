@@ -2,91 +2,106 @@
 @model RoomInfoViewModel
 
 @{
-    ViewData["Title"] = @Model.Room.Name;
+	ViewData["Title"] = @Model.Room.Name;
 }
 <main class="py-5">
-    <div class="container room-info">
-        <div class="row">
-            <!-- Room Image and Slideshow Section -->
-            <div class="col-lg-8 col-md-12 mb-4">
-                <h1 class="display-4 text-primary">@Model.Room.Name</h1>
-                <hr class="my-4">
+	<div class="container room-info">
+		<div class="row">
+			<!-- Room Image and Slideshow Section -->
+			<div class="col-lg-8 col-md-12 mb-4">
+				<h1 class="display-4 text-primary">@Model.Room.Name</h1>
+				<hr class="my-4">
 
-                <section class="Home">
-                    <div class="slide-show position-relative">
-                        <div class="img-slide-show overflow-hidden position-relative">
-                            @if (Model.ImagePaths != null && Model.ImagePaths.Any())
-                            {
-                                @foreach (var image in Model.ImagePaths)
-                                {
-                                    <div class="img-slide fade-animation">
-                                        <img src="~/images/rooms/room-@Model.Room.RoomId/@image" alt="Room Image"
-                                     class="d-block w-100 rounded mb-2 shadow-sm img-fluid">
-                                    </div>
-                                }
-                                <!-- Navigation buttons -->
-                                <a class="position-absolute top-50 start-0 translate-middle-y text-dark fs-2 text-decoration-none px-3" id="prevButton">&#10094;</a>
-                                <a class="position-absolute top-50 end-0 translate-middle-y text-dark fs-2 text-decoration-none px-3" id="nextButton">&#10095;</a>
-                            }
-                            else
-                            {
-                                <p class="text-muted text-center">No images available for this room.</p>
-                            }
-                        </div>
-                    </div>
-                </section>
-            </div>
+				<section class="Home">
+					<div class="slide-show position-relative">
+						<div class="img-slide-show overflow-hidden position-relative">
+							@if (Model.ImagePaths != null && Model.ImagePaths.Any())
+							{
+								@foreach (var image in Model.ImagePaths)
+								{
+									<div class="img-slide fade-animation">
+										<img src="~/images/rooms/room-@Model.Room.RoomId/@image" alt="Room Image"
+									 class="d-block w-100 rounded mb-2 shadow-sm img-fluid">
+									</div>
+								}
+								<!-- Navigation buttons -->
+								<a class="position-absolute top-50 start-0 translate-middle-y text-dark fs-2 text-decoration-none px-3" id="prevButton">&#10094;</a>
+								<a class="position-absolute top-50 end-0 translate-middle-y text-dark fs-2 text-decoration-none px-3" id="nextButton">&#10095;</a>
+							}
+							else
+							{
+								<p class="text-muted text-center">No images available for this room.</p>
+							}
+						</div>
+					</div>
+				</section>
+			</div>
 
-            <!-- Room Details Section -->
-            <div class="col-lg-4 col-md-12 pt-5">
-                <div class="card shadow-sm p-4">
-                    <p><strong>Description:</strong> @Model.Room.Description</p>
+			<!-- Room Details Section -->
+			<div class="col-lg-4 col-md-12 pt-5">
+				<div class="card shadow-sm p-4">
+					<p><strong>Description:</strong> @Model.Room.Description</p>
 
-                    @if (Model.Room.Price.DiscountIsActive && Model.Room.Price.StartDate <= DateTime.Today && Model.Room.Price.EndDate >= DateTime.Today)
-                    {
-                        <p class="card-text">
-                            <span class="text-decoration-line-through"><strong>Price: @Model.Room.Price.BasePrice.ToString("C")</strong></span>
-                            <span class="ms-2 text-success"><strong>@((Model.Room.Price.BasePrice - (Model.Room.Price.Discount / 100 * Model.Room.Price.BasePrice)).ToString("C"))</strong></span>
-                        </p>
-                    }
-                    else
-                    {
-                        <p class="card-text"><strong>Price: @Model.Room.Price.BasePrice.ToString("C")</strong></p>
-                    }
-                    <p><strong>Capacity:</strong> @Model.Room.Capacity.ToString()</p>
+					@if (Model.Room.Price.DiscountIsActive && Model.Room.Price.StartDate <= DateTime.Today && Model.Room.Price.EndDate >= DateTime.Today)
+					{
+						<p class="card-text">
+							<span class="text-decoration-line-through"><strong>Price: @Model.Room.Price.BasePrice.ToString("C")</strong></span>
+							<span class="ms-2 text-success"><strong>@((Model.Room.Price.BasePrice - (Model.Room.Price.Discount / 100 * Model.Room.Price.BasePrice)).ToString("C"))</strong></span>
+						</p>
+					}
+					else
+					{
+						<p class="card-text"><strong>Price: @Model.Room.Price.BasePrice.ToString("C")</strong></p>
+					}
+					<p><strong>Capacity:</strong> @Model.Room.Capacity.ToString()</p>
 
-                    <!-- Date Range Picker -->
-                    <form id="filterForm" class="container mt-5 pb-3">
-                        <div class="row g-3 align-items-end">
-                            <div class="col-md-6">
-                                <label for="startDate" class="form-label">Start Date</label>
-                                <div class="input-group" id="startDatePicker">
-                                    <input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" value="@Model.CheckInDate" />
-                                    <span class="input-group-text">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                </div>
-                            </div>
+					<form class="mt-4">
+						<label for="breakfastCount" class="form-label"><strong>Would you like breakfast during your stay?</strong></label>
+						<p>Please select the number of people who would like to have breakfast for the period you’ve booked.</p>
+						<select class="form-select" id="breakfastCount" name="breakfastCount">
+							<option value="" selected>Choose number of breakfasts...</option>
+							@for (int i = 1; i <= Model.Room.Capacity; i++)
+							{
+								<option va lue="@i">@i</option>
+							}
+						</select>
+						<small class="text-muted d-block mt-2">
+							*This is just for planning purposes. You’re not obligated to purchase now, and payment will be made at the restaurant after ordering.
+						</small>
+					</form>
 
-                            <div class="col-md-6">
-                                <label for="endDate" class="form-label">End Date</label>
-                                <div class="input-group" id="endDatePicker">
-                                    <input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate" value="@Model.CheckOutDate">
-                                    <span class="input-group-text">
-                                        <i class="fa-regular fa-calendar"></i>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+					<!-- Date Range Picker -->
+					<form id="filterForm" class="container mt-5 pb-3">
+						<div class="row g-3 align-items-end">
+							<div class="col-md-6">
+								<label for="startDate" class="form-label">Start Date</label>
+								<div class="input-group" id="startDatePicker">
+									<input type="text" class="form-control" placeholder="Start Date" id="startDate" name="startDate" value="@Model.CheckInDate" />
+									<span class="input-group-text">
+										<i class="fa-regular fa-calendar"></i>
+									</span>
+								</div>
+							</div>
 
-                    <button type="button" class="btn btn-primary add-to-cart-button-info" data-room-id="@Model.Room.RoomId" data-url="@Url.Action("AddToCart", "BookingCart")">
-                        Book
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
+							<div class="col-md-6">
+								<label for="endDate" class="form-label">End Date</label>
+								<div class="input-group" id="endDatePicker">
+									<input type="text" class="form-control" placeholder="End Date" id="endDate" name="endDate" value="@Model.CheckOutDate">
+									<span class="input-group-text">
+										<i class="fa-regular fa-calendar"></i>
+									</span>
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<button type="button" class="btn btn-primary add-to-cart-button-info" data-room-id="@Model.Room.RoomId" data-url="@Url.Action("AddToCart", "BookingCart")">
+						Book
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </main>
 
 <script src="~/js/datePicker.js" asp-append-version="true"></script>

@@ -21,7 +21,7 @@ public class BookingCartController : Controller
     }
 
 
-    public async Task<IActionResult> AddToCart(int roomId, string checkInDate, string checkOutDate)
+    public async Task<IActionResult> AddToCart(int roomId, string checkInDate, string checkOutDate, int breakfastCount)
     {
         try
         {
@@ -88,7 +88,7 @@ public class BookingCartController : Controller
             }
             try
             {
-                cart.AddToCart(addedRoom, parsedStartDate, parsedEndDate);
+                cart.AddToCart(addedRoom, parsedStartDate, parsedEndDate, breakfastCount);
             }
             catch (InvalidOperationException ex)
             {

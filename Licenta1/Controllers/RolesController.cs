@@ -198,8 +198,23 @@ namespace DolphinsSunsetResort.Controllers
                 return ViewComponent("ReceptionBookingsList", new { filters = bookingFilters, page = page });
             }
 
+			var bookings = _context.Bookings.Include(b=>b.BookingRooms).Where(b =>  b.Status != Dictionaries.BookingStatus.Cancelled && b.Status != Dictionaries.BookingStatus.NoShow 
+                                                    && b.CheckInDate.Date < DateTime.Now.Date && b.CheckOutDate.Date >= DateTime.Now.Date);
 
-            return View("/Views/Roles/Reception/TodaysBookings.cshtml");
+            var totalNumberBreakfast = 0;
+
+            foreach (Booking b in bookings)
+            {
+                foreach(BookingRoom br in b.BookingRooms)
+                {
+                    totalNumberBreakfast += br.BreakfastCount;
+
+				}
+            }
+
+            ViewBag.TotalBreakfastCount = totalNumberBreakfast;
+
+			return View("/Views/Roles/Reception/TodaysBookings.cshtml");
         }
 
 

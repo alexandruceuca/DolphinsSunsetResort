@@ -195,7 +195,18 @@ namespace DolphinsSunsetResort.Controllers
 												.Include(r => r.BookingRooms)
 													.ThenInclude(rm => rm.Room)
 												.FirstOrDefault(b => b.BookingId == bookingId);
+			var totalBreakfastCount = 0;
+			var numberBookings = -1;
 
+			foreach (BookingRoom b in bookingDetail.BookingRooms)
+			{
+				totalBreakfastCount += b.BreakfastCount;
+			}
+
+			var bookings = _context.Bookings.Where(b=>b.UserId==bookingDetail.UserId && b.Status==Dictionaries.BookingStatus.CheckOut);
+
+			ViewBag.TotalBreakfastCount = totalBreakfastCount;
+			ViewBag.NumberBookings = numberBookings+bookings.Count();
 
 			return View(bookingDetail);
 		}
@@ -231,7 +242,7 @@ namespace DolphinsSunsetResort.Controllers
 		public async Task<IActionResult> GetBookingRating(int bookingId)
 		{
 			var booking = await _context.Bookings
-				.Include(b => b.DictionaryRecommendation) 
+				.Include(b => b.DictionaryRecommendation)
 				.FirstOrDefaultAsync(b => b.BookingId == bookingId);
 
 			if (booking == null)

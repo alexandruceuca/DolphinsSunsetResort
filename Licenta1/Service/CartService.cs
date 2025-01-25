@@ -50,7 +50,7 @@ namespace DolphinsSunsetResort.Service
 			return httpContext.Session.GetString(CartSessionKey);
 		}
 
-		public void AddToCart(Room room, DateTime checkInDate, DateTime checkOutDate)
+		public void AddToCart(Room room, DateTime checkInDate, DateTime checkOutDate,int breakfastCount)
 		{
 
 			var cartItem = new Cart
@@ -61,7 +61,8 @@ namespace DolphinsSunsetResort.Service
 				CheckOutDate = checkOutDate,
 				CreatedDate = DateTime.Now,
 				Room = room,
-				Price = CalculatePrice(room.Price, checkInDate, checkOutDate)
+				Price = CalculatePrice(room.Price, checkInDate, checkOutDate),
+				BreakfastCount = breakfastCount
 			};
 			_context.Carts.Add(cartItem);
 
@@ -188,7 +189,8 @@ namespace DolphinsSunsetResort.Service
 				{
 					RoomId = item.RoomId,
 					BookingId = booking.BookingId,
-					Price = item.Price
+					Price = item.Price,
+					BreakfastCount =item.BreakfastCount,
 				};
 				// Set the order total of the booking cart
 				orderTotal += item.Price;

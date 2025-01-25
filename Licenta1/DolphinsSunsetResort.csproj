@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\home-bonfire\" />
     <Folder Include="wwwroot\images\rooms\room-1\" />
     <Folder Include="wwwroot\images\rooms\room-2\" />
     <Folder Include="wwwroot\images\rooms\room-3\" />

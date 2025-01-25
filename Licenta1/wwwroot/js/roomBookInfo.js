@@ -7,8 +7,10 @@
         var roomId = $(this).data("room-id");
         var checkInDate = $("#startDate").val();
         var checkOutDate = $("#endDate").val();
+        var breakfastCount = $("#breakfastCount").val();
         var actionUrl = $(this).data("url"); // Get the URL for the action
 
+        console.log(breakfastCount);
 
         if (!checkInDate || !checkOutDate) {
             showPopup(false, "Please select both check-in and check-out dates.");
@@ -33,7 +35,8 @@
             data: {
                 roomId: roomId,
                 checkInDate: checkInDate,
-                checkOutDate: checkOutDate
+                checkOutDate: checkOutDate,
+                breakfastCount: breakfastCount
             },
             success: function (response) {
                 showPopup(response.success, response.message);

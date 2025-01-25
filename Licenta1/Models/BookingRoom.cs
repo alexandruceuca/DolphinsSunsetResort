@@ -10,6 +10,7 @@ namespace DolphinsSunsetResort.Models
 		
 		public int RoomId { get; set; }
 
+		public int BreakfastCount { get; set; }
 		public decimal Price { get; set; }
 
 		public virtual Room Room { get; set; } = null;

@@ -11,7 +11,9 @@ namespace DolphinsSunsetResort.Models
 
         public int RoomId { get; set; }
         public decimal Price { get; set; }
-        public DateTime CheckInDate { get; set; }
+        public int BreakfastCount { get; set; }
+
+		public DateTime CheckInDate { get; set; }
         public DateTime CheckOutDate { get; set; }
         public DateTime CreatedDate { get; set; }
         public virtual Room Room { get; set; }
