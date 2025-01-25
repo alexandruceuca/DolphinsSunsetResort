@@ -196,7 +196,7 @@ namespace DolphinsSunsetResort.Controllers
 													.ThenInclude(rm => rm.Room)
 												.FirstOrDefault(b => b.BookingId == bookingId);
 			var totalBreakfastCount = 0;
-			var numberBookings = -1;
+			var numberBookings = 0;
 
 			foreach (BookingRoom b in bookingDetail.BookingRooms)
 			{
