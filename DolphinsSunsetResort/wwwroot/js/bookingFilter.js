@@ -100,7 +100,7 @@
             url: filterUrl,
             type: 'GET',
             data: {
-                statusFilter: statusFilter,
+                bookingStatus: statusFilter,
                 startDate: startDate,
                 endDate: endDate,
                 page: page

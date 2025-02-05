@@ -1,5 +1,6 @@
 ﻿using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Data;
+using DolphinsSunsetResort.Dictionaries;
 using DolphinsSunsetResort.Models;
 using DolphinsSunsetResort.Views.ViewsModel;
 using Microsoft.AspNetCore.Authorization;
@@ -45,6 +46,12 @@ namespace DolphinsSunsetResort.ViewComponents
                 if (!string.IsNullOrEmpty(filters.EmailFilter))
                 {
                     bookings = bookings.Where(b => b.AplicationUser.Email.Contains(filters.EmailFilter));
+                }
+
+                // Apply Status filter
+                if (filters.Status != BookingStatus.None)
+                {
+                    bookings = bookings.Where(b => b.Status == filters.Status);
                 }
 
                 if (filters.AllBookings == false)
