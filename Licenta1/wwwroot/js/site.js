@@ -26,7 +26,7 @@ function prevSlide() {
 // Set an interval for automatic sliding, e.g., every 10 seconds
 setInterval(nextSlide, 10000);
 
-// Optionally, you can add event listeners for navigation
+
 document.getElementById('nextButton').addEventListener('click', nextSlide);
 document.getElementById('prevButton').addEventListener('click', prevSlide);
 
@@ -35,13 +35,4 @@ showSlide(currentSlide);
 
 
 
-
-//------------------Script for slide show--------------------------
-
-
-//-----------------Script for date-picker
-
-
-
-//-----------------
 

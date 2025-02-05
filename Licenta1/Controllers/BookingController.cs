@@ -55,7 +55,7 @@ namespace DolphinsSunsetResort.Controllers
 			// Get all enum values except "None"
 			var bookingStatusList = Enum.GetValues(typeof(BookingStatus))
 				.Cast<BookingStatus>()
-				.Where(status => status != BookingStatus.None)
+				.Where(status => status != BookingStatus.None && status != BookingStatus.NoShow)
 				.ToList();
 
 			// Pass the filtered enum values to the view
