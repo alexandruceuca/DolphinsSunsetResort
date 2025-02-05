@@ -1,6 +1,7 @@
 ﻿using DolphinsSunsetResort.Areas.Identity.Data;
 using DolphinsSunsetResort.Data;
 using DolphinsSunsetResort.Dictionaries;
+
 using DolphinsSunsetResort.Models;
 using DolphinsSunsetResort.Service;
 using DolphinsSunsetResort.Utils;
@@ -219,16 +220,31 @@ namespace DolphinsSunsetResort.Controllers
 
 
         [Authorize(Roles = "Admin,Manager,Reception")]
-        public async Task<IActionResult> GetAllBookings(int bookingIdFilter, string phoneFilter, string emailFilter, string checkInDate, string checkOutDate, int page)
+        public async Task<IActionResult> GetAllBookings(int bookingIdFilter, string phoneFilter, string emailFilter, string checkInDate, string checkOutDate, BookingStatus bookingStatus, int page)
         {
 			var (parsedStartDate, parsedEndDate) = UtilsDate.ParseAndSetBookingDates(checkInDate, checkOutDate);
-			//// Parse the dates
-			//DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
-   //         DateTime parsedEndDate = string.IsNullOrEmpty(checkOutDate) ? DateTime.MaxValue : DateTime.Parse(checkOutDate);
+            //// Parse the dates
+            //DateTime parsedStartDate = string.IsNullOrEmpty(checkInDate) ? DateTime.MinValue : DateTime.Parse(checkInDate);
+            //         DateTime parsedEndDate = string.IsNullOrEmpty(checkOutDate) ? DateTime.MaxValue : DateTime.Parse(checkOutDate);
 
-   //         //Set time
-   //         parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
-   //         parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
+            //         //Set time
+            //         parsedStartDate = new DateTime(parsedStartDate.Year, parsedStartDate.Month, parsedStartDate.Day, 13, 0, 0);
+            //         parsedEndDate = new DateTime(parsedEndDate.Year, parsedEndDate.Month, parsedEndDate.Day, 9, 0, 0);
+
+            // Check if the bookingStatus is not set 
+            if (string.IsNullOrEmpty(Request.Query["bookingStatus"]))
+            {
+                bookingStatus = BookingStatus.None;
+            }
+
+            // Get all enum values except "None"
+            var bookingStatusList = Enum.GetValues(typeof(BookingStatus))
+                .Cast<BookingStatus>()
+                .Where(status => status != BookingStatus.None && status != BookingStatus.NoShow)
+                .ToList();
+
+            // Pass the filtered enum values to the view
+            ViewBag.bookingStatus = bookingStatusList;
 
             var bookingFilters = new BookingFilterViewModel
             {
@@ -237,6 +253,7 @@ namespace DolphinsSunsetResort.Controllers
                 BookingIdFilter = bookingIdFilter,
                 CheckInDate = parsedStartDate,
                 CheckOutDate = parsedEndDate,
+                Status = bookingStatus,
                 AllBookings = true,
 
             };

@@ -24,6 +24,7 @@
         const emailFilter = $('#emailFilter').val();
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
+        const status = $('#statusFilter').val();
         const url = $('#bookingIdFilter').data("url");
 
 
@@ -47,6 +48,7 @@
                 emailFilter: emailFilter,
                 checkInDate: startDate,
                 checkOutDate: endDate,
+                bookingStatus: status,
                 page: 1 // Reset to the first page when applying filters
             },
             success: function (response) {
@@ -65,6 +67,7 @@
         $('#emailFilter').val('');
         $('#startDate').val('');
         $('#endDate').val('');
+        $('#statusFilter').val('');
         const url = $('#bookingIdFilter').data('url');
 
         $.ajax({
@@ -90,6 +93,7 @@
         const emailFilter = $('#emailFilter').val();
         const startDate = $('#startDate').val();
         const endDate = $('#endDate').val();
+        const status = $('#statusFilter').val();
         const url = $('#bookingIdFilter').data('url');
 
         $.ajax({
@@ -101,6 +105,7 @@
                 emailFilter: emailFilter,
                 checkInDate: startDate,
                 checkOutDate: endDate,
+                bookingStatus: status,
                 page: page
             },
             success: function (response) {

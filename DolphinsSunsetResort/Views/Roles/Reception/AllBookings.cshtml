@@ -50,6 +50,17 @@
         <label for="emailFilter" class="form-label">Email</label>
         <input type="text" id="emailFilter" class="form-control" placeholder="Filter by Email..." />
     </div>
+    <!-- Status Filter -->
+    <div class="col-12 col-md-4 pt-2">
+        <label for="statusFilter">Status</label>
+        <select id="statusFilter" class="form-select">
+            <option value="">All</option>
+            @foreach (var status in ViewBag.bookingStatus as List<DolphinsSunsetResort.Dictionaries.BookingStatus>)
+            {
+                <option value="@status">@status</option>
+            }
+        </select>
+    </div>
 </div>
 
 <!-- Filter and Reset Buttons -->
