@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Room>
+@{
+    ViewData["Title"] = "Reception";
+    Layout = "/Views/Shared/_ReceptionMenuLayout.cshtml";
+}
+
+<body>
+    <div class="container mt-5">
+        <h3 class="text-center mb-4">Rooms Status</h3>
+
+        <div id="roomsList" class="list-group">
+            @await Component.InvokeAsync("ReceptionRoomsStatusList") 
+        </div>
+    </div>
+</body>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/showPopup.js" asp-append-version="true"></script>
+<script src="~/js/roomStatus.js" asp-append-version="true"></script>

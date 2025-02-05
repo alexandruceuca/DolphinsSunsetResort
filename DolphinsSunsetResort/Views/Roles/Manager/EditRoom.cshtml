@@ -1,0 +1,125 @@
+﻿@using System.Globalization;
+@model DolphinsSunsetResort.Models.Room
+@{
+	ViewData["Title"] = "Edit Room Details";
+}
+
+<div class="container mt-5">
+<div class="d-flex justify-content-between align-items-center mb-3">
+	<h2>@ViewData["Title"]</h2>
+	<div class="btn-group">
+			@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+			{
+			   <a class="btn btn-primary" asp-controller="Roles" asp-action="GetRooms">
+				   Rooms
+			   </a>
+			}
+	</div>
+</div>
+
+
+	<form asp-action="EditRoom" method="post">
+		<div class="row">
+			<input type="hidden" name="RoomId" value="@Model.RoomId" />
+
+			<!-- Room Number -->
+			<div class="col-12 col-md-6">
+				<div class="form-group">
+					<label for="Number">Room Number</label>
+					<input type="number" class="form-control" id="Number" name="Number" value="@Model.Number" required>
+				</div>
+			</div>
+
+			<!-- Room Name -->
+			<div class="col-12 col-md-6">
+				<div class="form-group">
+					<label for="Name">Room Name</label>
+					<input type="text" class="form-control" id="Name" name="Name" value="@Model.Name" required>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<!-- Room Description -->
+			<div class="col-12">
+				<div class="form-group">
+					<label for="Description">Room Description</label>
+					<textarea class="form-control" id="Description" name="Description" rows="3" required>@Model.Description</textarea>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<!-- Room Type -->
+			<div class="col-12 col-md-6">
+				<div class="form-group">
+					<label for="RoomType">Room Type</label>
+					<input type="text" class="form-control" id="RoomType" name="RoomType" value="@Model.RoomType" readonly>
+				</div>
+			</div>
+
+			<!-- Room Capacity -->
+			<div class="col-12 col-md-6">
+				<div class="form-group">
+					<label for="Capacity">Capacity</label>
+					<input type="number" class="form-control" id="Capacity" name="Capacity" value="@Model.Capacity" readonly>
+				</div>
+			</div>
+		</div>
+
+		<h4>Price Information</h4>
+		<div class="row">
+			<!-- Base Price -->
+			<div class="col-12 col-md-6">
+				<div class="form-group">
+					<label for="BasePrice">Base Price</label>
+					<input type="number" class="form-control" id="BasePrice" name="Price.BasePrice"
+						   value="@Model.Price.BasePrice" step="0.01" min="0" required />
+				</div>
+			</div>
+
+			<!-- Discount (Percentage) -->
+			<div class="col-12 col-md-6">
+				<div class="form-group">
+					<label for="Discount">Discount (%)</label>
+					<input type="number" step="any" class="form-control" id="Discount" name="Price.Discount"
+						   value="@Model.Price.Discount" min="0" max="100" required>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<!-- Start Date -->
+			<div class="col-12 col-md-6">
+				<div class="form-group">
+					<label for="StartDate">Start Date</label>
+					<input type="date" class="form-control" id="StartDate" name="Price.StartDate" value="@Model.Price.StartDate.ToString("yyyy-MM-dd")" required>
+				</div>
+			</div>
+
+			<!-- End Date -->
+			<div class="col-12 col-md-6">
+				<div class="form-group">
+					<label for="EndDate">End Date</label>
+					<input type="date" class="form-control" id="EndDate" name="Price.EndDate" value="@Model.Price.EndDate.ToString("yyyy-MM-dd")" required>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<!-- Discount Active -->
+			<div class="col-12 col-md-6">
+				<div class="form-group">
+					<label for="DiscountIsActive">Discount Active</label>
+					<input asp-for="@Model.Price.DiscountIsActive" type="checkbox" />
+				</div>
+			</div>
+		</div>
+		<input type="hidden" id="PriceId" name="Price.PriceId" value="@Model.Price.PriceId"/>
+		<div class="row mt-4">
+			<div class="col-12">
+				<button type="submit" class="btn btn-success w-100">Save Changes</button>
+			</div>
+		</div>
+	</form>
+</div>

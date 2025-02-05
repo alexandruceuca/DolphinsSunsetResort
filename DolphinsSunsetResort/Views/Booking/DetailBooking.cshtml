@@ -1,0 +1,144 @@
+﻿@using DolphinsSunsetResort.Dictionaries
+@model DolphinsSunsetResort.Models.Booking
+
+@{
+	Layout = "/Views/Shared/_ReceptionMenuLayout.cshtml";
+}
+
+<div class="container mt-4">
+	<div class="d-flex justify-content-between align-items-center">
+		<h3>Booking Details</h3>
+
+		@if (Model.Status == BookingStatus.Confirmed)
+		{
+			<div class="btn-group">
+				<button class="btn btn-danger btn-sm cancel-booking" data-booking-id="@Model.BookingId" data-url="@Url.Action("CancelBooking", "Booking")">
+					Cancel Booking
+				</button>
+				<button class="btn btn-success btn-sm checkin-booking" data-booking-id="@Model.BookingId" data-url="@Url.Action("CheckInBooking", "Booking")">
+					Check In
+				</button>
+			</div>
+		}
+		else if (Model.Status == BookingStatus.CheckIn)
+		{
+			<div class="btn-group">
+				<button class="btn btn-primary btn-sm checkout-booking" data-booking-id="@Model.BookingId" data-url="@Url.Action("CheckOutBooking", "Booking")">
+					Check Out
+				</button>
+			</div>
+		}
+	</div>
+
+	<div class="card mt-4">
+		<div class="card-body">
+			<!-- Booking Information Section -->
+			<h5 class="card-title">Booking Information</h5>
+			<dl class="row">
+				<dt class="col-sm-4 col-md-3">Booking Number:</dt>
+				<dd class="col-sm-8 col-md-9">@Model.BookingId</dd>
+
+				<dt class="col-sm-4 col-md-3">Check-In Date:</dt>
+				<dd class="col-sm-8 col-md-9">@Model.CheckInDate.ToShortDateString()</dd>
+
+				<dt class="col-sm-4 col-md-3">Check-Out Date:</dt>
+				<dd class="col-sm-8 col-md-9">@Model.CheckOutDate.ToShortDateString()</dd>
+
+				<dt class="col-sm-4 col-md-3">Booking Status:</dt>
+				<dd class="col-sm-8 col-md-9" id="bookingStatus">
+					@Model.Status
+				</dd>
+				<dt class="col-sm-4 col-md-3">Total Price:</dt>
+				<dd class="col-sm-8 col-md-9" ">
+					@Model.TotalPrice.ToString("C")
+				</dd>
+				<dt class="col-sm-4 col-md-3">Number of People Who Would Like Breakfast:</dt>
+				<dd class="col-sm-8 col-md-9" ">
+					@ViewBag.TotalBreakfastCount
+				</dd>
+				<dt class="col-sm-4 col-md-3">Guest Status:</dt>
+				<dd class="col-sm-8 col-md-9">
+					@if (ViewBag.NumberBookings<1)
+					{
+						<span class="text-success">First-Time Guest</span>
+					}
+					else
+					{
+						<span class="text-info">Returning Guest (Booking Number: @ViewBag.NumberBookings)</span>
+					}
+				</dd>
+			</dl>
+			<hr>
+
+			<!-- User Information Section -->
+			<h5 class="card-title">User Information</h5>
+			<dl class="row">
+				<dt class="col-sm-4 col-md-3">Email:</dt>
+				<dd class="col-sm-8 col-md-9">@Model.AplicationUser.Email</dd>
+
+				<dt class="col-sm-4 col-md-3">Phone Number:</dt>
+				<dd class="col-sm-8 col-md-9">@Model.AplicationUser.PhoneNumber</dd>
+
+				<dt class="col-sm-4 col-md-3">Full Name:</dt>
+				<dd class="col-sm-8 col-md-9">@Model.AplicationUser.FirstName @Model.AplicationUser.LastName</dd>
+			</dl>
+			<hr>
+
+			<!-- Rooms Booked Section -->
+			<h5 class="card-title">Rooms Booked</h5>
+			<div class="table-responsive">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>Room Number </th>
+							<th>Room Type</th>
+							<th>Room Status </th>
+							<th>Price Per Night</th>
+							<th>Nights</th>
+							<th>Total Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						@if (Model.BookingRooms != null && Model.BookingRooms.Any())
+						{
+							foreach (var bookingRoom in Model.BookingRooms)
+							{
+								// Calculate the number of nights
+								var nights = (Model.CheckOutDate.Date - Model.CheckInDate.Date).Days;
+
+								// Calculate the total price for the room
+								var totalPrice = bookingRoom.Price * nights;
+
+								<tr data-room-id="@bookingRoom.Room.RoomId">
+									<td>@bookingRoom.Room.Number</td>
+									<td>@bookingRoom.Room.Name</td>
+									<td class="room-status">@bookingRoom.Room.RoomStatus.ToString()</td>
+									<td>@bookingRoom.Price.ToString("C")</td>
+									<td>@nights</td>
+									<td>@totalPrice.ToString("C")</td>
+								</tr>
+							}
+						}
+						else
+						{
+							<tr>
+								<td colspan="4">No rooms associated with this booking.</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- Back Button -->
+	<div class="mt-4">
+		<a href="@Url.Action("GetBookingsToday", "Roles")" class="btn btn-secondary">
+			<i class="bi bi-arrow-left-circle"></i> Back to Today's Bookings
+		</a>
+	</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="~/js/showPopup.js" asp-append-version="true"></script>
+<script src="~/js/detailBooking.js" asp-append-version="true"></script>

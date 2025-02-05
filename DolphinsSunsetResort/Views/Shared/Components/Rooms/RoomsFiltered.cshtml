@@ -1,0 +1,64 @@
+﻿@model DolphinsSunsetResort.Views.ViewsModel.RoomFilterViewModel
+
+@foreach (var room in Model.Rooms)
+{
+	<div class="col-md-6 col-lg-4">
+		<div class="px-2 py-2 card rooms-container ">
+			<div class="img-zoom card-img-top">
+				<img src="@($"images/home-romes/room-{room.Number}.jpg")" alt="" class="img-fluid">
+			</div>
+			<div class="card-body">
+				<h3 class="card-title">@room.Name</h3>
+				<p class="card-text text-justify">@{
+						string preview = room.Description.Length > 150
+							? room.Description.Substring(0, 150) + "..."
+						: room.Description;
+						}
+						<pre>@Html.Raw(preview)</pre></p>
+				@if (room.Price.DiscountIsActive && room.Price.StartDate <= DateTime.Today && room.Price.EndDate >= DateTime.Today)
+				{
+					<!-- Code for showing the discounted price -->
+					<p class="card-text">
+						<span class="text-decoration-line-through">@room.Price.BasePrice</span>
+						<span class="ms-2 text-success">@((room.Price.BasePrice - (room.Price.Discount / 100 * room.Price.BasePrice)).ToString("C"))</span>
+					</p>
+					<p class="card-text text-muted">
+						<strong>Available until:</strong> @room.Price.EndDate.ToString("MMMM dd, yyyy")
+					</p>
+				}
+				else
+				{
+					<!-- Code for showing the regular price -->
+					<p class="card-text">@room.Price.BasePrice.ToString("C")</p>
+				}
+
+
+				<div class="container">
+					<div class="row">
+						<div class="col-md-3">
+							<a class="btn btn-secondary  "
+						   href="@Url.Action("Info", "Room", new { id = room.RoomId,startDate=@Model.CheckInDate,endDate=@Model.CheckOutDate })"
+						   role="button">Info</a>
+						</div>
+						<div class="col-md-3"></div>
+						<div class="col-md-3"></div>
+						<div class="col-md-3">
+							<button type="button"
+								class="btn btn-primary  add-to-cart-button  "
+								data-room-id="@room.RoomId"
+								data-url="@Url.Action("AddToCart", "BookingCart")"
+								data-checkin-date="@Model.CheckInDate"
+								data-checkout-date="@Model.CheckOutDate">
+								Book
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+<script src="~/js/showPopup.js" asp-append-version="true"></script>
+<script src="~/js/roomFilters.js" asp-append-version="true"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

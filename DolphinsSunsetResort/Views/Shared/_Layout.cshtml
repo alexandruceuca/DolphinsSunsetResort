@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Dolphins Sunset Resort</title>
+
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- Popperjs -->
+	<script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha256-BRqBN7dYgABqtY9Hd4ynE+1slnEw+roEPFzQ7TRRfcg=" crossorigin="anonymous"></script>
+	<!-- Tempus Dominus JavaScript -->
+	<script src="https://cdn.jsdelivr.net/npm/@@eonasdan/tempus-dominus@6.9.4/dist/js/tempus-dominus.min.js" crossorigin="anonymous"></script>
+
+	<!-- Tempus Dominus Styles -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@eonasdan/tempus-dominus@6.9.4/dist/css/tempus-dominus.min.css" crossorigin="anonymous">
+
+	<!-- Bootstrap CDN -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+	<!-- Font Awesome CDN -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+	<!-- Google Font -->
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Tilt+Neon&display=swap" rel="stylesheet">
+	<!-- Google Font -->
+</head>
+<body>
+	<header>
+
+		<nav class="navbar navbar-expand-lg  navbar-light fixed-top">
+			<div class="container">
+				<!-- Logo -->
+				<a class="navbar-brand d-flex align-items-center" asp-controller="Home" asp-action="Index">
+					<img src="@Url.Content("~/images/Logo.png")" alt="Hotel" class="logo">
+				</a>
+
+				<!-- Toggler Button -->
+				<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvasLg" aria-controls="navbarOffcanvasLg" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+
+				<!-- Offcanvas Menu -->
+				<div class="offcanvas offcanvas-end" tabindex="-1" id="navbarOffcanvasLg" aria-labelledby="navbarOffcanvasLgLabel">
+					<div class="offcanvas-header">
+						<h5 class="offcanvas-title" id="offcanvasNavbarLabel"></h5>
+						<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+					</div>
+					<div class="offcanvas-body align-items-center">
+						<!-- Centered Links -->
+						<ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+							<li class="nav-item ">
+								<a class="nav-link active" asp-controller="Home" asp-action="Index">Home</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Room" asp-action="Index">Rooms</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="About" asp-action="Index">About</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="RestaurantMenu" asp-action="Index">Restaurant</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="News" asp-action="Index">News</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" asp-controller="Contact" asp-action="Index">Contact</a>
+							</li>
+						</ul>
+
+						<!-- Buttons -->
+						<div class="d-flex align-items-center justify-content-end pt-3 mt-lg-0">
+							<partial name="_LoginPartial.cshtml" />
+						</div>
+						<div class="d-flex align-items-center justify-content-end mt-3 mt-lg-0 ps-2 pb-2">
+							<a type="button" class="nav-link btn btn-primary" asp-controller="BookingCart" asp-action="Index">
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart-fill" viewBox="0 0 16 16">
+									<path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .491.592l-1.5 8A.5.5 0 0 1 13 12H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5M5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4m7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4m-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2m7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
+								</svg>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+
+
+	</header>
+	<div class="container">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<!--Footer section start-->
+	<footer>
+		<div class="container">
+			<footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+				<div class="col mb-3">
+					<a href="/" class="d-flex align-items-center mb-3 link-body-emphasis text-decoration-none">
+						<img src="~/images/Logo.png" alt="" class="img-fluid">
+					</a>
+					<p class="text-body-secondary">© 2024</p>
+				</div>
+
+				<div class="col mb-3">
+				</div>
+
+				<div class="col mb-3">
+					<h5>Address</h5>
+					<p>Romania</p>
+				</div>
+
+				<div class="col mb-3">
+					<h5>Section</h5>
+					<ul class="nav flex-column">
+						<li class="nav-item mb-2">
+							<a asp-controller="Home" asp-action="Index" class="nav-link p-0 text-body-secondary">Home</a>
+						</li>
+						<li class="nav-item mb-2">
+							<a asp-controller="Room" asp-action="Index" class="nav-link p-0 text-body-secondary">Rooms</a>
+						</li>
+						<li class="nav-item mb-2">
+							<a asp-controller="About" asp-action="Index"
+							   class="nav-link p-0 text-body-secondary">About</a>
+						</li>
+						<li class="nav-item mb-2">
+							<a asp-controller="RestaurantMenu" asp-action="Index"
+							   class="nav-link p-0 text-body-secondary">Restaurant</a>
+						</li>
+						<li class="nav-item mb-2">
+							<a asp-controller="News" asp-action="Index"
+							   class="nav-link p-0 text-body-secondary">News</a>
+						</li>
+						<li class="nav-item mb-2">
+							<a asp-controller="Contact" asp-action="Index"
+							   class="nav-link p-0 text-body-secondary">Contact</a>
+						</li>
+					</ul>
+				</div>
+
+				<div class="col mb-3">
+					<h5>Reservation</h5>
+					<p>+07000000000</p>
+					<p class="text-break">dolphins.susnet@tahoo.com</p>
+
+				</div>
+
+
+			</footer>
+		</div>
+	</footer>
+
+	<!--Footer section end-->
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
