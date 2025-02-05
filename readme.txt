@@ -16,6 +16,10 @@ Stringul de conexiune la baza de date este definit în fișierul `appsettings.js
    - Acest script include atât schema bazei de date, cât și datele existente.
    - Folosiți-l dacă doriți să populați baza de date cu informațiile deja existente.
 
+## 📧 Configurarea Serverului SMTP Local
+Aplicația folosește un server SMTP local pentru a trimite e-mailuri. Pentru a testa funcționalitatea de trimitere a e-mailurilor, utilizați **smtp4dev**, un server SMTP local de testare.
 
+- Descărcați **smtp4dev** de aici: [rnwood/smtp4dev](https://github.com/rnwood/smtp4dev/releases)
+- Rulați aplicația **smtp4dev** pe sistemul local.
 
 
